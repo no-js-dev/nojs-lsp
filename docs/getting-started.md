@@ -34,7 +34,7 @@ Or in VS Code: **Extensions** → **⋯** menu → **Install from VSIX…**
 The extension activates automatically on any HTML file. No configuration is required.
 
 1. **Open an HTML file** in VS Code.
-2. **Start typing a No.JS attribute** — `state=`, `bind-`, `on:`, `if=`, `each=`, `get=`, etc.
+2. **Start typing a No.JS attribute** — `state=`, `bind-`, `on:`, `if=`, `foreach=`, `get=`, etc.
 3. **Observe completions** appearing with directive names, descriptions, and companion attributes.
 
 <!-- screenshot: completion-popup.png -->
@@ -83,6 +83,6 @@ For full details, see [Configuration](reference/configuration.md).
 - **[Diagnostics](features/diagnostics.md)** — Unknown directive warnings with "did you mean?" suggestions, orphaned `else` detection, expression validation, and more.
 - **[Go-to-Definition](features/go-to-definition.md)** — Jump to `<template>` definitions, `ref` declarations, and `store` sources.
 - **[Semantic Highlighting](features/semantic-highlighting.md)** — Distinct colors for directive names, filters, stores, and loop variables.
-- **[Snippets](features/snippets.md)** — 23 built-in snippets for common patterns like `if`/`else`, `each`, `get`, `store`, and `form`.
+- **[Snippets](features/snippets.md)** — 23 built-in snippets for common patterns like `if`/`else`, `foreach`, `get`, `store`, and `form`.
 
 See the full [documentation index](README.md) for all features.

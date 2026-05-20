@@ -34,8 +34,9 @@ Complete reference for all No.JS directives supported by the LSP. Data sourced f
 | `switch` | conditional | expression | Yes | No |
 | `case` | conditional | string | Yes | Yes |
 | `default` | conditional | none | No | Yes |
+| `foreach` | loop | iterable | Yes | Yes |
 | `each` | loop | iterable | Yes | Yes |
-| `foreach` | loop | string | Yes | Yes |
+| `for` | loop | iterable | Yes | Yes |
 | `trigger` | event | string | Yes | Yes |
 | `ref` | reference | identifier | Yes | No |
 | `use` | template | templateId | Yes | Yes |
@@ -183,7 +184,7 @@ Performs an HTTP GET request and makes response data available.
 
 ```html
 <div get="/api/users" as="users" loading="spinner-tpl">
-  <li each="user in users" bind="user.name">
+  <li foreach="user in users" bind="user.name">
 </div>
 
 <!-- With caching and auto-refresh -->
@@ -479,11 +480,11 @@ Default case in a `switch` block. Renders when no `case` matches.
 
 Directives for iterating over collections.
 
-Both `each` and `foreach` expose [loop context variables](#loop-context-variables): `$index`, `$count`, `$first`, `$last`, `$even`, `$odd`.
+`foreach` is the primary iteration directive. `each` and `for` are aliases with identical capabilities. All three expose [loop context variables](#loop-context-variables): `$index`, `$count`, `$first`, `$last`, `$even`, `$odd`.
 
-#### `each`
+#### `foreach`
 
-Loops over an iterable collection using `"item in list"` syntax.
+Loops over a collection using `"item in list"` syntax. Supports filtering, sorting, pagination, and external templates.
 
 - **Value type:** iterable (`"item in list"` syntax) — required
 - **Priority:** 10
@@ -492,36 +493,9 @@ Loops over an iterable collection using `"item in list"` syntax.
 
 | Name | Type | Description |
 |------|------|-------------|
-| `template` | templateId | Template ID for item rendering |
-| `else` | templateId | Template ID for empty list |
-| `key` | expression | Unique key expression for DOM optimization |
-| `animate-enter` | animation | Enter animation name |
-| `animate` | animation | Enter animation name (alias) |
-| `animate-leave` | animation | Leave animation name |
-| `animate-stagger` | number | Stagger delay between items in ms |
-| `animate-duration` | number | Animation duration in ms |
-
-```html
-<li each="user in users" bind="user.name">
-
-<!-- With key and animations -->
-<li each="item in items" key="item.id" animate-enter="fadeIn" animate-stagger="50">
-```
-
-#### `foreach`
-
-Alternative loop with more options. Supports inline templates and external templates via the `template` companion.
-
-- **Value type:** string (item variable name) — required
-- **Priority:** 10
-
-**Companions:**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `from` | path | List path to iterate |
 | `index` | identifier | Custom index variable name |
 | `else` | templateId | Template ID for empty list |
+| `key` | expression | Unique key expression for DOM optimization |
 | `filter` | expression | Filter expression |
 | `sort` | string | Property to sort by |
 | `limit` | number | Max items to show |
@@ -534,14 +508,47 @@ Alternative loop with more options. Supports inline templates and external templ
 | `animate-duration` | number | Animation duration in ms |
 
 ```html
-<!-- Inline template -->
-<li foreach="user" from="users" bind="user.name">
+<!-- Basic loop -->
+<li foreach="user in users" bind="user.name">
+
+<!-- With key and animations -->
+<li foreach="item in items" key="item.id" animate-enter="fadeIn" animate-stagger="50">
 
 <!-- With filtering, sorting, and pagination -->
-<li foreach="item" from="products" filter="item.price > 10" sort="name" limit="5">
+<li foreach="item in products" filter="item.price > 10" sort="name" limit="5">
+
+<!-- Inline children -->
+<ul>
+  <li foreach="user in users">
+    <span bind="user.name"></span>
+    <span if="$first" class="badge">First</span>
+  </li>
+</ul>
 
 <!-- External template -->
-<li foreach="item" from="products" template="item-tpl">
+<li foreach="item in products" template="item-tpl">
+```
+
+#### `each` (alias)
+
+Alias for `foreach` with identical syntax and companions.
+
+- **Value type:** iterable (`"item in list"` syntax) — required
+- **Priority:** 10
+
+```html
+<li each="user in users" bind="user.name">
+```
+
+#### `for` (alias)
+
+Alias for `foreach` with identical syntax and companions.
+
+- **Value type:** iterable (`"item in list"` syntax) — required
+- **Priority:** 10
+
+```html
+<li for="user in users" bind="user.name">
 ```
 
 ---
@@ -1055,7 +1062,7 @@ Built-in context variables available in expressions.
 
 ## Loop Context Variables
 
-Available inside `each` and `foreach` loops.
+Available inside `foreach` / `each` / `for` loops.
 
 | Variable | Type | Description |
 |----------|------|-------------|
@@ -1067,7 +1074,7 @@ Available inside `each` and `foreach` loops.
 | `$odd` | boolean | `true` if `$index` is odd |
 
 ```html
-<li each="item in items">
+<li foreach="item in items">
   <span bind="($index + 1) + '. ' + item.name"></span>
   <span if="$first" class="badge">First</span>
   <span if="$last" class="badge">Last</span>
@@ -1151,5 +1158,5 @@ Built-in animation names for use with `animate-enter`, `animate-leave`, and `ani
 ```html
 <div if="isVisible" animate-enter="fadeInUp" animate-leave="fadeOutDown" animate-duration="300">
 
-<li each="item in items" animate-enter="slideInLeft" animate-stagger="50">
+<li foreach="item in items" animate-enter="slideInLeft" animate-stagger="50">
 ```

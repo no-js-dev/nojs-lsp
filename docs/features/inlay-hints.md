@@ -8,7 +8,13 @@ The No.JS LSP provides inlay hints — small inline annotations displayed direct
 
 ### Loop Variable Hints
 
-When you use an `each` or `foreach` directive, the LSP displays the available loop context variables as a hint after the attribute value:
+When you use a `foreach`, `each`, or `for` directive, the LSP displays the available loop context variables as a hint after the attribute value:
+
+```html
+<li foreach="item in items"> → $index, $count, $first, $last, $even, $odd
+                            ▲
+                            inlay hint (parameter)
+```
 
 ```html
 <li each="item in items"> → $index, $count, $first, $last, $even, $odd
@@ -16,13 +22,7 @@ When you use an `each` or `foreach` directive, the LSP displays the available lo
                          inlay hint (parameter)
 ```
 
-```html
-<li foreach="item" from="items"> → $index, $count, $first, $last, $even, $odd
-                                ▲
-                                inlay hint (parameter)
-```
-
-Both `each` and `foreach` show the same set of available context variables:
+All three iteration directives (`foreach`, `each`, `for`) show the same set of available context variables:
 
 | Variable | Description |
 |----------|-------------|

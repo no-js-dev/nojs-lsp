@@ -183,7 +183,7 @@ The validation rule name that triggered the error. Available in error templates.
 
 ## Loop Variables
 
-Available inside `each` and `foreach` loops. These provide metadata about the current iteration.
+Available inside `foreach` / `each` / `for` loops. These provide metadata about the current iteration.
 
 | Variable | Type | Description |
 |----------|------|-------------|
@@ -196,7 +196,7 @@ Available inside `each` and `foreach` loops. These provide metadata about the cu
 
 ```html
 <ul state="{ users: ['Alice', 'Bob', 'Charlie'] }">
-  <li each="user in users">
+  <li foreach="user in users">
     <span bind="($index + 1) + '. ' + user"></span>
     <span if="$first"> (first)</span>
     <span if="$last"> (last)</span>
@@ -204,7 +204,7 @@ Available inside `each` and `foreach` loops. These provide metadata about the cu
 </ul>
 
 <!-- Striped table rows -->
-<tr foreach="item" from="items"
+<tr foreach="item in items"
     class-even-row="$even"
     class-odd-row="$odd">
   <td bind="item.name"></td>
@@ -281,7 +281,7 @@ Available inside `drop` handler expressions. Provide information about the drag-
 ```html
 <div state="{ inbox: [], archive: [] }">
   <!-- Draggable items -->
-  <div each="msg in inbox" drag="msg" drag-type="email">
+  <div foreach="msg in inbox" drag="msg" drag-type="email">
     <span bind="msg.subject"></span>
   </div>
 

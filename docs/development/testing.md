@@ -73,7 +73,7 @@ HTML fixture files live in `test/fixtures/`:
 
 | File | Purpose |
 |---|---|
-| `all-directives.html` | Complete HTML document using every No.JS directive — state, store, computed, bind, if/else, foreach, HTTP verbs, routing, i18n, animations, and more. Used by tests that need a realistic full-page document. |
+| `all-directives.html` | Complete HTML document using every No.JS directive — state, store, computed, bind, if/else, foreach/each/for, HTTP verbs, routing, i18n, animations, and more. Used by tests that need a realistic full-page document. |
 | `pipes-errors.html` | Dynamic attribute bindings (`bind-*`), pipe/filter chains (`| uppercase`, `| trim | lowercase | truncate:50`), and intentional error conditions. Used by diagnostics and expression-analyzer tests. |
 
 Fixtures are loaded in tests via `fs.readFileSync` or by inlining the content directly.

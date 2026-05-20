@@ -38,7 +38,7 @@ Given this HTML file:
 
   <div get="/api/users" as="users">
     <ul>
-      <li each="user in users" bind="user.name"></li>
+      <li foreach="user in users" bind="user.name"></li>
     </ul>
   </div>
 

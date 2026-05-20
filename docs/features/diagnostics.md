@@ -246,7 +246,7 @@ HTTP directives (`get`, `post`, `put`, `patch`, `delete`, `call`) require the `a
 ```html
 <!-- ✓ Correct -->
 <div get="/api/users" as="users">
-  <p each="user in users" bind="user.name"></p>
+  <p foreach="user in users" bind="user.name"></p>
 </div>
 ```
 

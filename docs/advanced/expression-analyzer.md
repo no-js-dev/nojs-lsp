@@ -136,7 +136,7 @@ Certain expression patterns are **not** standard JavaScript and would produce fa
 
 | Pattern | Example | Why It's Skipped |
 |---------|---------|-----------------|
-| Loop syntax | `item in items` | `each` / `foreach` directive syntax |
+| Loop syntax | `item in items` | `foreach` / `each` / `for` directive syntax |
 | Object literals | `{ count: 0, name: '' }` | `state` / `value` directive values |
 | Array literals | `[1, 2, 3]` | Array values in directives |
 | Simple identifiers | `user.name`, `myStore` | Dot-notation paths and names |

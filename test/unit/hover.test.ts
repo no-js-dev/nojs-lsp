@@ -85,13 +85,23 @@ describe('HoverProvider', () => {
   });
 
   it('shows hover for foreach directive', async () => {
-    const content = '<li foreach="user" from="users" bind="user.name"></li>';
+    const content = '<li foreach="user in users" bind="user.name"></li>';
     const hover = await getHover(content, 5); // on "foreach"
     expect(hover).not.toBeNull();
     if (hover) {
       const value = typeof hover.contents === 'string' ? hover.contents : (hover.contents as any).value;
       expect(value).toContain('foreach');
       expect(value).toContain('inline');
+    }
+  });
+
+  it('shows hover for for directive', async () => {
+    const content = '<li for="user in users" bind="user.name"></li>';
+    const hover = await getHover(content, 5); // on "for"
+    expect(hover).not.toBeNull();
+    if (hover) {
+      const value = typeof hover.contents === 'string' ? hover.contents : (hover.contents as any).value;
+      expect(value).toContain('for');
     }
   });
 

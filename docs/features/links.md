@@ -13,7 +13,7 @@ URLs in HTTP directive attributes (`get`, `post`, `put`, `patch`, `delete`) are 
 ```html
 <!-- "https://api.example.com/users" is a clickable link -->
 <div get="https://api.example.com/users" as="users">
-  <li each="user in users" bind="user.name"></li>
+  <li foreach="user in users" bind="user.name"></li>
 </div>
 
 <!-- "/api/posts" is also linkable -->

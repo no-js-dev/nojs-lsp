@@ -56,7 +56,7 @@
       },
       "snippets": {
         "title": "23 Snippets",
-        "desc": "Digite nojs-if, nojs-each, nojs-get, nojs-store, nojs-form e expanda em padrões completos prontos para usar."
+        "desc": "Digite nojs-if, nojs-foreach, nojs-get, nojs-store, nojs-form e expanda em padrões completos prontos para usar."
       }
     },
     "showcase": {

@@ -7,7 +7,7 @@ Also works as a standalone language server (`--stdio`) for **Neovim**, **Sublime
 ## Features
 
 ### Completions
-- **Directive completions** — All 40+ No.JS directives (`state`, `if`, `get`, `each`, `model`, etc.)
+- **Directive completions** — All 40+ No.JS directives (`state`, `if`, `get`, `foreach`, `model`, etc.)
 - **Dynamic directives** — `bind-*`, `on:*`, `class-*`, `style-*` with common targets/events
 - **Companion attributes** — Context-aware: shows `as`, `loading`, `error` only when `get` is present
 - **Event modifiers** — `.prevent`, `.stop`, `.once`, `.debounce`, `.throttle`, key modifiers
@@ -81,11 +81,11 @@ Also works as a standalone language server (`--stdio`) for **Neovim**, **Sublime
 - Quick fix: "did you mean?" for typos in directive names
 
 ### Inlay Hints
-- Loop variable names for `each` and `foreach` (`→ $index, $count, $first, $last`)
+- Loop variable names for `foreach` / `each` / `for` (`→ $index, $count, $first, $last`)
 - HTTP method badge for `get`/`post`/`put`/`patch`/`delete` with `as`
 
 ### Snippets
-- 31 built-in snippets for common patterns (`if`, `each`, `foreach`, `get`, `store`, `form`, `call`, `notify`, `page-title`, `plugin`, etc.)
+- 31 built-in snippets for common patterns (`if`, `foreach`, `each`, `for`, `get`, `store`, `form`, `call`, `notify`, `page-title`, `plugin`, etc.)
 
 ## Configuration
 

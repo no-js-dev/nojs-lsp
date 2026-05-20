@@ -41,6 +41,7 @@ describe('CompletionProvider', () => {
       expect(labels).toContain('state');
       expect(labels).toContain('if');
       expect(labels).toContain('each');
+      expect(labels).toContain('for');
     });
 
     it('filters directives by partial input', async () => {
@@ -86,10 +87,32 @@ describe('CompletionProvider', () => {
     });
 
     it('suggests foreach companion attributes', async () => {
-      const content = '<li foreach="item" ></li>';
-      const items = await getCompletions(content, 19); // after space
+      const content = '<li foreach="item in items" ></li>';
+      const items = await getCompletions(content, 28); // after space
       const labels = items.map(i => i.label);
-      expect(labels).toContain('from');
+      expect(labels).not.toContain('from');
+      expect(labels).toContain('filter');
+      expect(labels).toContain('sort');
+      expect(labels).toContain('limit');
+      expect(labels).toContain('offset');
+      expect(labels).toContain('template');
+    });
+
+    it('suggests each companion attributes including filter/sort/limit/offset', async () => {
+      const content = '<li each="item in items" ></li>';
+      const items = await getCompletions(content, 25); // after space
+      const labels = items.map(i => i.label);
+      expect(labels).toContain('filter');
+      expect(labels).toContain('sort');
+      expect(labels).toContain('limit');
+      expect(labels).toContain('offset');
+      expect(labels).toContain('template');
+    });
+
+    it('suggests for companion attributes', async () => {
+      const content = '<li for="item in items" ></li>';
+      const items = await getCompletions(content, 24); // after space
+      const labels = items.map(i => i.label);
       expect(labels).toContain('filter');
       expect(labels).toContain('sort');
       expect(labels).toContain('limit');

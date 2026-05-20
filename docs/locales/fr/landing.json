@@ -56,7 +56,7 @@
       },
       "snippets": {
         "title": "23 Snippets",
-        "desc": "Tapez nojs-if, nojs-each, nojs-get, nojs-store, nojs-form et développez en modèles complets prêts à l'emploi."
+        "desc": "Tapez nojs-if, nojs-foreach, nojs-get, nojs-store, nojs-form et développez en modèles complets prêts à l'emploi."
       }
     },
     "showcase": {

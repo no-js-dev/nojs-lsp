@@ -56,7 +56,7 @@
       },
       "snippets": {
         "title": "23 Snippets",
-        "desc": "Type nojs-if, nojs-each, nojs-get, nojs-store, nojs-form and expand into complete, ready-to-use patterns."
+        "desc": "Type nojs-if, nojs-foreach, nojs-get, nojs-store, nojs-form and expand into complete, ready-to-use patterns."
       }
     },
     "showcase": {

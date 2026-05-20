@@ -28,7 +28,7 @@ The attributes `then`, `else`, `loading`, `error`, `empty`, `success`, and `erro
 ```html
 <!-- Cmd+Click on "spinner" or "error-msg" jumps to the respective template -->
 <div get="/api/users" as="users" loading="spinner" error="error-msg">
-  <li each="user in users" bind="user.name"></li>
+  <li foreach="user in users" bind="user.name"></li>
 </div>
 
 <template id="spinner">

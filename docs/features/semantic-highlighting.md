@@ -18,7 +18,7 @@ The LSP emits the following semantic token types:
 
 | Token Type | Applied To | Example |
 |------------|-----------|---------|
-| `keyword` | Directive names | `state`, `if`, `each`, `get`, `bind` |
+| `keyword` | Directive names | `state`, `if`, `foreach`, `get`, `bind` |
 | `decorator` | Dynamic prefixes | `bind-`, `on:`, `class-`, `style-` |
 | `function` | Filter names | `uppercase`, `currency`, `truncate` |
 | `operator` | Pipe separator | `\|` |
@@ -34,8 +34,8 @@ The LSP emits the following semantic token types:
   <!--  ^^^^  keyword            -->
   <!--             ^ operator    -->
   <!--               ^^^^^^^^^ function -->
-  <ul each="item in $store.items">
-  <!-- ^^^^  keyword              -->
+  <ul foreach="item in $store.items">
+  <!-- ^^^^^^^  keyword              -->
   <!--               ^^^^^^ variable.readonly -->
     <li bind="item.label"></li>
     <!--^^^^  keyword     -->
@@ -103,7 +103,7 @@ These are contextual variables available inside specific directives:
 
 | Variable | Context |
 |----------|---------|
-| `$index` | Current iteration index (`each`, `foreach`) |
+| `$index` | Current iteration index (`foreach`, `each`, `for`) |
 | `$count` | Total item count in the loop |
 | `$first` | `true` on the first iteration |
 | `$last` | `true` on the last iteration |

@@ -130,7 +130,7 @@ describe('DiagnosticsProvider', () => {
 
   describe('foreach directive', () => {
     it('does not flag foreach without template as an error', async () => {
-      const content = '<li foreach="item" from="items" bind="item.name"></li>';
+      const content = '<li foreach="item in items" bind="item.name"></li>';
       const doc = createDocument(content);
       const conn = createMockConnection();
       await validateTextDocument(doc, conn as any);
@@ -140,12 +140,34 @@ describe('DiagnosticsProvider', () => {
     });
 
     it('reports error for foreach without a value', async () => {
-      const content = '<li foreach from="items"></li>';
+      const content = '<li foreach></li>';
       const doc = createDocument(content);
       const conn = createMockConnection();
       await validateTextDocument(doc, conn as any);
       const diagnostics = conn.getDiagnostics();
       const reqError = diagnostics.find(d => d.message.includes('"foreach" requires a value'));
+      expect(reqError).toBeDefined();
+    });
+  });
+
+  describe('for directive', () => {
+    it('does not flag valid for directive', async () => {
+      const content = '<li for="item in items" bind="item.name"></li>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const forError = diagnostics.find(d => d.message.includes('"for"'));
+      expect(forError).toBeUndefined();
+    });
+
+    it('reports error for for directive without a value', async () => {
+      const content = '<li for></li>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const reqError = diagnostics.find(d => d.message.includes('"for" requires a value'));
       expect(reqError).toBeDefined();
     });
   });

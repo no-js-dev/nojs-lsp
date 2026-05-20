@@ -56,7 +56,7 @@
       },
       "snippets": {
         "title": "23 Snippets",
-        "desc": "Escribe nojs-if, nojs-each, nojs-get, nojs-store, nojs-form y expande en patrones completos listos para usar."
+        "desc": "Escribe nojs-if, nojs-foreach, nojs-get, nojs-store, nojs-form y expande en patrones completos listos para usar."
       }
     },
     "showcase": {

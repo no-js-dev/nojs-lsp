@@ -10,7 +10,7 @@ Hovering over a directive attribute name shows its purpose, category, value desc
 
 ### Exact Directives
 
-For exact-match directives (e.g., `state`, `get`, `each`, `if`), the hover displays:
+For exact-match directives (e.g., `state`, `get`, `foreach`, `if`), the hover displays:
 
 - **Directive name** as a heading
 - **Documentation** with description and HTML examples
@@ -28,7 +28,7 @@ Performs an HTTP GET request and makes response data available.
 **Example:**
 ​```html
 <div get="/api/users" as="users" loading="spinner-tpl">
-  <li each="user in users" bind="user.name">
+  <li foreach="user in users" bind="user.name">
 </div>
 ​```
 
@@ -293,7 +293,7 @@ For full context key reference, see [Context Keys](../reference/context-keys.md)
 
 ## Loop Variable Hover
 
-Inside `each` or `foreach` loop expressions, hovering over loop context variables shows their descriptions.
+Inside `foreach` / `each` / `for` loop expressions, hovering over loop context variables shows their descriptions.
 
 | Variable | Hover Description |
 |----------|-------------------|
@@ -306,7 +306,7 @@ Inside `each` or `foreach` loop expressions, hovering over loop context variable
 
 ```html
 <!-- Hovering over "$index" -->
-<li each="item in items" bind="$index + ': ' + item.name">
+<li foreach="item in items" bind="$index + ': ' + item.name">
 ```
 
 ```markdown

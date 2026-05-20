@@ -35,7 +35,17 @@ All snippets use tab stops (`$1`, `$2`, …) so you can cycle through placeholde
 
 ## Loops
 
-### No.JS Each Loop
+### No.JS Foreach Loop
+
+**Prefix:** `foreach`
+
+```html
+<div foreach="item in items">
+  <span bind="item."></span>
+</div>
+```
+
+### No.JS Each Loop (alias)
 
 **Prefix:** `each`
 
@@ -45,22 +55,14 @@ All snippets use tab stops (`$1`, `$2`, …) so you can cycle through placeholde
 </div>
 ```
 
-### No.JS Foreach Loop
-
-**Prefix:** `foreach`
-
-```html
-<li foreach="item" from="items">
-  <span bind="item."></span>
-</li>
-```
+> `each` and `for` are aliases for `foreach` with identical capabilities.
 
 ### No.JS Foreach with Template
 
 **Prefix:** `foreach-template`
 
 ```html
-<div foreach="item" from="items" template="item-tpl"></div>
+<div foreach="item in items" template="item-tpl"></div>
 
 <template id="item-tpl">
   <span bind="item."></span>
@@ -72,7 +74,7 @@ All snippets use tab stops (`$1`, `$2`, …) so you can cycle through placeholde
 **Prefix:** `foreach-filter`
 
 ```html
-<li foreach="item" from="items" filter="item.active" sort="name" limit="10">
+<li foreach="item in products" filter="item.active" sort="name" limit="10">
   <span bind="item."></span>
 </li>
 ```

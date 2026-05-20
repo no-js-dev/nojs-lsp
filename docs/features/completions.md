@@ -78,8 +78,9 @@ When typing an attribute name, the LSP suggests all 39 built-in directives group
 
 | Directive | Value | Description |
 |-----------|-------|-------------|
-| `each` | `"item in list"` | Loops over a collection |
-| `foreach` | Item variable name | Alternative loop with filter, sort, limit, offset |
+| `foreach` | `"item in list"` | Loops over a collection (primary). Supports filter, sort, limit, offset |
+| `each` | `"item in list"` | Alias for `foreach` with identical capabilities |
+| `for` | `"item in list"` | Alias for `foreach` with identical capabilities |
 
 #### Event
 
@@ -251,8 +252,8 @@ When a directive is already present on an element, the LSP suggests its companio
 | `hide` | `animate-enter`, `animate`, `animate-leave`, `transition`, `animate-duration` |
 | `case` | `then` |
 | `default` | `then` |
-| `each` | `template`, `else`, `key`, `animate-enter`, `animate`, `animate-leave`, `animate-stagger`, `animate-duration` |
-| `foreach` | `from`, `index`, `else`, `filter`, `sort`, `limit`, `offset`, `template`, `animate-enter`, `animate`, `animate-leave`, `animate-stagger`, `animate-duration` |
+| `foreach` | `index`, `else`, `key`, `filter`, `sort`, `limit`, `offset`, `template`, `animate-enter`, `animate`, `animate-leave`, `animate-stagger`, `animate-duration` |
+| `each`, `for` | *(same as `foreach` — aliases with identical companions)* |
 | `trigger` | `trigger-data` |
 | `use` | `var-*` |
 | `validate` | `error`, `error-*`, `error-class`, `validate-on`, `validate-if`, `as`, `success` |
@@ -444,7 +445,7 @@ When the cursor is inside `animate`, `animate-enter`, or `animate-leave` attribu
 
 ```html
 <div if="isVisible" animate-enter="fadeIn" animate-leave="fadeOut">
-<li each="item in items" animate="fadeInUp" animate-stagger="50">
+<li foreach="item in items" animate="fadeInUp" animate-stagger="50">
 ```
 
 For full reference, see [Animations](../reference/animations.md).
@@ -480,7 +481,7 @@ When typing `$` inside a directive expression value, the LSP suggests context va
 
 ### Loop Context Variables
 
-Inside `each` or `foreach` loops, these additional variables are available:
+Inside `foreach` / `each` / `for` loops, these additional variables are available:
 
 `$index`, `$count`, `$first`, `$last`, `$even`, `$odd`
 
