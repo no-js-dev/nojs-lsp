@@ -6,6 +6,11 @@ All notable changes to the **No.JS LSP** extension will be documented in this fi
 
 ### Changed
 
+- Consolidated docs CSS design system to match Core (`--primary`, `--text`, `--border` variable names)
+- Aligned header with Core/Elements pattern — added "More" ecosystem dropdown (Popover API), Discord icon, reordered nav items
+- Aligned footer with Core design — replaced links layout with `footer-cols`, removed "Powered by" badge, use Core's SVG logo
+- Removed `filter: brightness(0) invert(1)` from inline SVG footer logo
+- Switched favicon from `logo.png` to `favicon.ico` (matching Core)
 - Version bump for ecosystem sync with NoJS v1.12.0
 
 ## [1.11.1](https://github.com/ErickXavier/nojs-lsp/compare/v1.11.0...v1.11.1) — 2026-05-20
