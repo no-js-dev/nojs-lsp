@@ -88,12 +88,19 @@ input, select, textarea { font: inherit; }
 .logo-dot {
   color: var(--primary);
 }
+.logo-sub {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: -0.3px;
+}
 .logo-label {
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
-  color: var(--vscode);
-  background: #EFF6FF;
+  color: var(--primary);
+  background: var(--primary-surface);
   padding: 2px 8px;
   border-radius: 100px;
   letter-spacing: 0.3px;
@@ -140,6 +147,97 @@ input, select, textarea { font: inherit; }
 .github-link:hover svg {
   color: var(--text);
 }
+.discord-link {
+  display: flex;
+  align-items: center;
+  margin-left: 4px;
+}
+.discord-link svg {
+  width: 22px;
+  height: 22px;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.discord-link:hover svg {
+  color: #5865F2;
+}
+
+/* ── Ecosystem Dropdown (Popover API — matching Core) ── */
+.eco-dropdown {
+  position: relative;
+  anchor-name: --eco-anchor;
+}
+.eco-dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.eco-dropdown-btn:hover { color: var(--primary); }
+.eco-chevron {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s;
+  color: var(--text-dim);
+}
+.eco-dropdown-menu {
+  margin: 0;
+  padding: 4px;
+  border: 1px solid var(--border);
+  position: fixed;
+  position-anchor: --eco-anchor;
+  inset: unset;
+  top: anchor(bottom);
+  right: anchor(right);
+  margin-top: 6px;
+  min-width: 220px;
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  z-index: 200;
+}
+.eco-dropdown-menu:popover-open {
+  animation: ecoFadeIn 0.15s ease;
+}
+@keyframes ecoFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.eco-option {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.15s;
+  cursor: pointer;
+}
+.eco-option:hover { background: var(--primary-surface); }
+.eco-option-name {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.eco-option-desc {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-dim);
+}
+.eco-option.current {
+  background: var(--primary-surface);
+}
+.eco-option.current .eco-option-name { color: var(--primary); }
 
 /* ── Language Dropdown (Popover API) ── */
 .lang-dropdown {
