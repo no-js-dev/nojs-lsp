@@ -18,7 +18,7 @@
   <meta name="twitter:title" content="No.JS LSP — VS Code Extension">
   <meta name="twitter:description" content="Intelligent VS Code extension for the No.JS framework. Smart completions, diagnostics, hover docs, go-to-definition, semantic highlighting, and more.">
   <meta name="twitter:image" content="https://lsp.no-js.dev/thumbnail.png">
-  <link rel="icon" href="logo.png">
+  <link rel="icon" href="favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -60,6 +60,7 @@
     <a href="#" class="header-logo">
       <img src="logo.svg" alt="No.JS" class="logo-img">
       <span class="logo-title">No<span class="logo-dot">.</span>JS</span>
+      <span class="logo-sub">LSP</span>
       <span class="logo-label">v<span bind="version"></span></span>
     </a>
     <button class="mobile-menu-btn" popovertarget="mobile-nav" aria-label="Menu">
@@ -70,9 +71,38 @@
       <a href="#config" t="landing.nav.config"></a>
       <a href="#ecosystem" t="landing.nav.ecosystem"></a>
       <a href="https://github.com/ErickXavier/nojs-lsp/tree/main/docs" target="_blank" t="landing.nav.docs"></a>
+      <!-- Ecosystem dropdown (Popover API — matching Core) -->
+      <div class="eco-dropdown">
+        <button class="eco-dropdown-btn" popovertarget="eco-menu">
+          <span>More</span>
+          <svg class="eco-chevron" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+        </button>
+        <div id="eco-menu" class="eco-dropdown-menu" popover>
+          <a href="https://no-js.dev" target="_blank" class="eco-option" popovertarget="eco-menu" popovertargetaction="hide">
+            <span class="eco-option-name">No.JS</span>
+            <span class="eco-option-desc">HTML-first reactive framework</span>
+          </a>
+          <a href="https://elements.no-js.dev" target="_blank" class="eco-option" popovertarget="eco-menu" popovertargetaction="hide">
+            <span class="eco-option-name">NoJS Elements</span>
+            <span class="eco-option-desc">UI component plugins</span>
+          </a>
+          <a href="https://github.com/ErickXavier/nojs-skill" target="_blank" rel="noopener noreferrer" class="eco-option" popovertarget="eco-menu" popovertargetaction="hide">
+            <span class="eco-option-name">NoJS Skill</span>
+            <span class="eco-option-desc">Claude Code AI skill</span>
+          </a>
+          <a class="eco-option current" popovertarget="eco-menu" popovertargetaction="hide">
+            <span class="eco-option-name">NoJS LSP</span>
+            <span class="eco-option-desc">VS Code extension (you are here)</span>
+          </a>
+        </div>
+      </div>
       <a href="https://github.com/ErickXavier/nojs-lsp" target="_blank" class="github-link" aria-label="GitHub">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
       </a>
+      <a href="https://discord.gg/CaSbGYg3xY" target="_blank" class="discord-link" aria-label="Discord">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+      </a>
+      <a href="https://marketplace.visualstudio.com/items?itemName=exs.nojs-lsp" target="_blank" class="nav-cta" t="landing.nav.install"></a>
       <div class="lang-dropdown">
         <button class="lang-dropdown-btn" if="window.NoJS.locale" popovertarget="lang-menu">
           <span t="landing.flag"></span>
@@ -86,7 +116,6 @@
           <button class="lang-option" on:click="window.NoJS.locale = 'fr'" class-active="window.NoJS.locale === 'fr'" popovertarget="lang-menu">🇫🇷 Français</button>
         </div>
       </div>
-      <a href="https://marketplace.visualstudio.com/items?itemName=exs.nojs-lsp" target="_blank" class="nav-cta" t="landing.nav.install"></a>
     </nav>
   </header>
 
@@ -279,11 +308,11 @@
             <span class="editor-filename">index.html</span>
           </div>
           <div class="editor-body">
-            <div class="editor-line"><span class="line-number">1</span><span class="line-content"><span class="tok-bracket">&lt;</span><span class="tok-tag">div</span> <span class="tok-directive">get</span><span class="tok-equals">=</span><span class="tok-quote">"</span><span class="tok-value">/api/users</span><span class="tok-quote">"</span></span></div>
-            <div class="editor-line"><span class="line-number">2</span><span class="line-content">     <span class="tok-companion">as</span><span class="tok-equals">=</span><span class="tok-quote">"</span><span class="tok-value">users</span><span class="tok-quote">"</span></span></div>
-            <div class="editor-line"><span class="line-number">3</span><span class="line-content">     <span class="tok-attr-name"></span></span></div>
+            <div class="editor-line"><span class="line-number">1</span><span class="line-content"><span class="hl-bracket">&lt;</span><span class="hl-tag">div</span> <span class="hl-directive">get</span><span class="hl-equals">=</span><span class="hl-quote">"</span><span class="hl-value">/api/users</span><span class="hl-quote">"</span></span></div>
+            <div class="editor-line"><span class="line-number">2</span><span class="line-content">     <span class="hl-companion">as</span><span class="hl-equals">=</span><span class="hl-quote">"</span><span class="hl-value">users</span><span class="hl-quote">"</span></span></div>
+            <div class="editor-line"><span class="line-number">3</span><span class="line-content">     <span class="hl-attr"></span></span></div>
             <div class="editor-line"><span class="line-number">4</span><span class="line-content"></span></div>
-            <div class="editor-line"><span class="line-number">5</span><span class="line-content"><span class="tok-bracket">&lt;/</span><span class="tok-tag">div</span><span class="tok-bracket">&gt;</span></span></div>
+            <div class="editor-line"><span class="line-number">5</span><span class="line-content"><span class="hl-bracket">&lt;/</span><span class="hl-tag">div</span><span class="hl-bracket">&gt;</span></span></div>
             <div class="autocomplete" style="top: 52px">
               <div class="autocomplete-item autocomplete-item--active">
                 <span class="autocomplete-icon">N</span>
@@ -347,7 +376,7 @@
           <!-- Without LSP -->
           <div class="highlight-panel">
             <div class="highlight-panel-header highlight-panel-header--off">Without LSP</div>
-            <pre class="highlight-panel-body"><span class="tok-gray">&lt;ul get="/api/users"
+            <pre class="highlight-panel-body"><span class="hl-gray">&lt;ul get="/api/users"
     as="users"&gt;
   &lt;li each="user of users"
       if="user.active"
@@ -357,12 +386,12 @@
           <!-- With LSP -->
           <div class="highlight-panel">
             <div class="highlight-panel-header highlight-panel-header--on">With LSP</div>
-            <pre class="highlight-panel-body"><span class="tok-bracket">&lt;</span><span class="tok-tag">ul</span> <span class="tok-directive">get</span><span class="tok-equals">=</span><span class="tok-quote">"</span><span class="tok-value">/api/users</span><span class="tok-quote">"</span>
-<span class="tok-bracket">    </span><span class="tok-companion">as</span><span class="tok-equals">=</span><span class="tok-quote">"</span><span class="tok-value">users</span><span class="tok-quote">"</span><span class="tok-bracket">&gt;</span>
-<span class="tok-bracket">  &lt;</span><span class="tok-tag">li</span> <span class="tok-directive">each</span><span class="tok-equals">=</span><span class="tok-quote">"</span><span class="tok-value">user of users</span><span class="tok-quote">"</span>
-<span class="tok-bracket">      </span><span class="tok-directive">if</span><span class="tok-equals">=</span><span class="tok-quote">"</span><span class="tok-value">user.active</span><span class="tok-quote">"</span>
-<span class="tok-bracket">      </span><span class="tok-dynamic-prefix">class-</span><span class="tok-attr-name">highlight</span><span class="tok-equals">=</span><span class="tok-quote">"</span><span class="tok-value">user.vip</span><span class="tok-quote">"</span>
-<span class="tok-bracket">      </span><span class="tok-directive">bind</span><span class="tok-equals">=</span><span class="tok-quote">"</span><span class="tok-value">user.name</span> <span class="tok-pipe">|</span> <span class="tok-filter">upper</span><span class="tok-quote">"</span><span class="tok-bracket">&gt;</span></pre>
+            <pre class="highlight-panel-body"><span class="hl-bracket">&lt;</span><span class="hl-tag">ul</span> <span class="hl-directive">get</span><span class="hl-equals">=</span><span class="hl-quote">"</span><span class="hl-value">/api/users</span><span class="hl-quote">"</span>
+<span class="hl-bracket">    </span><span class="hl-companion">as</span><span class="hl-equals">=</span><span class="hl-quote">"</span><span class="hl-value">users</span><span class="hl-quote">"</span><span class="hl-bracket">&gt;</span>
+<span class="hl-bracket">  &lt;</span><span class="hl-tag">li</span> <span class="hl-directive">each</span><span class="hl-equals">=</span><span class="hl-quote">"</span><span class="hl-value">user of users</span><span class="hl-quote">"</span>
+<span class="hl-bracket">      </span><span class="hl-directive">if</span><span class="hl-equals">=</span><span class="hl-quote">"</span><span class="hl-value">user.active</span><span class="hl-quote">"</span>
+<span class="hl-bracket">      </span><span class="hl-dynamic-prefix">class-</span><span class="hl-attr">highlight</span><span class="hl-equals">=</span><span class="hl-quote">"</span><span class="hl-value">user.vip</span><span class="hl-quote">"</span>
+<span class="hl-bracket">      </span><span class="hl-directive">bind</span><span class="hl-equals">=</span><span class="hl-quote">"</span><span class="hl-value">user.name</span> <span class="hl-pipe">|</span> <span class="hl-filter">upper</span><span class="hl-quote">"</span><span class="hl-bracket">&gt;</span></pre>
           </div>
         </div>
       </div>
@@ -405,15 +434,15 @@
             <span class="editor-filename">page.html</span>
           </div>
           <div class="editor-body">
-            <div class="editor-line"><span class="line-number">8</span><span class="line-content"><span class="tok-bracket">&lt;</span><span class="tok-tag">section</span><span class="tok-bracket">&gt;</span></span></div>
-            <div class="editor-line"><span class="line-number">9</span><span class="line-content">  <span class="tok-bracket">&lt;</span><span class="tok-tag">div</span> <span class="tok-directive">each</span><span class="tok-equals">=</span><span class="tok-quote">"</span><span class="tok-value">user of users</span><span class="tok-quote">"</span></span></div>
-            <div class="editor-line" style="background:rgba(14,165,233,0.08)"><span class="line-number">10</span><span class="line-content">       <span class="tok-directive">use</span><span class="tok-equals">=</span><span class="tok-quote">"</span><span class="gotodef-link tok-value">user-card</span><span class="tok-quote">"</span><span class="tok-bracket">&gt;</span></span></div>
-            <div class="editor-line"><span class="line-number">11</span><span class="line-content">  <span class="tok-bracket">&lt;/</span><span class="tok-tag">div</span><span class="tok-bracket">&gt;</span></span></div>
-            <div class="editor-line"><span class="line-number">12</span><span class="line-content"><span class="tok-bracket">&lt;/</span><span class="tok-tag">section</span><span class="tok-bracket">&gt;</span></span></div>
+            <div class="editor-line"><span class="line-number">8</span><span class="line-content"><span class="hl-bracket">&lt;</span><span class="hl-tag">section</span><span class="hl-bracket">&gt;</span></span></div>
+            <div class="editor-line"><span class="line-number">9</span><span class="line-content">  <span class="hl-bracket">&lt;</span><span class="hl-tag">div</span> <span class="hl-directive">each</span><span class="hl-equals">=</span><span class="hl-quote">"</span><span class="hl-value">user of users</span><span class="hl-quote">"</span></span></div>
+            <div class="editor-line" style="background:rgba(14,165,233,0.08)"><span class="line-number">10</span><span class="line-content">       <span class="hl-directive">use</span><span class="hl-equals">=</span><span class="hl-quote">"</span><span class="gotodef-link hl-value">user-card</span><span class="hl-quote">"</span><span class="hl-bracket">&gt;</span></span></div>
+            <div class="editor-line"><span class="line-number">11</span><span class="line-content">  <span class="hl-bracket">&lt;/</span><span class="hl-tag">div</span><span class="hl-bracket">&gt;</span></span></div>
+            <div class="editor-line"><span class="line-number">12</span><span class="line-content"><span class="hl-bracket">&lt;/</span><span class="hl-tag">section</span><span class="hl-bracket">&gt;</span></span></div>
             <div class="editor-line"><span class="line-number">13</span><span class="line-content"></span></div>
-            <div class="editor-line"><span class="line-number">14</span><span class="line-content"><span class="tok-bracket">&lt;</span><span class="tok-tag">template</span> <span class="tok-attr-name">id</span><span class="tok-equals">=</span><span class="tok-quote">"</span><span class="tok-value">user-card</span><span class="tok-quote">"</span><span class="tok-bracket">&gt;</span></span></div>
-            <div class="editor-line"><span class="line-number">15</span><span class="line-content">  <span class="tok-bracket">&lt;</span><span class="tok-tag">div</span> <span class="tok-attr-name">class</span><span class="tok-equals">=</span><span class="tok-quote">"</span><span class="tok-string">card</span><span class="tok-quote">"</span><span class="tok-bracket">&gt;</span></span></div>
-            <div class="editor-line"><span class="line-number">16</span><span class="line-content">    <span class="tok-bracket">&lt;</span><span class="tok-tag">h3</span> <span class="tok-directive">bind</span><span class="tok-equals">=</span><span class="tok-quote">"</span><span class="tok-value">user.name</span><span class="tok-quote">"</span><span class="tok-bracket">&gt;&lt;/</span><span class="tok-tag">h3</span><span class="tok-bracket">&gt;</span></span></div>
+            <div class="editor-line"><span class="line-number">14</span><span class="line-content"><span class="hl-bracket">&lt;</span><span class="hl-tag">template</span> <span class="hl-attr">id</span><span class="hl-equals">=</span><span class="hl-quote">"</span><span class="hl-value">user-card</span><span class="hl-quote">"</span><span class="hl-bracket">&gt;</span></span></div>
+            <div class="editor-line"><span class="line-number">15</span><span class="line-content">  <span class="hl-bracket">&lt;</span><span class="hl-tag">div</span> <span class="hl-attr">class</span><span class="hl-equals">=</span><span class="hl-quote">"</span><span class="hl-str">card</span><span class="hl-quote">"</span><span class="hl-bracket">&gt;</span></span></div>
+            <div class="editor-line"><span class="line-number">16</span><span class="line-content">    <span class="hl-bracket">&lt;</span><span class="hl-tag">h3</span> <span class="hl-directive">bind</span><span class="hl-equals">=</span><span class="hl-quote">"</span><span class="hl-value">user.name</span><span class="hl-quote">"</span><span class="hl-bracket">&gt;&lt;/</span><span class="hl-tag">h3</span><span class="hl-bracket">&gt;</span></span></div>
             <div class="gotodef-tooltip" style="top: 40px; right: 16px;">
               <svg style="width:14px;height:14px;margin-right:4px;vertical-align:middle;color:#0EA5E9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
               Go to Definition → line 14
@@ -532,48 +561,36 @@
         <div class="footer-brand">
           <div class="footer-logo">
             <svg version="1.2" class="logo-img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" width="150" height="150">
-              <defs>
-                <mask id="bolt-border-footer">
-                  <rect x="0" y="0" width="150" height="150" fill="white"/>
-                  <path d="m119.5 16h-54l-26 51h18l-27 67 73-67h-18z" fill="black" stroke="black" stroke-width="15" stroke-linejoin="miter"/>
-                </mask>
-              </defs>
-              <style>.fa{fill:none;stroke:#FFF;stroke-width:14}.fb{fill:#0ea5e9}</style>
-              <g mask="url(#bolt-border-footer)">
-                <path fill-rule="evenodd" class="fa" d="m45 40l-35 35 35 35"/>
-                <path fill-rule="evenodd" class="fa" d="m105 40l35 35-35 35"/>
-              </g>
-              <path class="fb" d="m119.5 16h-54l-26 51h18l-27 67 73-67h-18z"/>
-            </svg>
-            <span class="logo-title">No<span class="logo-dot">.</span>JS <span class="logo-label">LSP</span></span>
-          </div>
+    <defs>
+        <mask id="bolt-border">
+            <rect x="0" y="0" width="150" height="150" fill="white"/>
+            <path d="m119.5 16h-54l-26 51h18l-27 67 73-67h-18z" fill="black" stroke="black" stroke-width="15" stroke-linejoin="miter"/>
+        </mask>
+    </defs>
+    <style>.a{fill:none;stroke:#FFF;stroke-width:14}.b{fill:#0ea5e9}</style>
+    <g mask="url(#bolt-border)">
+        <path fill-rule="evenodd" class="a" d="m45 40l-35 35 35 35"/>
+        <path fill-rule="evenodd" class="a" d="m105 40l35 35-35 35"/>
+    </g>
+    <path class="b" d="m119.5 16h-54l-26 51h18l-27 67 73-67h-18z"/>
+</svg><span class="logo-title">No<span class="logo-dot">.</span>JS</span></div>
           <p class="footer-desc" t="landing.footer.desc"></p>
         </div>
-        <div class="footer-links">
-          <span class="footer-links-heading" t="landing.footer.links"></span>
-          <a href="https://no-js.dev" target="_blank" t="landing.footer.website"></a>
-          <a href="https://github.com/ErickXavier/no-js" target="_blank" t="landing.footer.frameworkGithub"></a>
-          <a href="https://github.com/ErickXavier/nojs-lsp" target="_blank" t="landing.footer.lspGithub"></a>
-          <a href="https://marketplace.visualstudio.com/items?itemName=exs.nojs-lsp" target="_blank" t="landing.footer.marketplace"></a>
-          <a href="https://discord.gg/CaSbGYg3xY" target="_blank" t="landing.footer.discord"></a>
+        <div class="footer-cols">
+          <div class="footer-col">
+            <a href="https://no-js.dev" target="_blank">No.JS</a>
+            <a href="https://elements.no-js.dev" target="_blank">NoJS Elements</a>
+            <a href="https://github.com/ErickXavier/nojs-skill" target="_blank" rel="noopener noreferrer">NoJS Skill</a>
+            <a href="https://github.com/ErickXavier/nojs-lsp" target="_blank">GitHub</a>
+            <a href="https://marketplace.visualstudio.com/items?itemName=exs.nojs-lsp" target="_blank" t="landing.footer.marketplace"></a>
+            <a href="https://discord.gg/CaSbGYg3xY" target="_blank">Discord</a>
+          </div>
         </div>
       </div>
       <div class="footer-divider"></div>
       <div class="footer-bottom">
         <span t="landing.footer.license"></span>
         <span class="footer-version">No.JS LSP v<span bind="version"></span></span>
-        <a href="https://no-js.dev" target="_blank" class="powered-badge">
-          <span t="landing.footer.powered"></span>
-          <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" width="150" height="150">
-            <style>.pa{fill:none;stroke:currentColor;stroke-width:14}.pb{fill:#0ea5e9}</style>
-            <g>
-              <path fill-rule="evenodd" class="pa" d="m45 40l-35 35 35 35"/>
-              <path fill-rule="evenodd" class="pa" d="m105 40l35 35-35 35"/>
-            </g>
-            <path class="pb" d="m119.5 16h-54l-26 51h18l-27 67 73-67h-18z"/>
-          </svg>
-          No.JS
-        </a>
       </div>
     </div>
   </footer>

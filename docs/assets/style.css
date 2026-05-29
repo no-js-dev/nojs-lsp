@@ -33,8 +33,9 @@
 }
 
 /* ── Reset ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: var(--font-body);
   font-size: 16px;
@@ -42,18 +43,22 @@ body {
   color: var(--text);
   background: var(--white);
   -webkit-font-smoothing: antialiased;
+  padding-top: var(--header-h);
 }
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; cursor: pointer; }
 button { cursor: pointer; border: none; background: none; font: inherit; }
+input, select, textarea { font: inherit; }
 
 /* ══════════════════════════════════════════════════════════════════
    SECTION 0 — NAV BAR
    ══════════════════════════════════════════════════════════════════ */
 
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
   height: var(--header-h);
   background: var(--white);
@@ -83,12 +88,19 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .logo-dot {
   color: var(--primary);
 }
+.logo-sub {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: -0.3px;
+}
 .logo-label {
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
-  color: var(--vscode);
-  background: #EFF6FF;
+  color: var(--primary);
+  background: var(--primary-surface);
   padding: 2px 8px;
   border-radius: 100px;
   letter-spacing: 0.3px;
@@ -135,6 +147,97 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .github-link:hover svg {
   color: var(--text);
 }
+.discord-link {
+  display: flex;
+  align-items: center;
+  margin-left: 4px;
+}
+.discord-link svg {
+  width: 22px;
+  height: 22px;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.discord-link:hover svg {
+  color: #5865F2;
+}
+
+/* ── Ecosystem Dropdown (Popover API — matching Core) ── */
+.eco-dropdown {
+  position: relative;
+  anchor-name: --eco-anchor;
+}
+.eco-dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.eco-dropdown-btn:hover { color: var(--primary); }
+.eco-chevron {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s;
+  color: var(--text-dim);
+}
+.eco-dropdown-menu {
+  margin: 0;
+  padding: 4px;
+  border: 1px solid var(--border);
+  position: fixed;
+  position-anchor: --eco-anchor;
+  inset: unset;
+  top: anchor(bottom);
+  right: anchor(right);
+  margin-top: 6px;
+  min-width: 220px;
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  z-index: 200;
+}
+.eco-dropdown-menu:popover-open {
+  animation: ecoFadeIn 0.15s ease;
+}
+@keyframes ecoFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.eco-option {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.15s;
+  cursor: pointer;
+}
+.eco-option:hover { background: var(--primary-surface); }
+.eco-option-name {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.eco-option-desc {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-dim);
+}
+.eco-option.current {
+  background: var(--primary-surface);
+}
+.eco-option.current .eco-option-name { color: var(--primary); }
 
 /* ── Language Dropdown (Popover API) ── */
 .lang-dropdown {
@@ -709,22 +812,25 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   white-space: pre;
 }
 
-/* ── Syntax colors ── */
-.tok-tag { color: #89B4FA; }
-.tok-attr-name { color: #CDD6F4; }
-.tok-attr-value { color: #A6E3A1; }
-.tok-string { color: #A6E3A1; }
-.tok-bracket { color: #585B70; }
-.tok-equals { color: #585B70; }
-.tok-quote { color: #A6E3A1; }
+/* ── Syntax colors (aligned with Core .hl-* naming) ── */
+.hl-tag { color: #89B4FA; }
+.hl-attr { color: #CDD6F4; }
+.hl-attr-value { color: #A6E3A1; }
+.hl-str { color: #A6E3A1; }
+.hl-cmt { color: #64748B; font-style: italic; }
+.hl-kw { color: #C4B5FD; }
+.hl-fn { color: #FCA5A5; }
+.hl-bracket { color: #585B70; }
+.hl-equals { color: #585B70; }
+.hl-quote { color: #A6E3A1; }
 
 /* Semantic highlighting tokens (LSP-specific) */
-.tok-directive { color: #C084FC; font-weight: 700; }
-.tok-dynamic-prefix { color: #818CF8; }
-.tok-companion { color: #CDD6F4; }
-.tok-filter { color: #FB923C; font-weight: 700; }
-.tok-pipe { color: #94A3B8; }
-.tok-value { color: #FCD34D; }
+.hl-directive { color: #C084FC; font-weight: 700; }
+.hl-dynamic-prefix { color: #818CF8; }
+.hl-companion { color: #CDD6F4; }
+.hl-filter { color: #FB923C; font-weight: 700; }
+.hl-pipe { color: #94A3B8; }
+.hl-value { color: #FCD34D; }
 
 /* ── Autocomplete Dropdown ── */
 .autocomplete {
@@ -807,7 +913,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   line-height: 1.8;
   white-space: pre;
 }
-.tok-gray { color: #585B70; }
+.hl-gray { color: #585B70; }
 
 /* ── Go-to-Definition Mockup ── */
 .gotodef-mock {
@@ -969,60 +1075,52 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   border-top: 1px solid var(--code-surface);
 }
 .footer-inner {
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 48px 80px;
+  padding: 40px 80px;
 }
 .footer-row {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 }
-.footer-brand {
-  max-width: 320px;
-}
+.footer-brand {}
 .footer-logo {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 .footer-logo .logo-img {
   height: 28px;
 }
 .footer-logo .logo-title {
   color: #F1F5F9;
-  display: flex;
-  align-items: center;
-}
-.footer-logo .logo-label {
-  margin-left: 10px;
 }
 .footer-desc {
   font-family: var(--font-body);
   font-size: 14px;
   color: var(--text-dim);
+  max-width: 300px;
   line-height: 1.6;
 }
-.footer-links {
+.footer-cols {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  gap: 64px;
 }
-.footer-links-heading {
-  font-family: var(--font-heading);
-  font-size: 13px;
-  font-weight: 600;
-  color: #CBD5E1;
-  margin-bottom: 4px;
+.footer-col {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
 }
-.footer-links a {
+.footer-col a {
   font-family: var(--font-body);
   font-size: 14px;
   color: var(--text-dim);
   transition: color 0.2s;
 }
-.footer-links a:hover {
+.footer-col a:hover {
   color: var(--white);
 }
 .footer-divider {
@@ -1033,31 +1131,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .footer-bottom {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   font-family: var(--font-body);
   font-size: 13px;
   color: var(--text-muted);
-}
-.footer-version {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-dim);
-}
-.powered-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-body);
-  font-size: 12px;
-  color: var(--text-dim);
-  transition: color 0.2s;
-}
-.powered-badge:hover {
-  color: var(--primary-light);
-}
-.powered-badge svg {
-  width: 16px;
-  height: 16px;
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -1085,6 +1161,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   .ecosystem-grid { grid-template-columns: repeat(2, 1fr); }
 
   .footer-inner { padding: 32px 24px; }
+  .footer-row { flex-direction: column; gap: 32px; }
+  .footer-cols { gap: 32px; }
 }
 
 /* ══════════════════════════════════════════════════════════════════
