@@ -22,6 +22,7 @@ import {
   getEventModifiers,
   isHttpDirective,
   matchDirective,
+  getPluginRequirementNote,
   DirectiveMeta,
   PatternMeta,
   FilterMeta,
@@ -80,7 +81,7 @@ function getAttributeNameCompletions(context: CursorContext & { type: 'attribute
       detail: `No.JS: Directive (${dir.category})`,
       documentation: {
         kind: MarkupKind.Markdown,
-        value: dir.documentation,
+        value: dir.documentation + getPluginRequirementNote(dir.name),
       },
       insertText: dir.requiresValue ? `${dir.name}="$1"` : dir.name,
       insertTextFormat: dir.requiresValue ? InsertTextFormat.Snippet : InsertTextFormat.PlainText,
@@ -214,7 +215,7 @@ function getAttributeNameCompletions(context: CursorContext & { type: 'attribute
       detail: `No.JS: Companion attribute (${comp.type})`,
       documentation: {
         kind: MarkupKind.Markdown,
-        value: comp.description,
+        value: comp.description + getPluginRequirementNote(comp.name),
       },
       insertText,
       insertTextFormat: InsertTextFormat.Snippet,

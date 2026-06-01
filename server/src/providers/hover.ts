@@ -19,6 +19,7 @@ import {
   getLifecycleEvents,
   getLoopContextVars,
   getEventModifiers,
+  getPluginRequirementNote,
 } from '../directive-registry';
 import type { DevToolsBridge } from '../devtools-bridge';
 
@@ -199,7 +200,8 @@ function buildDirectiveHover(dir: DirectiveMeta): string {
     }
   }
 
-  return lines.join('\n');
+  // Plugin-requirement note, derived from the directive's `.plugin` field.
+  return lines.join('\n') + getPluginRequirementNote(dir.name);
 }
 
 function buildPatternHover(pat: PatternMeta, attrName: string): string {
@@ -239,7 +241,9 @@ function getCompanionDescription(attrName: string, element: ElementInfo): string
     if (dir) {
       const comp = dir.companions.find(c => c.name === attrName);
       if (comp) {
-        return `No.JS: **\`${attrName}\`** — Companion attribute for \`${dirName}\`\n\n${comp.description}`;
+        // A companion inherits the plugin requirement of its parent directive.
+        return `No.JS: **\`${attrName}\`** — Companion attribute for \`${dirName}\`\n\n${comp.description}`
+          + getPluginRequirementNote(attrName);
       }
     }
   }
