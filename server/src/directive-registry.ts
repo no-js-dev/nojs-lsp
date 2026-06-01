@@ -20,6 +20,8 @@ export interface DirectiveMeta {
   childAttributes?: CompanionMeta[];
   documentation: string;
   category: string;
+  /** npm package that must be installed via `NoJS.use(...)` for this directive (and its companions) to work. */
+  plugin?: string;
 }
 
 export interface PatternMeta {
@@ -88,6 +90,51 @@ for (const d of data.directives) {
     }
   }
   directiveMap.set(d.name, d);
+}
+
+// Map each companion attribute name back to the plugin of its parent directive.
+// A companion of a plugin-gated directive transitively requires the same plugin.
+// Wildcard companions (e.g. `error-*`) are stored without their trailing `*` for prefix matching.
+const companionPluginMap = new Map<string, string>();
+const companionPluginPrefixes: { prefix: string; plugin: string }[] = [];
+for (const d of data.directives) {
+  if (!d.plugin) continue;
+  for (const c of d.companions) {
+    if (c.name.endsWith('*')) {
+      companionPluginPrefixes.push({ prefix: c.name.slice(0, -1), plugin: d.plugin });
+    } else if (!companionPluginMap.has(c.name)) {
+      companionPluginMap.set(c.name, d.plugin);
+    }
+  }
+}
+
+/**
+ * Resolve the plugin that an attribute (directive OR companion) requires, if any.
+ * Directives carry `.plugin` directly; companions inherit it from their parent directive.
+ */
+export function getRequiredPlugin(attrName: string): string | undefined {
+  const direct = directiveMap.get(attrName);
+  if (direct?.plugin) return direct.plugin;
+
+  const companion = companionPluginMap.get(attrName);
+  if (companion) return companion;
+
+  for (const { prefix, plugin } of companionPluginPrefixes) {
+    if (attrName.startsWith(prefix)) return plugin;
+  }
+  return undefined;
+}
+
+/**
+ * Build the standard, single-sourced plugin-requirement note for hover/completion
+ * documentation. Returns an empty string when the attribute requires no plugin, so
+ * callers can append unconditionally. The `NoJS.use(NoJSElements)` call form matches
+ * the framework convention (the field only carries the package name).
+ */
+export function getPluginRequirementNote(attrName: string): string {
+  const plugin = getRequiredPlugin(attrName);
+  if (!plugin) return '';
+  return `\n\n⚠️ Requires the \`${plugin}\` plugin (\`NoJS.use(NoJSElements)\`) as of v1.13.0.`;
 }
 
 for (const f of filtersData.filters as FilterMeta[]) {

@@ -161,4 +161,63 @@ describe('HoverProvider', () => {
       expect(value).not.toContain('Live');
     }
   });
+
+  // ─── Plugin-requirement note (derived from .plugin field) ────────────
+
+  function hoverValue(hover: Hover | null): string {
+    if (!hover) return '';
+    return typeof hover.contents === 'string' ? hover.contents : (hover.contents as any).value;
+  }
+
+  function countRequirementLines(value: string): number {
+    return (value.match(/⚠️ Requires the `@erickxavier\/nojs-elements` plugin/g) ?? []).length;
+  }
+
+  it('renders the plugin-requirement note exactly once for a gated directive (validate)', async () => {
+    const content = '<form validate=""></form>';
+    const hover = await getHover(content, 8); // on "validate"
+    const value = hoverValue(hover);
+    expect(value).toContain('validate');
+    expect(value).toContain('Requires the `@erickxavier/nojs-elements` plugin');
+    expect(countRequirementLines(value)).toBe(1); // guards against old double-append
+  });
+
+  it('renders the plugin-requirement note exactly once for a gated directive (drag)', async () => {
+    const content = '<div drag="item"></div>';
+    const hover = await getHover(content, 6); // on "drag"
+    const value = hoverValue(hover);
+    expect(value).toContain('drag');
+    expect(countRequirementLines(value)).toBe(1);
+  });
+
+  it('renders the plugin-requirement note for a companion, derived from its parent (drag-handle)', async () => {
+    const content = '<div drag="item" drag-handle=""></div>';
+    const hover = await getHover(content, 18); // on "drag-handle"
+    const value = hoverValue(hover);
+    expect(value).toContain('drag-handle');
+    expect(countRequirementLines(value)).toBe(1);
+  });
+
+  it('renders the plugin-requirement note for a companion of validate (validate-on)', async () => {
+    const content = '<form validate="" validate-on="blur"></form>';
+    const hover = await getHover(content, 20); // on "validate-on"
+    const value = hoverValue(hover);
+    expect(value).toContain('validate-on');
+    expect(countRequirementLines(value)).toBe(1);
+  });
+
+  it('renders no plugin-requirement note for a non-gated directive (if)', async () => {
+    const content = '<div if="cond"></div>';
+    const hover = await getHover(content, 6); // on "if"
+    const value = hoverValue(hover);
+    expect(value).toContain('if');
+    expect(value).not.toContain('Requires the `@erickxavier/nojs-elements` plugin');
+  });
+
+  it('renders no plugin-requirement note for a non-gated directive (bind)', async () => {
+    const content = '<div bind="value"></div>';
+    const hover = await getHover(content, 6); // on "bind"
+    const value = hoverValue(hover);
+    expect(value).not.toContain('Requires the `@erickxavier/nojs-elements` plugin');
+  });
 });

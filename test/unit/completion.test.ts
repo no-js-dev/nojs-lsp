@@ -236,4 +236,35 @@ describe('CompletionProvider', () => {
       expect(labels).toContain('$store.cart');
     });
   });
+
+  describe('Plugin-requirement note (derived from .plugin field)', () => {
+    function docValue(item: CompletionItem | undefined): string {
+      if (!item || !item.documentation) return '';
+      return typeof item.documentation === 'string' ? item.documentation : item.documentation.value;
+    }
+
+    it('includes the requirement note in a gated directive completion (validate)', async () => {
+      const content = '<form ></form>';
+      const items = await getCompletions(content, 6); // after space
+      const validate = items.find(i => i.label === 'validate');
+      expect(validate).toBeDefined();
+      expect(docValue(validate)).toContain('Requires the `@erickxavier/nojs-elements` plugin');
+    });
+
+    it('includes the requirement note in a companion completion derived from its parent', async () => {
+      const content = '<div drag="item" ></div>';
+      const items = await getCompletions(content, 17); // after space, drag present
+      const handle = items.find(i => i.label === 'drag-handle');
+      expect(handle).toBeDefined();
+      expect(docValue(handle)).toContain('Requires the `@erickxavier/nojs-elements` plugin');
+    });
+
+    it('omits the requirement note for a non-gated directive (if)', async () => {
+      const content = '<div ></div>';
+      const items = await getCompletions(content, 5);
+      const ifItem = items.find(i => i.label === 'if');
+      expect(ifItem).toBeDefined();
+      expect(docValue(ifItem)).not.toContain('Requires the `@erickxavier/nojs-elements` plugin');
+    });
+  });
 });
