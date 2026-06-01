@@ -17,3 +17,5 @@ out/test/**
 out/**/*.map
 playwright-report/**
 test-results/**
+.design/**
+**/*.pen
