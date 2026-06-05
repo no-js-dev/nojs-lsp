@@ -336,5 +336,75 @@
       "</script>"
     ],
     "description": "No.JS plugin that registers a request or response interceptor"
+  },
+  "No.JS Infinite Scroll": {
+    "prefix": ["nojs-infinite-scroll", "nojs-scroll-pagination"],
+    "body": [
+      "<div get=\"${1:/api/items?page=\\{page\\}}\"",
+      "     get-trigger=\"scroll\"",
+      "     get-insert=\"append\"",
+      "     get-page=\"${2:1}\"",
+      "     as=\"${3:items}\">",
+      "  <div each=\"${4:item} in ${3:items}\">",
+      "    $0",
+      "  </div>",
+      "</div>"
+    ],
+    "description": "Infinite scroll with page-based pagination"
+  },
+  "No.JS Load More Button": {
+    "prefix": ["nojs-load-more", "nojs-button-pagination"],
+    "body": [
+      "<div get=\"${1:/api/items?page=\\{page\\}}\"",
+      "     get-trigger=\"button\"",
+      "     get-trigger-label=\"${2:Load More}\"",
+      "     get-insert=\"append\"",
+      "     get-page=\"${3:1}\"",
+      "     as=\"${4:items}\">",
+      "  <div each=\"${5:item} in ${4:items}\">",
+      "    $0",
+      "  </div>",
+      "</div>"
+    ],
+    "description": "Load more button with page-based pagination"
+  },
+  "No.JS Cursor Pagination": {
+    "prefix": ["nojs-cursor-pagination", "nojs-cursor-scroll"],
+    "body": [
+      "<div get=\"${1:/api/items?cursor=\\{cursor\\}}\"",
+      "     get-trigger=\"scroll\"",
+      "     get-insert=\"append\"",
+      "     get-cursor",
+      "     get-cursor-field=\"${2:meta.nextCursor}\"",
+      "     as=\"${3:items}\">",
+      "  <div each=\"${4:item} in ${3:items}\">",
+      "    $0",
+      "  </div>",
+      "</div>"
+    ],
+    "description": "Infinite scroll with cursor-based pagination"
+  },
+  "No.JS Lazy Load on Visible": {
+    "prefix": ["nojs-lazy-visible", "nojs-visible-trigger"],
+    "body": [
+      "<div get=\"${1:/api/data}\"",
+      "     get-trigger=\"visible\"",
+      "     get-threshold=\"${2:200px}\"",
+      "     as=\"${3:data}\">",
+      "  $0",
+      "</div>"
+    ],
+    "description": "Lazy load content when element becomes visible"
+  },
+  "No.JS Hover Prefetch": {
+    "prefix": ["nojs-hover-prefetch", "nojs-hover-trigger"],
+    "body": [
+      "<div get=\"${1:/api/preview}\"",
+      "     get-trigger=\"hover\"",
+      "     as=\"${3:preview}\">",
+      "  $0",
+      "</div>"
+    ],
+    "description": "Prefetch content on hover"
   }
 }
