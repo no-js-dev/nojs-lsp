@@ -80,9 +80,16 @@
         { "name": "retry-delay", "type": "number", "description": "No.JS: Delay between retries in ms" },
         { "name": "params", "type": "expression", "description": "No.JS: Query parameters object" },
         { "name": "debounce", "type": "number", "description": "No.JS: Debounce delay in ms" },
-        { "name": "skeleton", "type": "string", "description": "No.JS: ID (without #) of a DOM element to hide while loading and restore on response. Prevents CLS — element must start visible in HTML." }
+        { "name": "skeleton", "type": "string", "description": "No.JS: ID (without #) of a DOM element to hide while loading and restore on response. Prevents CLS — element must start visible in HTML." },
+        { "name": "get-trigger", "type": "enum", "description": "No.JS: Controls when the GET request fires", "values": ["load", "visible", "hover", "none", "scroll", "button"] },
+        { "name": "get-trigger-label", "type": "string", "description": "No.JS: Label text for the auto-generated Load More button (get-trigger=\"button\")" },
+        { "name": "get-insert", "type": "enum", "description": "No.JS: How fetched content is inserted into the container", "values": ["append", "prepend"] },
+        { "name": "get-page", "type": "number", "description": "No.JS: Initial page number for offset-based pagination (auto-increments)" },
+        { "name": "get-cursor", "type": "boolean", "description": "No.JS: Enable cursor-based pagination (mutually exclusive with get-page)" },
+        { "name": "get-cursor-field", "type": "string", "description": "No.JS: Dot-notation path to cursor value in JSON response (e.g. 'meta.nextCursor')" },
+        { "name": "get-threshold", "type": "string", "description": "No.JS: IntersectionObserver rootMargin for scroll/visible triggers (e.g. '200px')" }
       ],
-      "documentation": "Performs an HTTP GET request and makes response data available.\n\n**Example:**\n```html\n<div get=\"/api/users\" as=\"users\" loading=\"spinner-tpl\">\n  <li each=\"user in users\" bind=\"user.name\">\n</div>\n```\n\n**Companions:** `as`, `loading`, `error`, `empty`, `success`, `then`, `redirect`, `confirm`, `refresh`, `cached`, `body`, `headers`, `var`, `into`, `retry`, `retry-delay`, `params`, `debounce`, `skeleton`",
+      "documentation": "Performs an HTTP GET request and makes response data available.\n\n**Example:**\n```html\n<div get=\"/api/users\" as=\"users\" loading=\"spinner-tpl\">\n  <li each=\"user in users\" bind=\"user.name\">\n</div>\n```\n\n**Companions:** `as`, `loading`, `error`, `empty`, `success`, `then`, `redirect`, `confirm`, `refresh`, `cached`, `body`, `headers`, `var`, `into`, `retry`, `retry-delay`, `params`, `debounce`, `skeleton`, `get-trigger`, `get-trigger-label`, `get-insert`, `get-page`, `get-cursor`, `get-cursor-field`, `get-threshold`",
       "category": "http"
     },
     {
