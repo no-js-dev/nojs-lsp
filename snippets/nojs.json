@@ -49,6 +49,17 @@
     ],
     "description": "No.JS foreach loop with sibling else for empty list"
   },
+  "No.JS Foreach with Else Template Ref": {
+    "prefix": "foreach-else-template",
+    "body": [
+      "<${1:li} foreach=\"${2:item} in ${3:items}\" else=\"${4:no-items}\" bind=\"${2}.${5:name}\"></${1:li}>",
+      "",
+      "<template id=\"${4:no-items}\">",
+      "\t<${6:span}>${7:No items found}</${6:span}>",
+      "</template>"
+    ],
+    "description": "No.JS foreach loop with else template reference for empty list"
+  },
   "No.JS Foreach with Template": {
     "prefix": "foreach-template",
     "body": [
