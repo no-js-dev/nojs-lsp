@@ -89,15 +89,14 @@ Capitalizes first letter of string.
 
 #### `truncate`
 
-Truncates string to given length.
+Truncates string to given length with `...` appended.
 
 | Argument | Type | Required | Default |
 |----------|------|:--------:|---------|
-| `length` | number | Yes | — |
-| `suffix` | string | No | `...` |
+| `length` | number | No | `100` |
 
 ```html
-<span bind="text | truncate:100:'…'"></span>
+<span bind="text | truncate:50"></span>
 ```
 
 #### `trim`
@@ -152,8 +151,7 @@ Formats number with locale formatting.
 
 | Argument | Type | Required | Default |
 |----------|------|:--------:|---------|
-| `decimals` | number | No | — |
-| `locale` | string | No | — |
+| `decimals` | number | No | `0` |
 
 ```html
 <span bind="price | number:2"></span>
@@ -166,7 +164,6 @@ Formats number as currency.
 | Argument | Type | Required | Default |
 |----------|------|:--------:|---------|
 | `currency` | string | No | `USD` |
-| `locale` | string | No | — |
 
 ```html
 <span bind="price | currency:'EUR'"></span>
@@ -272,19 +269,18 @@ Extracts a property from each item in array.
 
 #### `sortBy`
 
-Sorts array by property.
+Sorts array by property. Prefix the key with `-` for descending order.
 
 | Argument | Type | Required | Default |
 |----------|------|:--------:|---------|
 | `key` | string | Yes | — |
-| `direction` | string | No | `asc` |
 
 ```html
 <!-- Ascending (default) -->
-<ul each="users | sortBy:'name'">...</ul>
+<li each="user in users|sortBy:'name'" bind="user.name"></li>
 
 <!-- Descending -->
-<ul each="users | sortBy:'age':'desc'">...</ul>
+<li each="user in users|sortBy:'-age'" bind="user.age"></li>
 ```
 
 #### `where`
@@ -297,7 +293,7 @@ Filters array by property value.
 | `value` | any | Yes | — |
 
 ```html
-<ul each="users | where:'active':true">...</ul>
+<li each="user in users|where:'active':true" bind="user.name"></li>
 ```
 
 ---
@@ -308,23 +304,22 @@ Filters for formatting date and time values.
 
 #### `date`
 
-Formats date value.
+Formats date value using the browser's locale.
 
 | Argument | Type | Required | Default |
 |----------|------|:--------:|---------|
-| `format` | string | No | — |
+| `style` | string | No | `short` |
+
+Accepted values: `short`, `long`, `full`.
 
 ```html
-<span bind="createdAt | date:'YYYY-MM-DD'"></span>
+<span bind="createdAt | date"></span>
+<span bind="createdAt | date:'long'"></span>
 ```
 
 #### `datetime`
 
-Formats date with time.
-
-| Argument | Type | Required | Default |
-|----------|------|:--------:|---------|
-| `format` | string | No | — |
+Formats date with time using the browser's locale.
 
 ```html
 <span bind="createdAt | datetime"></span>
@@ -389,9 +384,7 @@ Logs value to console and returns it unchanged. Useful for inspecting intermedia
 Returns object keys as array.
 
 ```html
-<ul each="obj | keys">
-  <li bind="$item"></li>
-</ul>
+<li each="k in obj|keys" bind="k"></li>
 ```
 
 #### `values`
@@ -399,9 +392,7 @@ Returns object keys as array.
 Returns object values as array.
 
 ```html
-<ul each="obj | values">
-  <li bind="$item"></li>
-</ul>
+<li each="v in obj|values" bind="v"></li>
 ```
 
 ---

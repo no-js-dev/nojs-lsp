@@ -1,21 +1,64 @@
+# IDE / editor
 .vscode/**
-test/**
+
+# Source (compiled JS is in out/)
 src/**
 server/src/**
 client/src/**
-node_modules/**
-.git/**
-.github/**
-tsconfig.json
-jest.config.js
-esbuild.mjs
-TODO.md
-LSP-PLAN.md
-.gitignore
 **/*.ts
+
+# Build config
+tsconfig.json
+tsconfig*.json
+esbuild.mjs
+jest.config.js
+
+# Tests
+test/**
 out/test/**
 out/**/*.map
 playwright-report/**
 test-results/**
+
+# Dependencies (bundled via esbuild)
+node_modules/**
+server/node_modules/**
+
+# VCS / CI
+.git/**
+.github/**
+.gitignore
+
+# Agent / AI artifacts
+.claude/**
+
+# Design files
 .design/**
 **/*.pen
+
+# Documentation site (not needed in extension)
+docs/**
+
+# Community / dev-only files
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+SECURITY.md
+TODO.md
+LSP-PLAN.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Packaging artifacts
+*.vsix
+
+# Logs
+*.log
+npm-debug.log*
+
+# Env / temp
+.env
+.env.*
+*.tmp
+*.bak
