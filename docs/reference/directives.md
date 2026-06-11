@@ -2,7 +2,7 @@
 
 Complete reference for all No.JS directives supported by the LSP. Data sourced from `server/src/data/directives.json`.
 
-**39 exact directives** and **4 dynamic patterns** across 13 categories.
+**43 exact directives** and **4 dynamic patterns** across 14 categories.
 
 ---
 
@@ -49,6 +49,10 @@ Complete reference for all No.JS directives supported by the LSP. Data sourced f
 | `drop` | dnd | statement | Yes | Yes |
 | `drag-list` | dnd | expression | Yes | Yes |
 | `drag-multiple` | dnd | none | No | Yes |
+| `page-title` | head | expression | Yes | No |
+| `page-description` | head | expression | Yes | No |
+| `page-canonical` | head | expression | Yes | No |
+| `page-jsonld` | head | string | No | No |
 | `route` | routing | string | Yes | Yes |
 | `route-view` | routing | string | No | Yes |
 | `guard` | routing | expression | Yes | Yes |
@@ -83,6 +87,7 @@ Declares reactive state on the element. The value is evaluated as a JavaScript o
 |------|------|-------------|
 | `persist` | boolean | Persist state to localStorage |
 | `persist-key` | string | Custom localStorage key |
+| `persist-fields` | string | Comma-separated list of state fields to persist selectively |
 
 ```html
 <div state="{ count: 0, name: 'World' }">
@@ -181,6 +186,14 @@ Performs an HTTP GET request and makes response data available.
 | `retry-delay` | number | Delay between retries in ms |
 | `params` | expression | Query parameters object |
 | `debounce` | number | Debounce delay in ms |
+| `skeleton` | string | ID of a DOM element to hide while loading and restore on response (prevents CLS) |
+| `get-trigger` | enum | Controls when the GET request fires (`load`, `visible`, `hover`, `none`, `scroll`, `button`) |
+| `get-trigger-label` | string | Button label text when `get-trigger="button"` (default: `"Load More"`) |
+| `get-insert` | enum | How fetched content is inserted (`append`, `prepend`; absent = replace) |
+| `get-page` | number | Initial page number for offset-based pagination (auto-increments) |
+| `get-cursor` | boolean | Enable cursor-based pagination (mutually exclusive with `get-page`) |
+| `get-cursor-field` | string | Dot-notation path to cursor value in response (e.g. `meta.nextCursor`) |
+| `get-threshold` | string | IntersectionObserver rootMargin for scroll/visible triggers (e.g. `200px`) |
 
 ```html
 <div get="/api/users" as="users" loading="spinner-tpl">
@@ -189,6 +202,22 @@ Performs an HTTP GET request and makes response data available.
 
 <!-- With caching and auto-refresh -->
 <div get="/api/status" as="status" cached refresh="5000">
+
+<!-- Infinite scroll pagination -->
+<div get="/api/items?page={page}" get-trigger="scroll" get-insert="append" get-page="1" as="items">
+  <div each="item in items" bind="item.name"></div>
+</div>
+
+<!-- Cursor-based pagination -->
+<div get="/api/items?cursor={cursor}" get-trigger="scroll" get-insert="append"
+     get-cursor get-cursor-field="meta.nextCursor" as="items">
+  <div each="item in items" bind="item.name"></div>
+</div>
+
+<!-- Skeleton loading -->
+<div get="/api/dashboard" as="data" skeleton="dashboard-skeleton">
+  <h1 bind="data.title"></h1>
+</div>
 ```
 
 #### `post`
@@ -836,6 +865,60 @@ Enables multi-select drag on `drag` elements.
 
 ```html
 <div drag="item" drag-multiple drag-group="cards" drag-multiple-class="selected">
+```
+
+---
+
+### Head
+
+Directives for managing `<head>` elements (title, meta description, canonical URL, JSON-LD structured data). Place on hidden elements; values are reactive expressions that update on state changes.
+
+#### `page-title`
+
+Sets `document.title` reactively. Place on a `<div hidden>` element. Prefer the `page-title` companion on `<template route>` for per-route titles.
+
+- **Value type:** expression (JS expression evaluating to a string) — required
+- **Priority:** 20
+
+```html
+<div hidden page-title="product.name + ' | My Store'"></div>
+<!-- Static -->
+<div hidden page-title="'About Us | My Store'"></div>
+```
+
+#### `page-description`
+
+Creates or updates `<meta name="description">` in `<head>`. Place on a `<div hidden>` element.
+
+- **Value type:** expression (JS expression evaluating to a string) — required
+- **Priority:** 20
+
+```html
+<div hidden page-description="product.description"></div>
+```
+
+#### `page-canonical`
+
+Creates or updates `<link rel="canonical">` in `<head>`. Place on a `<div hidden>` element.
+
+- **Value type:** expression (JS expression evaluating to a URL string) — required
+- **Priority:** 20
+
+```html
+<div hidden page-canonical="'/products/' + product.slug"></div>
+```
+
+#### `page-jsonld`
+
+Creates or updates `<script type="application/ld+json" data-nojs>` in `<head>`. The element's text content is a JSON string with `{placeholder}` interpolation.
+
+- **Value type:** string (JSON template with `{expression}` placeholders) — optional
+- **Priority:** 20
+
+```html
+<div hidden page-jsonld>
+  { "@type": "Product", "name": "{product.name}", "price": "{product.price}" }
+</div>
 ```
 
 ---
