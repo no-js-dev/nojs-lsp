@@ -215,14 +215,16 @@
     },
     {
       "name": "date",
-      "description": "No.JS: Formats date value.",
+      "description": "No.JS: Formats date value using Intl.DateTimeFormat.",
       "args": [
         {
-          "name": "format",
-          "type": "string"
+          "name": "fmt",
+          "type": "string",
+          "default": "short",
+          "description": "Date style: short | long | full"
         }
       ],
-      "example": "createdAt | date:'YYYY-MM-DD'",
+      "example": "createdAt | date:'long'",
       "category": "date"
     },
     {
