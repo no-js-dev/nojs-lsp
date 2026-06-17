@@ -53,7 +53,7 @@ describe('Data files — markdown documentation lint', () => {
     // FIX B: the note is derived from `.plugin`, not embedded in documentation.
     const leaks = ((directivesData as any).directives ?? [])
       .filter((d: any) => typeof d.documentation === 'string'
-        && d.documentation.includes('Requires the `@erickxavier'))
+        && d.documentation.includes('Requires the `@no-js-dev'))
       .map((d: any) => d.name);
     expect(leaks).toEqual([]);
   });

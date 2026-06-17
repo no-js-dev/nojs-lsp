@@ -863,7 +863,7 @@
       "valueType": "string",
       "valueDescription": "Validator rule string (pipe-separated)",
       "requiresValue": true,
-      "plugin": "@erickxavier/nojs-elements",
+      "plugin": "@no-js-dev/nojs-elements",
       "companions": [
         {
           "name": "error",
@@ -950,7 +950,7 @@
       "valueType": "expression",
       "valueDescription": "Expression for dragged item value",
       "requiresValue": true,
-      "plugin": "@erickxavier/nojs-elements",
+      "plugin": "@no-js-dev/nojs-elements",
       "companions": [
         {
           "name": "drag-type",
@@ -1008,7 +1008,7 @@
       "valueType": "statement",
       "valueDescription": "Statement to execute on drop",
       "requiresValue": true,
-      "plugin": "@erickxavier/nojs-elements",
+      "plugin": "@no-js-dev/nojs-elements",
       "companions": [
         {
           "name": "drop-accept",
@@ -1066,7 +1066,7 @@
       "valueType": "expression",
       "valueDescription": "List path expression",
       "requiresValue": true,
-      "plugin": "@erickxavier/nojs-elements",
+      "plugin": "@no-js-dev/nojs-elements",
       "companions": [
         {
           "name": "template",
@@ -1169,7 +1169,7 @@
       "valueType": "none",
       "valueDescription": "No value needed",
       "requiresValue": false,
-      "plugin": "@erickxavier/nojs-elements",
+      "plugin": "@no-js-dev/nojs-elements",
       "companions": [
         {
           "name": "drag-group",

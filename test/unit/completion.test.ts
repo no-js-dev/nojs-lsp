@@ -530,7 +530,7 @@ describe('CompletionProvider', () => {
       const items = await getCompletions(content, 6); // after space
       const validate = items.find(i => i.label === 'validate');
       expect(validate).toBeDefined();
-      expect(docValue(validate)).toContain('Requires the `@erickxavier/nojs-elements` plugin');
+      expect(docValue(validate)).toContain('Requires the `@no-js-dev/nojs-elements` plugin');
     });
 
     it('includes the requirement note in a companion completion derived from its parent', async () => {
@@ -538,7 +538,7 @@ describe('CompletionProvider', () => {
       const items = await getCompletions(content, 17); // after space, drag present
       const handle = items.find(i => i.label === 'drag-handle');
       expect(handle).toBeDefined();
-      expect(docValue(handle)).toContain('Requires the `@erickxavier/nojs-elements` plugin');
+      expect(docValue(handle)).toContain('Requires the `@no-js-dev/nojs-elements` plugin');
     });
 
     it('omits the requirement note for a non-gated directive (if)', async () => {
@@ -546,7 +546,7 @@ describe('CompletionProvider', () => {
       const items = await getCompletions(content, 5);
       const ifItem = items.find(i => i.label === 'if');
       expect(ifItem).toBeDefined();
-      expect(docValue(ifItem)).not.toContain('Requires the `@erickxavier/nojs-elements` plugin');
+      expect(docValue(ifItem)).not.toContain('Requires the `@no-js-dev/nojs-elements` plugin');
     });
   });
 

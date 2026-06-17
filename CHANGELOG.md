@@ -2,7 +2,7 @@
 
 All notable changes to the **No.JS LSP** extension will be documented in this file.
 
-## [Unreleased](https://github.com/ErickXavier/nojs-lsp/compare/v1.14.1...HEAD)
+## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.14.1...HEAD)
 
 ### Changed
 
@@ -11,7 +11,7 @@ All notable changes to the **No.JS LSP** extension will be documented in this fi
 - Template ID references (`else`, `then`, `use`, `template`, etc.) now accept the `#id` form in addition to the bare id
 - Loop directive docs, hovers, and the `else` directive docs updated with v1.15 empty-state semantics: the else template renders when the list is empty (`[]`) or null/undefined/not an array
 
-## [1.14.1](https://github.com/ErickXavier/nojs-lsp/compare/v1.14.0...v1.14.1) — 2026-06-11
+## [1.14.1](https://github.com/no-js-dev/nojs-lsp/compare/v1.14.0...v1.14.1) — 2026-06-11
 
 ### Fixed
 
@@ -25,40 +25,40 @@ All notable changes to the **No.JS LSP** extension will be documented in this fi
 - Fixed filter examples in docs/reference/filters.md (each syntax, phantom args)
 - Fixed `date` filter entry in filters.json: renamed phantom `format` arg to `fmt`, added `short` default, corrected `YYYY-MM-DD` example to `date:'long'`
 
-## [1.14.0](https://github.com/ErickXavier/nojs-lsp/compare/v1.13.3...v1.14.0) — 2026-06-09
+## [1.14.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.13.3...v1.14.0) — 2026-06-09
 
 ### Added
 
 - 7 new companion attributes for `get` directive: `get-trigger`, `get-trigger-label`, `get-insert`, `get-page`, `get-cursor`, `get-cursor-field`, `get-threshold`
 - 5 new VS Code snippets: Infinite Scroll, Load More Button, Cursor Pagination, Lazy Load on Visible, Hover Prefetch
 
-## [1.13.3](https://github.com/ErickXavier/nojs-lsp/compare/v1.13.2...v1.13.3) — 2026-06-05
+## [1.13.3](https://github.com/no-js-dev/nojs-lsp/compare/v1.13.2...v1.13.3) — 2026-06-05
 
 ### Changed
 
 - Version sync with NoJS ecosystem 1.13.3.
 
-## [1.13.2](https://github.com/ErickXavier/nojs-lsp/compare/v1.13.1...v1.13.2) — 2026-06-02
+## [1.13.2](https://github.com/no-js-dev/nojs-lsp/compare/v1.13.1...v1.13.2) — 2026-06-02
 
 ### Changed
 
 - Version sync with NoJS ecosystem 1.13.2.
 
-## [1.13.1](https://github.com/ErickXavier/nojs-lsp/compare/v1.13.0...v1.13.1) — 2026-06-01
+## [1.13.1](https://github.com/no-js-dev/nojs-lsp/compare/v1.13.0...v1.13.1) — 2026-06-01
 
 ### Fixed
 
-- Derive the "Requires `@erickxavier/nojs-elements` plugin" note from the `.plugin` field in hover/completion documentation — previously the `.plugin` field was inert dead metadata and the requirement text was hand-duplicated across doc strings, so the field is now the single source of truth
+- Derive the "Requires `@no-js-dev/nojs-elements` plugin" note from the `.plugin` field in hover/completion documentation — previously the `.plugin` field was inert dead metadata and the requirement text was hand-duplicated across doc strings, so the field is now the single source of truth
 - Companion attributes now inherit the plugin requirement from their parent directive instead of needing it re-declared
 - Fixed literal `\\n` newline escaping in `nojs-custom-data.json` that broke hover rendering for `validate`, `error-class`, `validate-on`, and `validate-if`
 
-## [1.13.0](https://github.com/ErickXavier/nojs-lsp/compare/v1.12.0...v1.13.0) — 2026-06-01
+## [1.13.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.12.0...v1.13.0) — 2026-06-01
 
 ### Changed
 
-- DnD (`drag`, `drop`, `drag-list`, `drag-multiple`) and `validate` metadata now mark these directives as requiring the `@erickxavier/nojs-elements` plugin (`NoJS.use(NoJSElements)`), surfaced in hover/completion documentation as of NoJS v1.13.0
+- DnD (`drag`, `drop`, `drag-list`, `drag-multiple`) and `validate` metadata now mark these directives as requiring the `@no-js-dev/nojs-elements` plugin (`NoJS.use(NoJSElements)`), surfaced in hover/completion documentation as of NoJS v1.13.0
 
-## [1.12.0](https://github.com/ErickXavier/nojs-lsp/compare/v1.11.1...v1.12.0) — 2026-05-21
+## [1.12.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.11.1...v1.12.0) — 2026-05-21
 
 ### Changed
 
@@ -69,32 +69,32 @@ All notable changes to the **No.JS LSP** extension will be documented in this fi
 - Switched favicon from `logo.png` to `favicon.ico` (matching Core)
 - Version bump for ecosystem sync with NoJS v1.12.0
 
-## [1.11.1](https://github.com/ErickXavier/nojs-lsp/compare/v1.11.0...v1.11.1) — 2026-05-20
+## [1.11.1](https://github.com/no-js-dev/nojs-lsp/compare/v1.11.0...v1.11.1) — 2026-05-20
 
 ### Changed
 
 - Removed NoJS-MCP references from docs and README
 
-## [1.11.0](https://github.com/ErickXavier/nojs-lsp/compare/v1.10.1...v1.11.0) — 2026-03-26
+## [1.11.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.10.1...v1.11.0) — 2026-03-26
 
 ### Added
 
-- Plugin snippets and TypeScript type reference for the plugin system ([`d469a76`](https://github.com/ErickXavier/nojs-lsp/commit/d469a76))
-- Head management directives (`page-title`, `page-description`, `page-canonical`, `page-jsonld`) completions, hover, and diagnostics ([`27ccc63`](https://github.com/ErickXavier/nojs-lsp/commit/27ccc63))
-- `focusBehavior` config option support ([`27ccc63`](https://github.com/ErickXavier/nojs-lsp/commit/27ccc63))
-- GitHub Actions CI workflow and VS Code Marketplace publishing automation ([`2fa1bcd`](https://github.com/ErickXavier/nojs-lsp/commit/2fa1bcd))
+- Plugin snippets and TypeScript type reference for the plugin system ([`d469a76`](https://github.com/no-js-dev/nojs-lsp/commit/d469a76))
+- Head management directives (`page-title`, `page-description`, `page-canonical`, `page-jsonld`) completions, hover, and diagnostics ([`27ccc63`](https://github.com/no-js-dev/nojs-lsp/commit/27ccc63))
+- `focusBehavior` config option support ([`27ccc63`](https://github.com/no-js-dev/nojs-lsp/commit/27ccc63))
+- GitHub Actions CI workflow and VS Code Marketplace publishing automation ([`2fa1bcd`](https://github.com/no-js-dev/nojs-lsp/commit/2fa1bcd))
 
 ### Fixed
 
-- Add `persist-fields` and `persist-schema` to state companions ([`ee45e6f`](https://github.com/ErickXavier/nojs-lsp/commit/ee45e6f))
+- Add `persist-fields` and `persist-schema` to state companions ([`ee45e6f`](https://github.com/no-js-dev/nojs-lsp/commit/ee45e6f))
 
-## [1.10.1](https://github.com/ErickXavier/nojs-lsp/compare/v1.10.0...v1.10.1) — 2026-03-23
+## [1.10.1](https://github.com/no-js-dev/nojs-lsp/compare/v1.10.0...v1.10.1) — 2026-03-23
 
 ### Fixed
 
-- Sync LSP directive data and documentation with NoJS v1.10.1 security hardening changes ([`4f7b29a`](https://github.com/ErickXavier/nojs-lsp/commit/4f7b29a))
+- Sync LSP directive data and documentation with NoJS v1.10.1 security hardening changes ([`4f7b29a`](https://github.com/no-js-dev/nojs-lsp/commit/4f7b29a))
 
-## [1.10.0](https://github.com/ErickXavier/nojs-lsp/compare/v1.9.1...v1.10.0) — 2026-03-23
+## [1.10.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.9.1...v1.10.0) — 2026-03-23
 
 ### Fixed
 
@@ -107,7 +107,7 @@ All notable changes to the **No.JS LSP** extension will be documented in this fi
 - Custom domain (CNAME) for `lsp.no-js.dev`
 - `foreach` directive support improvements in completions and diagnostics
 
-## [1.9.1](https://github.com/ErickXavier/nojs-lsp/compare/v1.9.0...v1.9.1) — 2026-03-18
+## [1.9.1](https://github.com/no-js-dev/nojs-lsp/compare/v1.9.0...v1.9.1) — 2026-03-18
 
 ### Added
 
@@ -117,7 +117,7 @@ All notable changes to the **No.JS LSP** extension will be documented in this fi
 - 4 `foreach` examples in test fixtures
 - 6 new tests across completion, hover, diagnostics, and inlay-hints
 
-## [1.9.0](https://github.com/ErickXavier/nojs-lsp/compare/v1.8.2...v1.9.0) — 2026-03-17
+## [1.9.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.8.2...v1.9.0) — 2026-03-17
 
 ### Added
 
@@ -130,12 +130,12 @@ All notable changes to the **No.JS LSP** extension will be documented in this fi
 
 - Replace `new Function()` in `expression-analyzer.ts` with bracket/string balance validation
 
-## [1.8.2](https://github.com/ErickXavier/nojs-lsp/compare/v1.8.1...v1.8.2) — 2026-03-17
+## [1.8.2](https://github.com/no-js-dev/nojs-lsp/compare/v1.8.1...v1.8.2) — 2026-03-17
 
 ### Changed
 - Version bump to match No.JS framework v1.8.2 (memory leak fixes, no LSP changes required)
 
-## [1.8.1](https://github.com/ErickXavier/nojs-lsp/compare/v1.8.0...v1.8.1) — 2026-03-17
+## [1.8.1](https://github.com/no-js-dev/nojs-lsp/compare/v1.8.0...v1.8.1) — 2026-03-17
 
 ### Changed
 - `i18n-ns` no longer requires a value — supports auto-detection from route template when used on `route-view`
@@ -145,50 +145,50 @@ All notable changes to the **No.JS LSP** extension will be documented in this fi
 - Added "study codebase" step to release and sync agent instructions
 - Added git tagging step to release agent flow
 
-## [1.8.0](https://github.com/ErickXavier/nojs-lsp/compare/v0.3.1...v1.8.0) — 2026-03-16
+## [1.8.0](https://github.com/no-js-dev/nojs-lsp/compare/v0.3.1...v1.8.0) — 2026-03-16
 
 ### Added
-- LSP support for `route="*"` wildcard catch-all — completions, diagnostics, hover ([`73629f2`](https://github.com/ErickXavier/nojs-lsp/commit/73629f2))
-- Duplicate wildcard route detection per outlet (diagnostics warning) ([`73629f2`](https://github.com/ErickXavier/nojs-lsp/commit/73629f2))
-- Rich hover for `route="*"` explaining fallback chain and `$route.matched` ([`73629f2`](https://github.com/ErickXavier/nojs-lsp/commit/73629f2))
-- `nojs-route-404` snippet for 404 catch-all template ([`73629f2`](https://github.com/ErickXavier/nojs-lsp/commit/73629f2))
-- `call` and `call-confirm` snippets ([`8df9c61`](https://github.com/ErickXavier/nojs-lsp/commit/8df9c61))
-- `NoJS.notify()` snippet (prefix: `notify`) for external store mutation pattern ([`a79b209`](https://github.com/ErickXavier/nojs-lsp/commit/a79b209))
-- Copilot project guidelines (`.github/copilot-instructions.md`) ([`d70f90c`](https://github.com/ErickXavier/nojs-lsp/commit/d70f90c))
+- LSP support for `route="*"` wildcard catch-all — completions, diagnostics, hover ([`73629f2`](https://github.com/no-js-dev/nojs-lsp/commit/73629f2))
+- Duplicate wildcard route detection per outlet (diagnostics warning) ([`73629f2`](https://github.com/no-js-dev/nojs-lsp/commit/73629f2))
+- Rich hover for `route="*"` explaining fallback chain and `$route.matched` ([`73629f2`](https://github.com/no-js-dev/nojs-lsp/commit/73629f2))
+- `nojs-route-404` snippet for 404 catch-all template ([`73629f2`](https://github.com/no-js-dev/nojs-lsp/commit/73629f2))
+- `call` and `call-confirm` snippets ([`8df9c61`](https://github.com/no-js-dev/nojs-lsp/commit/8df9c61))
+- `NoJS.notify()` snippet (prefix: `notify`) for external store mutation pattern ([`a79b209`](https://github.com/no-js-dev/nojs-lsp/commit/a79b209))
+- Copilot project guidelines (`.github/copilot-instructions.md`) ([`d70f90c`](https://github.com/no-js-dev/nojs-lsp/commit/d70f90c))
 
 ### Changed
-- Updated `call` directive companions in `directives.json` — added `loading`, `redirect`, `headers` ([`8df9c61`](https://github.com/ErickXavier/nojs-lsp/commit/8df9c61))
-- Updated `as` default description to note default `"data"` for `call` ([`8df9c61`](https://github.com/ErickXavier/nojs-lsp/commit/8df9c61))
-- Updated `nojs-custom-data.json` descriptions for `call`, `as`, `loading`, `redirect`, `headers` ([`8df9c61`](https://github.com/ErickXavier/nojs-lsp/commit/8df9c61))
-- Updated `$route` context key docs to include `matched` property ([`73629f2`](https://github.com/ErickXavier/nojs-lsp/commit/73629f2))
-- Updated `directives.json` route documentation with wildcard usage ([`73629f2`](https://github.com/ErickXavier/nojs-lsp/commit/73629f2))
-- Updated `nojs-custom-data.json` route description with catch-all example ([`73629f2`](https://github.com/ErickXavier/nojs-lsp/commit/73629f2))
-- Skip expression syntax validation for `route` attribute values ([`73629f2`](https://github.com/ErickXavier/nojs-lsp/commit/73629f2))
+- Updated `call` directive companions in `directives.json` — added `loading`, `redirect`, `headers` ([`8df9c61`](https://github.com/no-js-dev/nojs-lsp/commit/8df9c61))
+- Updated `as` default description to note default `"data"` for `call` ([`8df9c61`](https://github.com/no-js-dev/nojs-lsp/commit/8df9c61))
+- Updated `nojs-custom-data.json` descriptions for `call`, `as`, `loading`, `redirect`, `headers` ([`8df9c61`](https://github.com/no-js-dev/nojs-lsp/commit/8df9c61))
+- Updated `$route` context key docs to include `matched` property ([`73629f2`](https://github.com/no-js-dev/nojs-lsp/commit/73629f2))
+- Updated `directives.json` route documentation with wildcard usage ([`73629f2`](https://github.com/no-js-dev/nojs-lsp/commit/73629f2))
+- Updated `nojs-custom-data.json` route description with catch-all example ([`73629f2`](https://github.com/no-js-dev/nojs-lsp/commit/73629f2))
+- Skip expression syntax validation for `route` attribute values ([`73629f2`](https://github.com/no-js-dev/nojs-lsp/commit/73629f2))
 
-## [0.3.1](https://github.com/ErickXavier/nojs-lsp/compare/v0.3.0...v0.3.1) — 2026-03-14
+## [0.3.1](https://github.com/no-js-dev/nojs-lsp/compare/v0.3.0...v0.3.1) — 2026-03-14
 
 ### Fixed
 - Fix server crash caused by `vscode-html-languageservice` UMD bundle using dynamic `require()` calls that fail at runtime (`Cannot find module './parser/htmlScanner'`)
 - Add `mainFields: ['module', 'main']` to esbuild server config to prefer ESM entry points
 
-## [0.3.0](https://github.com/ErickXavier/nojs-lsp/compare/v0.2.0...v0.3.0) — 2026-03-13
+## [0.3.0](https://github.com/no-js-dev/nojs-lsp/compare/v0.2.0...v0.3.0) — 2026-03-13
 
 ### Added
-- `validate-on` value completions (`input`, `blur`, `focusout`, `submit`) ([`8c67713`](https://github.com/ErickXavier/nojs-lsp/commit/8c67713))
-- `$form.` sub-property completions for all 11 properties (`valid`, `dirty`, `touched`, `pending`, `submitting`, `errors`, `values`, `fields`, `firstError`, `errorCount`, `reset()`) ([`8c67713`](https://github.com/ErickXavier/nojs-lsp/commit/8c67713))
-- `$rule` context variable hover documentation and semantic token highlighting ([`8c67713`](https://github.com/ErickXavier/nojs-lsp/commit/8c67713))
-- `error-class`, `validate-on`, `validate-if` HTML attribute intellisense ([`8c67713`](https://github.com/ErickXavier/nojs-lsp/commit/8c67713))
-- Native ValidityState validators: `minlength`, `maxlength`, `pattern`, `step` ([`8c67713`](https://github.com/ErickXavier/nojs-lsp/commit/8c67713))
+- `validate-on` value completions (`input`, `blur`, `focusout`, `submit`) ([`8c67713`](https://github.com/no-js-dev/nojs-lsp/commit/8c67713))
+- `$form.` sub-property completions for all 11 properties (`valid`, `dirty`, `touched`, `pending`, `submitting`, `errors`, `values`, `fields`, `firstError`, `errorCount`, `reset()`) ([`8c67713`](https://github.com/no-js-dev/nojs-lsp/commit/8c67713))
+- `$rule` context variable hover documentation and semantic token highlighting ([`8c67713`](https://github.com/no-js-dev/nojs-lsp/commit/8c67713))
+- `error-class`, `validate-on`, `validate-if` HTML attribute intellisense ([`8c67713`](https://github.com/no-js-dev/nojs-lsp/commit/8c67713))
+- Native ValidityState validators: `minlength`, `maxlength`, `pattern`, `step` ([`8c67713`](https://github.com/no-js-dev/nojs-lsp/commit/8c67713))
 
 ### Changed
-- Updated `validate` directive companions and documentation for pristine-aware errors ([`8c67713`](https://github.com/ErickXavier/nojs-lsp/commit/8c67713))
-- Updated `$form` hover docs with all new properties ([`8c67713`](https://github.com/ErickXavier/nojs-lsp/commit/8c67713))
-- Updated form snippet with new validation pattern ([`8c67713`](https://github.com/ErickXavier/nojs-lsp/commit/8c67713))
+- Updated `validate` directive companions and documentation for pristine-aware errors ([`8c67713`](https://github.com/no-js-dev/nojs-lsp/commit/8c67713))
+- Updated `$form` hover docs with all new properties ([`8c67713`](https://github.com/no-js-dev/nojs-lsp/commit/8c67713))
+- Updated form snippet with new validation pattern ([`8c67713`](https://github.com/no-js-dev/nojs-lsp/commit/8c67713))
 
 ### Removed
-- Obsolete built-in validators: `between`, `match`, `phone`, `cpf`, `cnpj`, `creditcard` ([`8c67713`](https://github.com/ErickXavier/nojs-lsp/commit/8c67713))
+- Obsolete built-in validators: `between`, `match`, `phone`, `cpf`, `cnpj`, `creditcard` ([`8c67713`](https://github.com/no-js-dev/nojs-lsp/commit/8c67713))
 
-## [0.2.0](https://github.com/ErickXavier/nojs-lsp/compare/v0.1.0...v0.2.0) — 2026-03-13
+## [0.2.0](https://github.com/no-js-dev/nojs-lsp/compare/v0.1.0...v0.2.0) — 2026-03-13
 
 ### Added
 

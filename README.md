@@ -1,9 +1,9 @@
 # No.JS LSP — v1.14.1
 
 ![version](https://img.shields.io/badge/version-1.14.1-blue)
-[![jsDelivr hits](https://data.jsdelivr.com/v1/package/gh/erickxavier/nojs-lsp/badge)](https://www.jsdelivr.com/package/gh/erickxavier/nojs-lsp)
+[![jsDelivr hits](https://data.jsdelivr.com/v1/package/gh/no-js-dev/nojs-lsp/badge)](https://www.jsdelivr.com/package/gh/no-js-dev/nojs-lsp)
 
-VS Code extension providing full language server support for the [No.JS](https://github.com/ErickXavier/no-js) HTML-first reactive framework.
+VS Code extension providing full language server support for the [No.JS](https://github.com/no-js-dev/nojs) HTML-first reactive framework.
 
 Also works as a standalone language server (`--stdio`) for **Neovim**, **Sublime Text**, **Emacs**, and any LSP-compatible editor.
 
@@ -123,11 +123,11 @@ npm run package
 
 | Package | Description |
 |---------|-------------|
-| [No.JS](https://github.com/ErickXavier/no-js) | Core framework — 40+ directives, 32 filters, routing, forms, i18n, animations |
+| [No.JS](https://github.com/no-js-dev/nojs) | Core framework — 40+ directives, 32 filters, routing, forms, i18n, animations |
 | [NoJS Elements](https://elements.no-js.dev) | UI element plugins — `drag`, `drop`, `drag-list`, `drag-multiple`, `validate` (migrated from core in v1.13.0) |
-| [No.JS LSP](https://github.com/ErickXavier/nojs-lsp) | This extension — language server for VS Code and other editors |
-| [No.JS Skill](https://github.com/ErickXavier/nojs-skill) | Claude Code AI skill for No.JS development |
+| [No.JS LSP](https://github.com/no-js-dev/nojs-lsp) | This extension — language server for VS Code and other editors |
+| [No.JS Skill](https://github.com/no-js-dev/nojs-skill) | Claude Code AI skill for No.JS development |
 
 ## License
 
-MIT © [Erick Xavier](https://github.com/ErickXavier)
+MIT © [Erick Xavier](https://github.com/no-js-dev)

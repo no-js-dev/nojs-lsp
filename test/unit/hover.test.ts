@@ -170,7 +170,7 @@ describe('HoverProvider', () => {
   }
 
   function countRequirementLines(value: string): number {
-    return (value.match(/⚠️ Requires the `@erickxavier\/nojs-elements` plugin/g) ?? []).length;
+    return (value.match(/⚠️ Requires the `@no-js-dev\/nojs-elements` plugin/g) ?? []).length;
   }
 
   it('renders the plugin-requirement note exactly once for a gated directive (validate)', async () => {
@@ -178,7 +178,7 @@ describe('HoverProvider', () => {
     const hover = await getHover(content, 8); // on "validate"
     const value = hoverValue(hover);
     expect(value).toContain('validate');
-    expect(value).toContain('Requires the `@erickxavier/nojs-elements` plugin');
+    expect(value).toContain('Requires the `@no-js-dev/nojs-elements` plugin');
     expect(countRequirementLines(value)).toBe(1); // guards against old double-append
   });
 
@@ -211,13 +211,13 @@ describe('HoverProvider', () => {
     const hover = await getHover(content, 6); // on "if"
     const value = hoverValue(hover);
     expect(value).toContain('if');
-    expect(value).not.toContain('Requires the `@erickxavier/nojs-elements` plugin');
+    expect(value).not.toContain('Requires the `@no-js-dev/nojs-elements` plugin');
   });
 
   it('renders no plugin-requirement note for a non-gated directive (bind)', async () => {
     const content = '<div bind="value"></div>';
     const hover = await getHover(content, 6); // on "bind"
     const value = hoverValue(hover);
-    expect(value).not.toContain('Requires the `@erickxavier/nojs-elements` plugin');
+    expect(value).not.toContain('Requires the `@no-js-dev/nojs-elements` plugin');
   });
 });

@@ -50,7 +50,7 @@ We are committed to providing a welcoming, inclusive, and harassment-free experi
 
 ## Getting Started
 
-The NoJS LSP is a **VS Code language server extension** that provides IntelliSense for the [No.JS](https://github.com/ErickXavier/no-js) framework. It delivers completions, hover docs, diagnostics, go-to-definition, find references, semantic highlighting, code actions, inlay hints, and snippets for No.JS HTML attributes.
+The NoJS LSP is a **VS Code language server extension** that provides IntelliSense for the [No.JS](https://github.com/no-js-dev/nojs) framework. It delivers completions, hover docs, diagnostics, go-to-definition, find references, semantic highlighting, code actions, inlay hints, and snippets for No.JS HTML attributes.
 
 The extension follows the [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) and is split into two parts:
 
@@ -120,7 +120,7 @@ NoJS-LSP/
 
 ```bash
 # Clone and install
-git clone https://github.com/ErickXavier/nojs-lsp.git
+git clone https://github.com/no-js-dev/nojs-lsp.git
 cd nojs-lsp
 npm install
 
@@ -374,7 +374,7 @@ npm run compile && npm test && npx tsc --noEmit
 
 ## Relationship with the NoJS Framework
 
-The LSP extension is a companion to the [No.JS framework](https://github.com/ErickXavier/no-js). Changes in the framework often require corresponding updates here:
+The LSP extension is a companion to the [No.JS framework](https://github.com/no-js-dev/nojs). Changes in the framework often require corresponding updates here:
 
 | Framework change | LSP update needed |
 | --- | --- |
@@ -396,8 +396,8 @@ If you're contributing a feature to the framework that introduces new attributes
 
 ## Need Help?
 
-- **Questions?** Open a [Discussion](https://github.com/ErickXavier/no-js/discussions) on the framework repo
-- **Found a bug?** Open an [Issue](https://github.com/ErickXavier/nojs-lsp/issues) with steps to reproduce
-- **First-time contributor?** Look for issues labeled [`good first issue`](https://github.com/ErickXavier/nojs-lsp/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+- **Questions?** Open a [Discussion](https://github.com/no-js-dev/nojs/discussions) on the framework repo
+- **Found a bug?** Open an [Issue](https://github.com/no-js-dev/nojs-lsp/issues) with steps to reproduce
+- **First-time contributor?** Look for issues labeled [`good first issue`](https://github.com/no-js-dev/nojs-lsp/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 
 We appreciate every contribution, no matter how small. Welcome aboard!

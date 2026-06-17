@@ -1,6 +1,6 @@
 # Getting Started
 
-The **No.JS LSP** extension adds language server support for the [No.JS](https://github.com/ErickXavier/no-js) HTML-first reactive framework in VS Code. It provides completions, hover documentation, diagnostics, go-to-definition, and more — all activated automatically when you open an HTML file.
+The **No.JS LSP** extension adds language server support for the [No.JS](https://github.com/no-js-dev/nojs) HTML-first reactive framework in VS Code. It provides completions, hover documentation, diagnostics, go-to-definition, and more — all activated automatically when you open an HTML file.
 
 ## Installation
 
