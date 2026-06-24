@@ -134,11 +134,6 @@
         "desc": "Skill IA di Claude Code per No.JS",
         "link": "GitHub →"
       },
-      "cli": {
-        "title": "NoJS CLI",
-        "desc": "Strumenti da riga di comando per No.JS",
-        "link": "GitHub →"
-      },
       "lspGithub": {
         "title": "Estensione LSP",
         "desc": "Implementazione del protocollo del server di linguaggio",

@@ -209,14 +209,14 @@
       "name": "error-boundary",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Wraps content with error handling. Value is the fallback template ID.\n\n```html\n<div error-boundary=\"error-tpl\">...</div>\n```"
+        "value": "No.JS: Wraps content with error handling. Value is the fallback template ID.\n\n```html\n<div error-boundary=\"error-tpl\"\n     on:error=\"console.log($event.detail.message)\">\n  ...\n</div>\n```\n\nWhen an error is caught, dispatches a `nojs:error` CustomEvent on the boundary element. `$event.detail` contains: `message` (string), `source` (element), `error` (original Error).\n\n**Companion:** `on:error`"
       }
     },
     {
       "name": "t",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: i18n translation. Value is the translation key.\n\n```html\n<span t=\"greeting\" t-name=\"World\">\n```\n\n**Companions:** `t-*` (interpolation params), `t-html`"
+        "value": "No.JS: i18n translation. Value is the translation key.\n\n```html\n<span t=\"greeting\" t-name=\"World\">\n```\n\n**Expression proxy:** Use `$i18n.[path]` in expressions to access translations as reactive dot-notation properties — e.g. `bind=\"$i18n.labels.email\"`. Fully reactive: locale switches update bindings in real-time.\n\n**Companions:** `t-*` (interpolation params), `t-html`"
       }
     },
     {
