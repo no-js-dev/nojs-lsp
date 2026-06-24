@@ -4,6 +4,18 @@ All notable changes to the **No.JS LSP** extension will be documented in this fi
 
 ## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.15.4...HEAD)
 
+### Fixed
+
+- fix(data): remove incorrect `source` property from error-boundary CustomEvent detail in nojs-custom-data.json (core only dispatches `{ message, error }`)
+- fix(docs): update snippet count from 23 to 41 and directive count from 44 to 45 in llms.txt
+
+### Changed
+
+- docs(data): expand error-boundary documentation with `nojs:error` CustomEvent detail shape and `on:error` companion
+- docs(data): add `$i18n.[path]` reactive proxy documentation to `t` directive
+- docs(reference): document `on:error` companion and `nojs:error` CustomEvent for error-boundary in directives.md
+- docs(reference): document `$i18n.[path]` reactive proxy in `t` directive section of directives.md
+
 ## [1.15.4](https://github.com/no-js-dev/nojs-lsp/compare/v1.15.3...v1.15.4) — 2026-06-22
 
 ### Fixed

@@ -707,11 +707,20 @@ Built-in validators: `required`, `email`, `url`, `min`, `max`, `custom`.
 
 Wraps content with error handling. Shows fallback template on error.
 
+When an error is caught, dispatches a `nojs:error` CustomEvent on the boundary element. `$event.detail` contains `message` (string) and `error` (original Error).
+
 - **Value type:** templateId — required
 - **Priority:** 1
 
+**Companions:**
+
+| Name | Type | Description |
+|------|------|-------------|
+| `on:error` | expression | Handler for the `nojs:error` CustomEvent dispatched when the boundary catches an error |
+
 ```html
-<div error-boundary="error-tpl">
+<div error-boundary="error-tpl"
+     on:error="console.log($event.detail.message)">
   <!-- content that might throw -->
 </div>
 ```
@@ -726,6 +735,8 @@ Directives for internationalization and locale management.
 
 i18n translation. Value is the translation key. Interpolation parameters are passed as `t-{param}` attributes.
 
+**Expression proxy:** Use `$i18n.[path]` in expressions to access translations as reactive dot-notation properties — e.g. `bind="$i18n.labels.email"`. Fully reactive: locale switches update bindings in real-time.
+
 - **Value type:** string (translation key) — required
 - **Priority:** 20
 
@@ -739,6 +750,7 @@ i18n translation. Value is the translation key. Interpolation parameters are pas
 <span t="greeting">
 <span t="welcome" t-name="World">
 <div t="content.rich" t-html>
+<span bind="$i18n.labels.email">
 ```
 
 #### `i18n-ns`

@@ -20,11 +20,11 @@ NoJS LSP gives IDE-grade support for No.JS HTML attributes. It understands direc
 - [Code Actions](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/features/code-actions.md): Quick fixes for missing `as` attributes and directive typos
 - [Inlay Hints](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/features/inlay-hints.md): Loop variable labels and HTTP method badges
 - [Document Links](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/features/links.md): Clickable HTTP URLs and file references in directives
-- [Snippets](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/features/snippets.md): 23 ready-to-use code snippets for common No.JS patterns
+- [Snippets](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/features/snippets.md): 41 ready-to-use code snippets for common No.JS patterns
 
 ## Reference
 
-- [Directives](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/reference/directives.md): All 44 exact directives + 4 dynamic patterns supported by the LSP. The drag-and-drop directives (`drag`, `drop`, `drag-list`, `drag-multiple`) and `validate` now require the `@no-js-dev/nojs-elements` plugin (`NoJS.use(NoJSElements)`) as of NoJS v1.13.0
+- [Directives](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/reference/directives.md): All 45 exact directives + 4 dynamic patterns supported by the LSP. The drag-and-drop directives (`drag`, `drop`, `drag-list`, `drag-multiple`) and `validate` now require the `@no-js-dev/nojs-elements` plugin (`NoJS.use(NoJSElements)`) as of NoJS v1.13.0
 - [Filters](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/reference/filters.md): All 32 built-in filters with argument signatures
 - [Validators](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/reference/validators.md): Form validation rules reference
 - [Context Keys](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/reference/context-keys.md): `$store`, `$refs`, `$route`, `$router`, `$i18n`, `$form`
