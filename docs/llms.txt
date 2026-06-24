@@ -1,6 +1,6 @@
 # NoJS LSP
 
-> VS Code language server extension for the No.JS HTML-first reactive framework. Provides completions, diagnostics, hover documentation, go-to-definition, semantic highlighting, code actions, inlay hints, and 23 built-in snippets for 45 directives and 32 filters.
+> VS Code language server extension for the No.JS HTML-first reactive framework. Provides completions, diagnostics, hover documentation, go-to-definition, semantic highlighting, code actions, inlay hints, and 41 built-in snippets for 45+ directives and 32 filters.
 
 NoJS LSP gives IDE-grade support for No.JS HTML attributes. It understands directive companions (contextual attributes like `as`, `loading`, `error` for `get`), dynamic patterns (`bind-*`, `on:*`, `class-*`, `style-*`), expression syntax with pipe filters, and workspace-level awareness of stores, routes, i18n keys, and custom directives. Includes a DevTools bridge for live expression evaluation in running pages.
 
@@ -20,11 +20,11 @@ NoJS LSP gives IDE-grade support for No.JS HTML attributes. It understands direc
 - [Code Actions](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/features/code-actions.md): Quick fixes for missing `as` attributes and directive typos
 - [Inlay Hints](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/features/inlay-hints.md): Loop variable labels and HTTP method badges
 - [Document Links](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/features/links.md): Clickable HTTP URLs and file references in directives
-- [Snippets](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/features/snippets.md): 23 ready-to-use code snippets for common No.JS patterns
+- [Snippets](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/features/snippets.md): 41 ready-to-use code snippets for common No.JS patterns
 
 ## Reference
 
-- [Directives](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/reference/directives.md): All 44 exact directives + 4 dynamic patterns supported by the LSP. The drag-and-drop directives (`drag`, `drop`, `drag-list`, `drag-multiple`) and `validate` now require the `@no-js-dev/nojs-elements` plugin (`NoJS.use(NoJSElements)`) as of NoJS v1.13.0
+- [Directives](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/reference/directives.md): All 45 exact directives + 4 dynamic patterns supported by the LSP. The drag-and-drop directives (`drag`, `drop`, `drag-list`, `drag-multiple`) and `validate` now require the `@no-js-dev/nojs-elements` plugin (`NoJS.use(NoJSElements)`) as of NoJS v1.13.0
 - [Filters](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/reference/filters.md): All 32 built-in filters with argument signatures
 - [Validators](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/reference/validators.md): Form validation rules reference
 - [Context Keys](https://github.com/no-js-dev/nojs-lsp/blob/main/docs/reference/context-keys.md): `$store`, `$refs`, `$route`, `$router`, `$i18n`, `$form`

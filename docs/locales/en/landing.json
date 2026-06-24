@@ -150,11 +150,6 @@
         "desc": "Claude Code AI skill for No.JS",
         "link": "GitHub →"
       },
-      "cli": {
-        "title": "NoJS CLI",
-        "desc": "Command-line tooling for No.JS",
-        "link": "GitHub →"
-      },
       "lspGithub": {
         "title": "LSP Extension",
         "desc": "Language server protocol implementation",
