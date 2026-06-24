@@ -911,8 +911,14 @@
       "valueType": "templateId",
       "valueDescription": "Fallback template ID",
       "requiresValue": true,
-      "companions": [],
-      "documentation": "Wraps content with error handling. Shows fallback template on error.\n\n**Example:**\n```html\n<div error-boundary=\"error-tpl\">\n  <!-- content that might throw -->\n</div>\n```",
+      "companions": [
+        {
+          "name": "on:error",
+          "type": "expression",
+          "description": "No.JS: Handler for the nojs:error CustomEvent dispatched when the boundary catches an error"
+        }
+      ],
+      "documentation": "Wraps content with error handling. Shows fallback template on error.\n\nWhen an error is caught, dispatches a `nojs:error` CustomEvent on the boundary element. `$event.detail` contains `message` (string) and `error` (original Error).\n\n**Example:**\n```html\n<div error-boundary=\"error-tpl\"\n     on:error=\"console.log($event.detail.message)\">\n  <!-- content that might throw -->\n</div>\n```\n\n**Companion:** `on:error`",
       "category": "error"
     },
     {
@@ -929,7 +935,7 @@
           "description": "No.JS: Render translation as sanitized HTML (via _sanitizeHtml()) instead of plain text"
         }
       ],
-      "documentation": "i18n translation. Value is the translation key.\n\n**Example:**\n```html\n<span t=\"greeting\" t-name=\"World\">\n```\n\n**Companions:** `t-*` (interpolation parameters), `t-html`\n\nInterpolation params are passed as `t-{param}` attributes.",
+      "documentation": "i18n translation. Value is the translation key.\n\n**Example:**\n```html\n<span t=\"greeting\" t-name=\"World\">\n```\n\n**Expression proxy:** Use `$i18n.[path]` in expressions to access translations as reactive dot-notation properties — e.g. `bind=\"$i18n.labels.email\"`. Fully reactive: locale switches update bindings in real-time.\n\n**Companions:** `t-*` (interpolation parameters), `t-html`\n\nInterpolation params are passed as `t-{param}` attributes.",
       "category": "i18n"
     },
     {

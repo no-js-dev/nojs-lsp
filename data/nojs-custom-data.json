@@ -209,7 +209,7 @@
       "name": "error-boundary",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Wraps content with error handling. Value is the fallback template ID.\n\n```html\n<div error-boundary=\"error-tpl\"\n     on:error=\"console.log($event.detail.message)\">\n  ...\n</div>\n```\n\nWhen an error is caught, dispatches a `nojs:error` CustomEvent on the boundary element. `$event.detail` contains: `message` (string), `source` (element), `error` (original Error).\n\n**Companion:** `on:error`"
+        "value": "No.JS: Wraps content with error handling. Value is the fallback template ID.\n\n```html\n<div error-boundary=\"error-tpl\"\n     on:error=\"console.log($event.detail.message)\">\n  ...\n</div>\n```\n\nWhen an error is caught, dispatches a `nojs:error` CustomEvent on the boundary element. `$event.detail` contains: `message` (string), `error` (original Error).\n\n**Companion:** `on:error`"
       }
     },
     {
