@@ -281,6 +281,136 @@
       "category": "http"
     },
     {
+      "name": "query",
+      "pattern": false,
+      "priority": 1,
+      "valueType": "url",
+      "valueDescription": "URL string or expression",
+      "requiresValue": true,
+      "companions": [
+        {
+          "name": "as",
+          "type": "identifier",
+          "description": "No.JS: Variable name for response data"
+        },
+        {
+          "name": "loading",
+          "type": "templateId",
+          "description": "No.JS: Template ID shown while loading"
+        },
+        {
+          "name": "error",
+          "type": "templateId",
+          "description": "No.JS: Template ID shown on error"
+        },
+        {
+          "name": "empty",
+          "type": "templateId",
+          "description": "No.JS: Template ID shown when response is empty"
+        },
+        {
+          "name": "success",
+          "type": "templateId",
+          "description": "No.JS: Template ID shown on success"
+        },
+        {
+          "name": "then",
+          "type": "expression",
+          "description": "No.JS: Expression executed on success"
+        },
+        {
+          "name": "redirect",
+          "type": "string",
+          "description": "No.JS: Path to redirect after success"
+        },
+        {
+          "name": "confirm",
+          "type": "string",
+          "description": "No.JS: Confirmation message before request"
+        },
+        {
+          "name": "refresh",
+          "type": "number",
+          "description": "No.JS: Auto-refresh interval in ms"
+        },
+        {
+          "name": "cached",
+          "type": "boolean",
+          "description": "No.JS: Enable response caching"
+        },
+        {
+          "name": "body",
+          "type": "expression",
+          "description": "No.JS: Request body expression"
+        },
+        {
+          "name": "headers",
+          "type": "expression",
+          "description": "No.JS: Custom request headers object"
+        },
+        {
+          "name": "var",
+          "type": "identifier",
+          "description": "No.JS: Variable name for additional data"
+        },
+        {
+          "name": "into",
+          "type": "string",
+          "description": "No.JS: Store name to put response into"
+        },
+        {
+          "name": "retry",
+          "type": "number",
+          "description": "No.JS: Number of retry attempts"
+        },
+        {
+          "name": "retry-delay",
+          "type": "number",
+          "description": "No.JS: Delay between retries in ms"
+        },
+        {
+          "name": "params",
+          "type": "expression",
+          "description": "No.JS: Query parameters object"
+        },
+        {
+          "name": "debounce",
+          "type": "number",
+          "description": "No.JS: Debounce delay in ms"
+        },
+        {
+          "name": "skeleton",
+          "type": "string",
+          "description": "No.JS: ID (without #) of a DOM element to hide while loading and restore on response. Prevents CLS — element must start visible in HTML."
+        },
+        {
+          "name": "query-trigger",
+          "type": "enum",
+          "description": "No.JS: Controls when the QUERY request fires",
+          "values": [
+            "load",
+            "visible",
+            "hover",
+            "none",
+            "scroll",
+            "button"
+          ]
+        },
+        {
+          "name": "query-trigger-label",
+          "type": "string",
+          "description": "No.JS: Label text for the auto-generated Load More button (query-trigger=\"button\")"
+        },
+        {
+          "name": "query-threshold",
+          "type": "string",
+          "description": "No.JS: IntersectionObserver rootMargin for scroll/visible triggers (e.g. '200px')"
+        }
+      ],
+      "documentation": "Performs an HTTP QUERY request (RFC 10008) and makes response data available. QUERY is a **safe, idempotent, cacheable** method that carries a request body — semantically a read (like `get`) but able to send a structured payload (like `post`). On non-form elements it auto-fires and supports trigger modes; on `<form>` it intercepts submit. It is cacheable and CSRF-exempt.\n\n**Example:**\n```html\n<form query=\"/orders\" body=\"{ status, minTotal }\" as=\"result\">\n  <input model=\"status\">\n  <input model=\"minTotal\" type=\"number\">\n</form>\n```\n\n**Companions:** `as`, `loading`, `error`, `empty`, `success`, `then`, `redirect`, `confirm`, `refresh`, `cached`, `body`, `headers`, `var`, `into`, `retry`, `retry-delay`, `params`, `debounce`, `skeleton`, `query-trigger`, `query-trigger-label`, `query-threshold`",
+      "category": "http"
+    },
+    {
       "name": "bind",
       "pattern": false,
       "priority": 20,
@@ -1199,7 +1329,7 @@
       "valueDescription": "Base URL string",
       "requiresValue": true,
       "companions": [],
-      "documentation": "Sets the base URL for all descendant fetch directives (`get`, `post`, `put`, `patch`, `delete`, `call`).\n\n**Example:**\n```html\n<div base=\"https://api.example.com/v1\">\n  <div get=\"/users\" as=\"users\"><!-- fetches https://api.example.com/v1/users --></div>\n</div>\n```",
+      "documentation": "Sets the base URL for all descendant fetch directives (`get`, `post`, `put`, `patch`, `delete`, `query`, `call`).\n\n**Example:**\n```html\n<div base=\"https://api.example.com/v1\">\n  <div get=\"/users\" as=\"users\"><!-- fetches https://api.example.com/v1/users --></div>\n</div>\n```",
       "category": "http"
     },
     {

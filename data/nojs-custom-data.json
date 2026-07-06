@@ -65,6 +65,13 @@
       }
     },
     {
+      "name": "query",
+      "description": {
+        "kind": "markdown",
+        "value": "No.JS: HTTP QUERY request (RFC 10008) — a safe, idempotent, cacheable method that carries a request body. Behaves like `get` on non-form elements (auto-fires, trigger modes) and intercepts submit on `<form>`. Companions include `query-trigger`, `query-trigger-label`, `query-threshold`.\n\n```html\n<form query=\"/orders\" body=\"{ status, minTotal }\" as=\"result\">\n```"
+      }
+    },
+    {
       "name": "bind",
       "description": {
         "kind": "markdown",
@@ -1013,6 +1020,10 @@
         {
           "name": "delete",
           "description": "No.JS: HTTP DELETE"
+        },
+        {
+          "name": "query",
+          "description": "No.JS: HTTP QUERY (safe, cacheable, carries a body)"
         }
       ]
     },

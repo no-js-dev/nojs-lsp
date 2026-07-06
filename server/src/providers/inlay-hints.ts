@@ -14,7 +14,7 @@ import { TextDocument } from 'vscode-languageserver-textdocument';
 import { parseHtmlDocument, getAllElements } from '../html-parser';
 import { isHttpDirective } from '../directive-registry';
 
-const HTTP_METHODS = new Set(['get', 'post', 'put', 'patch', 'delete']);
+const HTTP_METHODS = new Set(['get', 'post', 'put', 'patch', 'delete', 'query']);
 
 export function onInlayHints(documents: TextDocuments<TextDocument>) {
   return (params: InlayHintParams): InlayHint[] => {
