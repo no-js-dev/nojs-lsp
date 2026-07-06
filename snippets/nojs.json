@@ -105,6 +105,32 @@
     ],
     "description": "No.JS HTTP GET with loading and error templates"
   },
+  "No.JS HTTP QUERY Fetch": {
+    "prefix": "query",
+    "body": [
+      "<${1:div} query=\"${2:/api/endpoint}\" body=\"${3:{ status, minTotal \\}}\" as=\"${4:data}\">",
+      "\t<${5:span} bind=\"${4:data}.$6\"></${5:span}>",
+      "</${1:div}>"
+    ],
+    "description": "No.JS HTTP QUERY fetch (safe, cacheable, carries a body) with data binding"
+  },
+  "No.JS HTTP QUERY with States": {
+    "prefix": "query-full",
+    "body": [
+      "<${1:div} query=\"${2:/api/endpoint}\" body=\"${3:{ status, minTotal \\}}\" as=\"${4:data}\" query-trigger=\"${5:load}\">",
+      "\t$0",
+      "</${1:div}>",
+      "",
+      "<template id=\"${6:loading-tpl}\">",
+      "\t<p>Loading...</p>",
+      "</template>",
+      "",
+      "<template id=\"${7:error-tpl}\">",
+      "\t<p>Error loading data</p>",
+      "</template>"
+    ],
+    "description": "No.JS HTTP QUERY with body, trigger, loading and error templates"
+  },
   "No.JS HTTP POST": {
     "prefix": "post",
     "body": [

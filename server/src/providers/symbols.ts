@@ -109,7 +109,7 @@ export function onDocumentSymbol(documents: TextDocuments<TextDocument>) {
       }
 
       // HTTP methods → Function
-      for (const method of ['get', 'post', 'put', 'patch', 'delete']) {
+      for (const method of ['get', 'post', 'put', 'patch', 'delete', 'query']) {
         const httpAttr = el.attributes.find(a => a.name === method);
         if (httpAttr?.value) {
           const asAttr = el.attributes.find(a => a.name === 'as');

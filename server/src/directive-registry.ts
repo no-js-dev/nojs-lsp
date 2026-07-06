@@ -274,7 +274,7 @@ export function getEventModifiers(): { behavioral: string[]; timing: string[]; k
 }
 
 /** HTTP directives set */
-const HTTP_DIRECTIVES = new Set(['get', 'post', 'put', 'patch', 'delete']);
+const HTTP_DIRECTIVES = new Set(['get', 'post', 'put', 'patch', 'delete', 'query']);
 
 export function isHttpDirective(name: string): boolean {
   return HTTP_DIRECTIVES.has(name);

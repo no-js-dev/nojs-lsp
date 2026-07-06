@@ -2,7 +2,13 @@
 
 All notable changes to the **No.JS LSP** extension will be documented in this file.
 
-## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.16.1...HEAD)
+## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.17.0...HEAD)
+
+## [1.17.0] - 2026-07-06
+
+### Added
+
+- LSP support (completion, hover, inlay hints, symbols, snippets, custom-data) for the `query` directive — an HTTP QUERY method (RFC 10008) that is safe, idempotent, cacheable, and carries a request body — and its `query-trigger` / `query-trigger-label` / `query-threshold` companions. Includes `query` and `query-full` snippets and a `query` entry in the `httpMethods` value-set for the `call method=` enum.
 
 ## [1.16.1](https://github.com/no-js-dev/nojs-lsp/compare/v1.16.0...v1.16.1) — 2026-07-03
 
