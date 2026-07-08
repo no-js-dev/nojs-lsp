@@ -956,4 +956,268 @@ describe('DiagnosticsProvider', () => {
       expect(reqError).toBeDefined();
     });
   });
+
+  // ─── Rule 16: switch × loop incompatibility ─────────────────────────
+  describe('switch × loop incompatibility (Finding 5)', () => {
+    it('warns when case appears on a looped element', async () => {
+      const content = '<div switch="status"><span each="item in items" case="\'active\'" bind="item.name"></span></div>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"case" on a looped element'));
+      expect(warn).toBeDefined();
+      expect(warn!.severity).toBe(DiagnosticSeverity.Warning);
+    });
+
+    it('warns when default appears on a looped element', async () => {
+      const content = '<div switch="status"><span foreach="item in items" default bind="item.name"></span></div>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"default" on a looped element'));
+      expect(warn).toBeDefined();
+    });
+
+    it('does not warn for case without a loop', async () => {
+      const content = '<div switch="status"><span case="\'active\'">Active</span></div>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('on a looped element'));
+      expect(warn).toBeUndefined();
+    });
+
+    it('does not warn for loop without case', async () => {
+      const content = '<li each="item in items" bind="item.name"></li>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('on a looped element is incompatible'));
+      expect(warn).toBeUndefined();
+    });
+  });
+
+  // ─── Rule 17: if + loop on same element ──────────────────────────────
+  describe('if + loop on same element (Finding 9)', () => {
+    it('warns when if and each are on the same element', async () => {
+      const content = '<li if="showItems" each="item in items" bind="item.name"></li>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"if" and "each" on the same element'));
+      expect(warn).toBeDefined();
+      expect(warn!.severity).toBe(DiagnosticSeverity.Warning);
+    });
+
+    it('warns when if and foreach are on the same element', async () => {
+      const content = '<li if="active" foreach="item in items" bind="item.name"></li>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"if" and "foreach" on the same element'));
+      expect(warn).toBeDefined();
+    });
+
+    it('warns when if and for are on the same element', async () => {
+      const content = '<li if="active" for="item in items" bind="item.name"></li>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"if" and "for" on the same element'));
+      expect(warn).toBeDefined();
+    });
+
+    it('does not warn when if and loop are on separate elements', async () => {
+      const content = '<div if="showItems"><li each="item in items" bind="item.name"></li></div>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"if" and "each" on the same element'));
+      expect(warn).toBeUndefined();
+    });
+  });
+
+  // ─── Rule 18: ref on looped element ──────────────────────────────────
+  describe('ref on looped element (Finding 10)', () => {
+    it('warns when ref is on a looped element', async () => {
+      const content = '<li each="item in items" ref="listItem" bind="item.name"></li>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"ref" on a looped element'));
+      expect(warn).toBeDefined();
+      expect(warn!.severity).toBe(DiagnosticSeverity.Warning);
+    });
+
+    it('warns for ref on foreach loop', async () => {
+      const content = '<div foreach="item in items" ref="card" bind="item.name"></div>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"ref" on a looped element'));
+      expect(warn).toBeDefined();
+    });
+
+    it('does not warn for ref without a loop', async () => {
+      const content = '<div ref="myDiv" bind="name"></div>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"ref" on a looped element'));
+      expect(warn).toBeUndefined();
+    });
+  });
+
+  // ─── Rule 19: bind-value + model redundancy ─────────────────────────
+  describe('bind-value + model redundancy (Finding 13)', () => {
+    it('warns when bind-value and model are on the same element', async () => {
+      const content = '<input bind-value="name" model="name">';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"bind-value" and "model"'));
+      expect(warn).toBeDefined();
+      expect(warn!.severity).toBe(DiagnosticSeverity.Warning);
+    });
+
+    it('does not warn for model alone', async () => {
+      const content = '<input model="name">';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"bind-value" and "model"'));
+      expect(warn).toBeUndefined();
+    });
+
+    it('does not warn for bind-value alone', async () => {
+      const content = '<input bind-value="name">';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"bind-value" and "model"'));
+      expect(warn).toBeUndefined();
+    });
+
+    it('does not warn for bind-src or other bind-* with model', async () => {
+      const content = '<input bind-placeholder="hint" model="name">';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"bind-value" and "model"'));
+      expect(warn).toBeUndefined();
+    });
+  });
+
+  // ─── Rule 20: watch + on:change on form control ─────────────────────
+  describe('watch + on:change on form control (Finding 19)', () => {
+    it('warns when watch and on:change are on an input', async () => {
+      const content = '<input watch="value" on:change="save()">';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"watch" and "on:change"'));
+      expect(warn).toBeDefined();
+      expect(warn!.severity).toBe(DiagnosticSeverity.Warning);
+    });
+
+    it('warns when watch and on:change are on a select', async () => {
+      const content = '<select watch="selected" on:change="update()"></select>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"watch" and "on:change"'));
+      expect(warn).toBeDefined();
+    });
+
+    it('warns when watch and on:change with modifiers are on an input', async () => {
+      const content = '<input watch="value" on:change.debounce.300="save()">';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"watch" and "on:change.debounce.300"'));
+      expect(warn).toBeDefined();
+    });
+
+    it('does not warn on non-form elements', async () => {
+      const content = '<div watch="value" on:change="update()"></div>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"watch" and "on:change"'));
+      expect(warn).toBeUndefined();
+    });
+
+    it('does not warn for watch without on:change', async () => {
+      const content = '<input watch="value">';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"watch" and'));
+      expect(warn).toBeUndefined();
+    });
+  });
+
+  // ─── Rule 21: t + bind double text-writer ───────────────────────────
+  describe('t + bind double text-writer (Finding 20)', () => {
+    it('warns when t and bind are on the same element', async () => {
+      const content = '<span t="greeting" bind="name"></span>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"t" and "bind"'));
+      expect(warn).toBeDefined();
+      expect(warn!.severity).toBe(DiagnosticSeverity.Warning);
+    });
+
+    it('does not warn for t without bind', async () => {
+      const content = '<span t="greeting"></span>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"t" and "bind"'));
+      expect(warn).toBeUndefined();
+    });
+
+    it('does not warn for bind without t', async () => {
+      const content = '<span bind="name"></span>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"t" and "bind"'));
+      expect(warn).toBeUndefined();
+    });
+
+    it('does not warn for t with bind-html (different targets)', async () => {
+      const content = '<span t="greeting" bind-html="richContent"></span>';
+      const doc = createDocument(content);
+      const conn = createMockConnection();
+      await validateTextDocument(doc, conn as any);
+      const diagnostics = conn.getDiagnostics();
+      const warn = diagnostics.find(d => msg(d).includes('"t" and "bind"'));
+      expect(warn).toBeUndefined();
+    });
+  });
 });

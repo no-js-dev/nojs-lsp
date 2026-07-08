@@ -26,7 +26,7 @@
       "name": "watch",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Watches an expression for changes.\n\n```html\n<div watch=\"count\" on:change=\"console.log($old, $new)\">\n```\n\n**Companion:** `on:change`"
+        "value": "No.JS: Watches an expression for changes.\n\n```html\n<div watch=\"count\" on:change=\"console.log($old, $new)\">\n```\n\n**Companion:** `on:change`\n\n**Limitation:** On form controls, avoid combining with `on:change` — both claim the change event."
       }
     },
     {
@@ -75,7 +75,7 @@
       "name": "bind",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Binds element text content to a JS expression.\n\n```html\n<span bind=\"user.name\">\n```"
+        "value": "No.JS: Binds element text content to a JS expression.\n\n```html\n<span bind=\"user.name\">\n```\n\n**Limitation:** Do not use with `t` on the same element — both write text content."
       }
     },
     {
@@ -89,14 +89,14 @@
       "name": "model",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Two-way data binding for form elements (INPUT, SELECT, TEXTAREA).\n\n```html\n<input model=\"username\">\n```"
+        "value": "No.JS: Two-way data binding for form elements (INPUT, SELECT, TEXTAREA).\n\n```html\n<input model=\"username\">\n```\n\n**Limitation:** Do not use with `bind-value` on the same element — duplicate two-way bindings."
       }
     },
     {
       "name": "if",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Conditionally renders element. Removes from DOM when false.\n\n```html\n<div if=\"isLoggedIn\">Welcome!</div>\n<div else>Please log in</div>\n```\n\n**Companions:** `then`, `else`, `animate-enter`, `animate-leave`, `transition`, `animate-duration`"
+        "value": "No.JS: Conditionally renders element. Removes from DOM when false.\n\n```html\n<div if=\"isLoggedIn\">Welcome!</div>\n<div else>Please log in</div>\n```\n\n**Companions:** `then`, `else`, `animate-enter`, `animate-leave`, `transition`, `animate-duration`\n\n**Limitation:** Do not place `if` and a loop on the same element. Use the loop's `filter` attribute or a wrapper element."
       }
     },
     {
@@ -167,7 +167,7 @@
       "name": "ref",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Declares a reference to this element, accessible via `$refs`.\n\n```html\n<input ref=\"emailInput\">\n<!-- Access via $refs.emailInput -->\n```"
+        "value": "No.JS: Declares a reference to this element, accessible via `$refs`.\n\n```html\n<input ref=\"emailInput\">\n<!-- Access via $refs.emailInput -->\n```\n\n**Limitation:** On a looped element, `$refs` will point to the last clone only."
       }
     },
     {
@@ -223,7 +223,7 @@
       "name": "t",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: i18n translation. Value is the translation key.\n\n```html\n<span t=\"greeting\" t-name=\"World\">\n```\n\n**Expression proxy:** Use `$i18n.[path]` in expressions to access translations as reactive dot-notation properties — e.g. `bind=\"$i18n.labels.email\"`. Fully reactive: locale switches update bindings in real-time.\n\n**Companions:** `t-*` (interpolation params), `t-html`"
+        "value": "No.JS: i18n translation. Value is the translation key.\n\n```html\n<span t=\"greeting\" t-name=\"World\">\n```\n\n**Expression proxy:** Use `$i18n.[path]` in expressions to access translations as reactive dot-notation properties — e.g. `bind=\"$i18n.labels.email\"`. Fully reactive: locale switches update bindings in real-time.\n\n**Companions:** `t-*` (interpolation params), `t-html`\n\n**Limitation:** Do not use with `bind` on the same element — both write text content."
       }
     },
     {
@@ -486,14 +486,14 @@
       "name": "case",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Child attribute for `switch`. Value to match against.\n\n```html\n<div switch=\"status\">\n  <p case=\"active\">Active</p>\n</div>\n```"
+        "value": "No.JS: Child attribute for `switch`. Value to match against.\n\n```html\n<div switch=\"status\">\n  <p case=\"active\">Active</p>\n</div>\n```\n\n**Limitation:** Do not combine `case` with a loop directive on the same element — switch logic becomes inert."
       }
     },
     {
       "name": "default",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Child attribute for `switch`. Fallback when no `case` matches.\n\n```html\n<p default>Unknown status</p>\n```"
+        "value": "No.JS: Child attribute for `switch`. Fallback when no `case` matches.\n\n```html\n<p default>Unknown status</p>\n```\n\n**Limitation:** Do not combine `default` with a loop directive on the same element — switch logic becomes inert."
       },
       "valueSet": "v"
     },
