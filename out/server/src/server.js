@@ -30827,7 +30827,7 @@ var directives_default = {
           description: "No.JS: Handler executed on change; receives $old, $new"
         }
       ],
-      documentation: 'Watches an expression for changes and runs a handler.\n\n**Example:**\n```html\n<div watch="count" on:change="console.log($old, $new)">\n```\n\n**Companion:** `on:change`\n**Handler variables:** `$old`, `$new`',
+      documentation: 'Watches an expression for changes and runs a handler.\n\n**Example:**\n```html\n<div watch="count" on:change="console.log($old, $new)">\n```\n\n**Companion:** `on:change`\n**Handler variables:** `$old`, `$new`\n\n**Limitation:** On form controls (`input`/`textarea`/`select`), avoid combining `watch` with an explicit `on:change` handler \u2014 both claim the change event and may conflict.',
       category: "state"
     },
     {
@@ -31170,7 +31170,7 @@ var directives_default = {
       valueDescription: "JS expression",
       requiresValue: true,
       companions: [],
-      documentation: 'Binds element\'s text content to a JS expression. Updates reactively.\n\n**Example:**\n```html\n<span bind="user.name">\n<p bind="items.length + \' items\'">\n```',
+      documentation: 'Binds element\'s text content to a JS expression. Updates reactively.\n\n**Example:**\n```html\n<span bind="user.name">\n<p bind="items.length + \' items\'">\n```\n\n**Limitation:** Do not use `bind` and `t` on the same element \u2014 both write text content and the last-processed directive wins silently.',
       category: "binding"
     },
     {
@@ -31192,7 +31192,7 @@ var directives_default = {
       valueDescription: "Variable path",
       requiresValue: true,
       companions: [],
-      documentation: 'Two-way data binding for form elements (INPUT, SELECT, TEXTAREA).\n\n**Example:**\n```html\n<input model="username">\n<select model="selectedOption">\n<textarea model="message">\n```',
+      documentation: 'Two-way data binding for form elements (INPUT, SELECT, TEXTAREA).\n\n**Example:**\n```html\n<input model="username">\n<select model="selectedOption">\n<textarea model="message">\n```\n\n**Limitation:** Do not use `model` and `bind-value` on the same element \u2014 both create two-way bindings with duplicate listeners that may conflict.',
       category: "binding"
     },
     {
@@ -31239,7 +31239,7 @@ var directives_default = {
           description: "No.JS: Animation duration in ms"
         }
       ],
-      documentation: 'Conditionally renders the element. Removes from DOM when expression is false.\n\n**Example:**\n```html\n<div if="isLoggedIn">Welcome!</div>\n<div else-if="isGuest">Hello Guest</div>\n<div else>Please log in</div>\n```\n\n**Companions:** `then`, `else`, `animate-enter`, `animate-leave`, `transition`, `animate-duration`',
+      documentation: 'Conditionally renders the element. Removes from DOM when expression is false.\n\n**Example:**\n```html\n<div if="isLoggedIn">Welcome!</div>\n<div else-if="isGuest">Hello Guest</div>\n<div else>Please log in</div>\n```\n\n**Companions:** `then`, `else`, `animate-enter`, `animate-leave`, `transition`, `animate-duration`\n\n**Limitation:** Do not place `if` and a loop (`each`/`foreach`/`for`) on the same element \u2014 the condition cannot filter individual items. Use the loop\'s `filter` attribute or wrap the loop in a container with `if`.',
       category: "conditional"
     },
     {
@@ -31375,7 +31375,7 @@ var directives_default = {
           description: "No.JS: Template ID to render"
         }
       ],
-      documentation: 'Switch case. Used inside a `switch` container.\n\n**Example:**\n```html\n<p case="admin">Admin panel</p>\n<p case="editor" then="editor-tpl"></p>\n```',
+      documentation: 'Switch case. Used inside a `switch` container.\n\n**Example:**\n```html\n<p case="admin">Admin panel</p>\n<p case="editor" then="editor-tpl"></p>\n```\n\n**Limitation:** Do not combine `case` (or `default`) with a loop directive (`each`/`foreach`/`for`) on the same element \u2014 the switch logic becomes inert and all branches render.',
       category: "conditional"
     },
     {
@@ -31392,7 +31392,7 @@ var directives_default = {
           description: "No.JS: Template ID to render"
         }
       ],
-      documentation: "Default case in a `switch` block. Renders when no `case` matches.\n\n**Example:**\n```html\n<p default>Guest view</p>\n```",
+      documentation: "Default case in a `switch` block. Renders when no `case` matches.\n\n**Example:**\n```html\n<p default>Guest view</p>\n```\n\n**Limitation:** Do not combine `default` (or `case`) with a loop directive (`each`/`foreach`/`for`) on the same element \u2014 the switch logic becomes inert and all branches render.",
       category: "conditional"
     },
     {
@@ -31651,7 +31651,7 @@ var directives_default = {
       valueDescription: "Reference name",
       requiresValue: true,
       companions: [],
-      documentation: 'Declares a reference to this element, accessible via `$refs.name`.\n\n**Example:**\n```html\n<input ref="emailInput">\n<!-- Access: $refs.emailInput.value -->\n```',
+      documentation: 'Declares a reference to this element, accessible via `$refs.name`.\n\n**Example:**\n```html\n<input ref="emailInput">\n<!-- Access: $refs.emailInput.value -->\n```\n\n**Limitation:** On a looped element, every clone re-registers the same ref name \u2014 `$refs.name` will point to the last clone only.',
       category: "reference"
     },
     {
@@ -31817,7 +31817,7 @@ var directives_default = {
           description: "No.JS: Render translation as sanitized HTML (via _sanitizeHtml()) instead of plain text"
         }
       ],
-      documentation: 'i18n translation. Value is the translation key.\n\n**Example:**\n```html\n<span t="greeting" t-name="World">\n```\n\n**Expression proxy:** Use `$i18n.[path]` in expressions to access translations as reactive dot-notation properties \u2014 e.g. `bind="$i18n.labels.email"`. Fully reactive: locale switches update bindings in real-time.\n\n**Companions:** `t-*` (interpolation parameters), `t-html`\n\nInterpolation params are passed as `t-{param}` attributes.',
+      documentation: 'i18n translation. Value is the translation key.\n\n**Example:**\n```html\n<span t="greeting" t-name="World">\n```\n\n**Expression proxy:** Use `$i18n.[path]` in expressions to access translations as reactive dot-notation properties \u2014 e.g. `bind="$i18n.labels.email"`. Fully reactive: locale switches update bindings in real-time.\n\n**Companions:** `t-*` (interpolation parameters), `t-html`\n\nInterpolation params are passed as `t-{param}` attributes.\n\n**Limitation:** Do not use `t` and `bind` on the same element \u2014 both write text content and the last-processed directive wins silently.',
       category: "i18n"
     },
     {
@@ -34896,6 +34896,83 @@ async function validateTextDocument(document, connection2, options) {
             }
           }
         }
+      }
+    }
+    const loopDirectives = ["each", "foreach", "for"];
+    const hasLoop = directivesOnElement.some((d) => loopDirectives.includes(d));
+    const loopAttr = hasLoop ? el.attributes.find((a) => loopDirectives.includes(a.name)) : void 0;
+    if (hasLoop) {
+      const caseAttr = el.attributes.find((a) => a.name === "case" || a.name === "default");
+      if (caseAttr) {
+        const range = toRange(document, caseAttr.nameStart, caseAttr.nameEnd);
+        diagnostics.push({
+          severity: import_node5.DiagnosticSeverity.Warning,
+          range,
+          message: `No.JS: "${caseAttr.name}" on a looped element is incompatible \u2014 switch/case becomes inert when combined with a loop. Move the loop inside the case branch or restructure.`,
+          source: SOURCE
+        });
+      }
+    }
+    if (hasLoop && directivesOnElement.includes("if")) {
+      const ifAttr = el.attributes.find((a) => a.name === "if");
+      const range = toRange(document, ifAttr.nameStart, ifAttr.nameEnd);
+      diagnostics.push({
+        severity: import_node5.DiagnosticSeverity.Warning,
+        range,
+        message: `No.JS: "if" and "${loopAttr.name}" on the same element is unreliable \u2014 the condition cannot remove individual items. Use the loop's "filter" attribute or wrap the loop in a container with "if".`,
+        source: SOURCE
+      });
+    }
+    if (hasLoop) {
+      const refAttr = el.attributes.find((a) => a.name === "ref");
+      if (refAttr) {
+        const range = toRange(document, refAttr.nameStart, refAttr.nameEnd);
+        diagnostics.push({
+          severity: import_node5.DiagnosticSeverity.Warning,
+          range,
+          message: `No.JS: "ref" on a looped element \u2014 every clone re-registers the same name, so $refs will point to the last clone only. Use a unique ref per item or access elements via the loop context.`,
+          source: SOURCE
+        });
+      }
+    }
+    {
+      const hasModel = directivesOnElement.includes("model");
+      const bindValueAttr = el.attributes.find((a) => a.name === "bind-value");
+      if (hasModel && bindValueAttr) {
+        const range = toRange(document, bindValueAttr.nameStart, bindValueAttr.nameEnd);
+        diagnostics.push({
+          severity: import_node5.DiagnosticSeverity.Warning,
+          range,
+          message: `No.JS: "bind-value" and "model" on the same element are redundant \u2014 both create two-way bindings. Remove one to avoid duplicate listeners and potential value conflicts.`,
+          source: SOURCE
+        });
+      }
+    }
+    {
+      const formControlTags = /* @__PURE__ */ new Set(["input", "textarea", "select"]);
+      const hasWatch = directivesOnElement.includes("watch");
+      const onChangeAttr = el.attributes.find((a) => a.name === "on:change" || a.name.startsWith("on:change."));
+      if (hasWatch && onChangeAttr && formControlTags.has(el.tag)) {
+        const range = toRange(document, onChangeAttr.nameStart, onChangeAttr.nameEnd);
+        diagnostics.push({
+          severity: import_node5.DiagnosticSeverity.Warning,
+          range,
+          message: `No.JS: "watch" and "${onChangeAttr.name}" on a form control \u2014 both claim the change event. The watch handler's on:change companion and this event listener may conflict. Use one approach.`,
+          source: SOURCE
+        });
+      }
+    }
+    {
+      const hasT = directivesOnElement.includes("t");
+      const bindAttr = el.attributes.find((a) => a.name === "bind");
+      if (hasT && bindAttr) {
+        const range = toRange(document, bindAttr.nameStart, bindAttr.nameEnd);
+        diagnostics.push({
+          severity: import_node5.DiagnosticSeverity.Warning,
+          range,
+          message: `No.JS: "t" and "bind" on the same element both write text content \u2014 the last-processed directive wins silently. Use only one text source per element.`,
+          source: SOURCE
+        });
       }
     }
   }

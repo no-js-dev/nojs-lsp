@@ -291,6 +291,98 @@ export async function validateTextDocument(
         }
       }
     }
+
+    // ── Directive incompatibility warnings (element-level checks) ───────
+
+    const loopDirectives = ['each', 'foreach', 'for'];
+    const hasLoop = directivesOnElement.some(d => loopDirectives.includes(d));
+    const loopAttr = hasLoop ? el.attributes.find(a => loopDirectives.includes(a.name)) : undefined;
+
+    // 16. Finding 5: switch × loop — case/default on looped element
+    if (hasLoop) {
+      const caseAttr = el.attributes.find(a => a.name === 'case' || a.name === 'default');
+      if (caseAttr) {
+        const range = toRange(document, caseAttr.nameStart, caseAttr.nameEnd);
+        diagnostics.push({
+          severity: DiagnosticSeverity.Warning,
+          range,
+          message: `No.JS: "${caseAttr.name}" on a looped element is incompatible — switch/case becomes inert when combined with a loop. Move the loop inside the case branch or restructure.`,
+          source: SOURCE,
+        });
+      }
+    }
+
+    // 17. Finding 9: if + loop on same element
+    if (hasLoop && directivesOnElement.includes('if')) {
+      const ifAttr = el.attributes.find(a => a.name === 'if')!;
+      const range = toRange(document, ifAttr.nameStart, ifAttr.nameEnd);
+      diagnostics.push({
+        severity: DiagnosticSeverity.Warning,
+        range,
+        message: `No.JS: "if" and "${loopAttr!.name}" on the same element is unreliable — the condition cannot remove individual items. Use the loop's "filter" attribute or wrap the loop in a container with "if".`,
+        source: SOURCE,
+      });
+    }
+
+    // 18. Finding 10: ref on looped element — last clone wins
+    if (hasLoop) {
+      const refAttr = el.attributes.find(a => a.name === 'ref');
+      if (refAttr) {
+        const range = toRange(document, refAttr.nameStart, refAttr.nameEnd);
+        diagnostics.push({
+          severity: DiagnosticSeverity.Warning,
+          range,
+          message: `No.JS: "ref" on a looped element — every clone re-registers the same name, so $refs will point to the last clone only. Use a unique ref per item or access elements via the loop context.`,
+          source: SOURCE,
+        });
+      }
+    }
+
+    // 19. Finding 13: bind-value + model on same element — redundant
+    {
+      const hasModel = directivesOnElement.includes('model');
+      const bindValueAttr = el.attributes.find(a => a.name === 'bind-value');
+      if (hasModel && bindValueAttr) {
+        const range = toRange(document, bindValueAttr.nameStart, bindValueAttr.nameEnd);
+        diagnostics.push({
+          severity: DiagnosticSeverity.Warning,
+          range,
+          message: `No.JS: "bind-value" and "model" on the same element are redundant — both create two-way bindings. Remove one to avoid duplicate listeners and potential value conflicts.`,
+          source: SOURCE,
+        });
+      }
+    }
+
+    // 20. Finding 19: watch + on:change on same form control
+    {
+      const formControlTags = new Set(['input', 'textarea', 'select']);
+      const hasWatch = directivesOnElement.includes('watch');
+      const onChangeAttr = el.attributes.find(a => a.name === 'on:change' || a.name.startsWith('on:change.'));
+      if (hasWatch && onChangeAttr && formControlTags.has(el.tag)) {
+        const range = toRange(document, onChangeAttr.nameStart, onChangeAttr.nameEnd);
+        diagnostics.push({
+          severity: DiagnosticSeverity.Warning,
+          range,
+          message: `No.JS: "watch" and "${onChangeAttr.name}" on a form control — both claim the change event. The watch handler's on:change companion and this event listener may conflict. Use one approach.`,
+          source: SOURCE,
+        });
+      }
+    }
+
+    // 21. Finding 20: t + bind on same element — double text-writer
+    {
+      const hasT = directivesOnElement.includes('t');
+      const bindAttr = el.attributes.find(a => a.name === 'bind');
+      if (hasT && bindAttr) {
+        const range = toRange(document, bindAttr.nameStart, bindAttr.nameEnd);
+        diagnostics.push({
+          severity: DiagnosticSeverity.Warning,
+          range,
+          message: `No.JS: "t" and "bind" on the same element both write text content — the last-processed directive wins silently. Use only one text source per element.`,
+          source: SOURCE,
+        });
+      }
+    }
   }
 
   // 15. Deprecated class-based transition CSS on route-view elements
