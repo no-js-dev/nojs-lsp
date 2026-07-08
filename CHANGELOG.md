@@ -2,7 +2,17 @@
 
 All notable changes to the **No.JS LSP** extension will be documented in this file.
 
-## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.17.0...HEAD)
+## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.18.0...HEAD)
+
+## [1.18.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.17.0...v1.18.0) — 2026-07-07
+
+### Added
+
+- 6 directive incompatibility diagnostics: switch×loop, if+loop, ref+loop, bind-value+model, watch+on:change, t+bind conflict detection (NOJS-260)
+
+### Changed
+
+- Updated directive documentation with compatibility notes, if-gate semantics, and `use` priority 9
 
 ## [1.17.0] - 2026-07-06
 
