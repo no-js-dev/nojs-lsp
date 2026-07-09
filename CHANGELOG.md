@@ -2,7 +2,13 @@
 
 All notable changes to the **No.JS LSP** extension will be documented in this file.
 
-## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.18.0...HEAD)
+## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.19.0...HEAD)
+
+## [1.19.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.18.0...v1.19.0) — 2026-07-09
+
+### Changed
+
+- Version bump to align with NoJS Core v1.19.0 reactive-core performance overhaul. No changes to language-server behavior, diagnostics, or directive data.
 
 ## [1.18.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.17.0...v1.18.0) — 2026-07-07
 
