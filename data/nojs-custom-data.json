@@ -295,7 +295,7 @@
       "name": "as",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Companion for HTTP directives (`get`, `post`, etc.) and `call`. Names the response data variable. Defaults to `\"data\"` for `call`.\n\n```html\n<div get=\"/api/users\" as=\"users\">\n```"
+        "value": "No.JS: Companion for HTTP directives (`get`, `post`, etc.), `call`, and `sse`. Names the response/event data variable. Defaults to `\"data\"` for `call` and `sse`.\n\n```html\n<div get=\"/api/users\" as=\"users\">\n<div sse=\"/events\" as=\"notification\">\n```"
       }
     },
     {
@@ -323,7 +323,7 @@
       "name": "then",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Companion attribute. For HTTP directives: expression to run on success. For `if`/`else`/`else-if`: template ID to render.\n\n```html\n<div if=\"isAdmin\" then=\"admin-panel\">\n<div get=\"/api\" as=\"d\" then=\"console.log(d)\">\n```"
+        "value": "No.JS: Companion attribute. For HTTP directives and `sse`: expression to run on success/event (`$event` = parsed data). For `if`/`else`/`else-if`: template ID to render.\n\n```html\n<div if=\"isAdmin\" then=\"admin-panel\">\n<div get=\"/api\" as=\"d\" then=\"console.log(d)\">\n<div sse=\"/events\" as=\"msg\" then=\"count++\">\n```"
       }
     },
     {
@@ -380,7 +380,7 @@
       "name": "into",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Companion for HTTP directives and `call`. Store name to put response data into.\n\n```html\n<button call=\"/api/cart\" into=\"cart\">\n```"
+        "value": "No.JS: Companion for HTTP directives, `call`, and `sse`. Store name to dual-write response/event data into.\n\n```html\n<button call=\"/api/cart\" into=\"cart\">\n<div sse=\"/events\" as=\"data\" into=\"live\">\n```"
       }
     },
     {
@@ -811,7 +811,7 @@
       "name": "error",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Companion for HTTP directives. Template ID shown on error, or template ID for `call` error handling."
+        "value": "No.JS: Companion for HTTP directives, `call`, and `sse`. Template ID shown on error or when the SSE connection closes."
       }
     },
     {
@@ -914,6 +914,43 @@
         "kind": "markdown",
         "value": "No.JS: ID (without `#`) of a DOM element to hide while loading and restore on response. Prevents CLS — element must start visible in HTML. Companion for `get`.\n\n```html\n<div id=\"user-skeleton\">Loading...</div>\n<div get=\"/api/user\" as=\"user\" skeleton=\"user-skeleton\">\n  <h1 bind=\"user.name\"></h1>\n</div>\n```"
       }
+    },
+    {
+      "name": "sse",
+      "description": {
+        "kind": "markdown",
+        "value": "No.JS: Opens a Server-Sent Events (EventSource) connection. Value is a URL (supports `{expr}` interpolation). Incoming events are parsed as JSON (raw-string fallback) and stored in the context variable named by `as`.\n\n```html\n<div sse=\"/events/notifications\" as=\"notification\">\n  <p bind=\"notification.message\"></p>\n  <span show=\"$sse.connecting\">Connecting...</span>\n</div>\n```\n\n**Context key:** `$sse` — `{ connecting, open, error }` booleans.\n\n**Companions:** `as`, `sse-event`, `sse-insert`, `sse-limit`, `sse-credentials`, `into`, `error`, `then`"
+      }
+    },
+    {
+      "name": "sse-event",
+      "description": {
+        "kind": "markdown",
+        "value": "No.JS: Companion for `sse`. Named SSE event type to listen for. Defaults to `\"message\"` (the standard EventSource event).\n\n```html\n<div sse=\"/events\" as=\"data\" sse-event=\"status-update\">\n```"
+      }
+    },
+    {
+      "name": "sse-insert",
+      "description": {
+        "kind": "markdown",
+        "value": "No.JS: Companion for `sse`. Controls how incoming events are stored.\n\n- `replace` (default) — overwrites the variable with each new event\n- `append` — pushes to the end of an array\n- `prepend` — unshifts to the beginning of an array\n\n```html\n<ul sse=\"/events/feed\" as=\"items\" sse-insert=\"append\" sse-limit=\"50\">\n  <li each=\"item in items\" bind=\"item.text\"></li>\n</ul>\n```"
+      },
+      "valueSet": "sseInsertModes"
+    },
+    {
+      "name": "sse-limit",
+      "description": {
+        "kind": "markdown",
+        "value": "No.JS: Companion for `sse`. Maximum number of items to keep in the array when using `sse-insert=\"append\"` or `sse-insert=\"prepend\"`. Prevents unbounded memory growth on long-lived streams. Has no effect with `sse-insert=\"replace\"` (the default).\n\n```html\n<div sse=\"/events/log\" as=\"entries\" sse-insert=\"append\" sse-limit=\"100\">\n```"
+      }
+    },
+    {
+      "name": "sse-credentials",
+      "description": {
+        "kind": "markdown",
+        "value": "No.JS: Companion for `sse`. Boolean attribute — when present, the EventSource connection is opened with `withCredentials: true`, sending cookies and HTTP auth headers cross-origin.\n\n```html\n<div sse=\"https://api.example.com/events\" as=\"data\" sse-credentials>\n```"
+      },
+      "valueSet": "v"
     }
   ],
   "valueSets": [
@@ -1121,6 +1158,23 @@
         {
           "name": "prepend",
           "description": "No.JS: Prepend new items before existing content"
+        }
+      ]
+    },
+    {
+      "name": "sseInsertModes",
+      "values": [
+        {
+          "name": "replace",
+          "description": "No.JS: Overwrite variable with each new event (default)"
+        },
+        {
+          "name": "append",
+          "description": "No.JS: Push each event to the end of an array"
+        },
+        {
+          "name": "prepend",
+          "description": "No.JS: Unshift each event to the beginning of an array"
         }
       ]
     }

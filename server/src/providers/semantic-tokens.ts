@@ -47,7 +47,7 @@ const CONTEXT_VARS = new Set([
   '$event', '$el', '$old', '$new', '$error', '$rule',
   '$drag', '$dragType', '$dragEffect', '$dropIndex', '$source', '$target',
 ]);
-const CONTEXT_REFS = new Set(['$store', '$refs', '$route', '$router', '$i18n', '$form', '$parent']);
+const CONTEXT_REFS = new Set(['$store', '$refs', '$route', '$router', '$i18n', '$form', '$sse', '$parent']);
 
 export function onSemanticTokens(documents: TextDocuments<TextDocument>) {
   return (params: SemanticTokensParams): SemanticTokens => {

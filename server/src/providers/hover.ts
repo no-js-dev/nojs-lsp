@@ -155,6 +155,7 @@ const CONTEXT_KEY_DOCS: Record<string, string> = {
   '$router': 'No.JS: **`$router`** — Router instance for programmatic navigation.\n\nUsage: `$router.push(\'/about\')`',
   '$i18n': 'No.JS: **`$i18n`** — Reactive i18n Proxy. Access translations as dot-notation properties.\n\nUsage: `$i18n.shell.sidebar.intro` resolves to the translation string.\n\nReserved properties: `locale` (current locale), `locales` (available locales), `t(key, params)` (classic lookup), `setLocale(code)` (switch locale).',
   '$form': 'No.JS: **`$form`** — Form validation state and methods.\n\nProperties: `valid`, `dirty`, `touched`, `pending`, `submitting`, `errors`, `values`, `fields`, `firstError`, `errorCount`, `reset()`\n\nUsage: `$form.valid`, `$form.errors.email`, `$form.fields.email.touched`',
+  '$sse': 'No.JS: **`$sse`** — SSE (Server-Sent Events) connection state.\n\nProperties: `connecting` (boolean — true while connecting/reconnecting), `open` (boolean — true when connection is active), `error` (boolean — true when connection closed with error)\n\nUsage: `$sse.connecting`, `$sse.open`, `$sse.error`\n\nAvailable inside elements with the `sse` directive.',
   '$el': 'No.JS: **`$el`** — Reference to the current DOM element.',
   '$event': 'No.JS: **`$event`** — The native DOM event object in event handlers.',
   '$parent': 'No.JS: **`$parent`** — Reference to the parent component context.',
