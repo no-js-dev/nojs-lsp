@@ -323,7 +323,7 @@
       "name": "then",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Companion attribute. For HTTP directives and `sse`: expression to run on success/event (`$event` = parsed data). For `if`/`else`/`else-if`: template ID to render.\n\n```html\n<div if=\"isAdmin\" then=\"admin-panel\">\n<div get=\"/api\" as=\"d\" then=\"console.log(d)\">\n<div sse=\"/events\" as=\"msg\" then=\"count++\">\n```"
+        "value": "No.JS: Companion attribute. For HTTP directives: expression to run on success. For `sse`: expression to run on each event (`$event` = parsed message data). For `if`/`else`/`else-if`: template ID to render.\n\n```html\n<div if=\"isAdmin\" then=\"admin-panel\">\n<div get=\"/api\" as=\"d\" then=\"console.log(d)\">\n<div sse=\"/events\" as=\"msg\" then=\"count++\">\n```"
       }
     },
     {
