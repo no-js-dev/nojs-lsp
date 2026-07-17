@@ -2,7 +2,22 @@
 
 All notable changes to the **No.JS LSP** extension will be documented in this file.
 
-## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.19.0...HEAD)
+## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.20.0...HEAD)
+
+## [1.20.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.19.0...v1.20.0) — 2026-07-17
+
+### Added
+
+- `sse` directive support — completion, hover, and snippets for the new SSE (Server-Sent Events) directive and its companions (`sse-event`, `sse-insert`, `sse-limit`, `sse-credentials`)
+- `$sse` sub-property completions — `$sse.connecting`, `$sse.open`, `$sse.error` with type and description
+- `$sse` hover documentation for the connection state context key
+- `sseInsertModes` value set — `replace`, `append`, `prepend` completions for the `sse-insert` attribute
+- `sse` and `sse-full` VS Code snippets for quick SSE scaffolding
+
+### Changed
+
+- Updated `as`, `then`, `into`, and `error` companion attribute documentation to reference `sse` alongside the HTTP directives
+- Added `$sse` to the semantic-tokens context-reference set
 
 ## [1.19.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.18.0...v1.19.0) — 2026-07-09
 
