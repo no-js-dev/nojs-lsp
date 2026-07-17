@@ -31007,6 +31007,63 @@ var directives_default = {
       category: "http"
     },
     {
+      name: "sse",
+      pattern: false,
+      priority: 1,
+      valueType: "url",
+      valueDescription: "URL string or expression (supports {expr} interpolation)",
+      requiresValue: true,
+      companions: [
+        {
+          name: "as",
+          type: "identifier",
+          description: 'No.JS: Variable name for received data (default: "data")'
+        },
+        {
+          name: "sse-event",
+          type: "string",
+          description: 'No.JS: Named SSE event to listen for (default: "message")'
+        },
+        {
+          name: "sse-insert",
+          type: "enum",
+          description: "No.JS: How incoming events are stored \u2014 replace overwrites, append/prepend accumulate into an array",
+          values: [
+            "replace",
+            "append",
+            "prepend"
+          ]
+        },
+        {
+          name: "sse-limit",
+          type: "number",
+          description: "No.JS: Maximum items to keep when using sse-insert append/prepend (prevents unbounded growth)"
+        },
+        {
+          name: "sse-credentials",
+          type: "boolean",
+          description: "No.JS: Send credentials (cookies) with the EventSource connection"
+        },
+        {
+          name: "into",
+          type: "string",
+          description: "No.JS: Store name to dual-write received data into"
+        },
+        {
+          name: "error",
+          type: "templateId",
+          description: "No.JS: Template ID shown when the SSE connection closes with an error"
+        },
+        {
+          name: "then",
+          type: "expression",
+          description: "No.JS: Expression executed on each received event ($event = parsed data)"
+        }
+      ],
+      documentation: 'Opens a Server-Sent Events (EventSource) connection to the given URL. Incoming events are parsed as JSON (with raw-string fallback) and stored in the context variable named by `as`.\n\n**Example:**\n```html\n<div sse="/events/notifications" as="notification">\n  <p bind="notification.message"></p>\n</div>\n```\n\n**Feed (append mode):**\n```html\n<ul sse="/events/feed" as="items" sse-insert="append" sse-limit="50">\n  <li each="item in items" bind="item.text"></li>\n</ul>\n```\n\n**Context key:** `$sse` \u2014 `{ connecting, open, error }` booleans for connection state.\n\n**Companions:** `as`, `sse-event`, `sse-insert`, `sse-limit`, `sse-credentials`, `into`, `error`, `then`',
+      category: "http"
+    },
+    {
       name: "query",
       pattern: false,
       priority: 1,
@@ -32380,6 +32437,7 @@ var directives_default = {
     "$router",
     "$i18n",
     "$form",
+    "$sse",
     "$el",
     "$event",
     "$error",
@@ -33204,7 +33262,7 @@ var CONTEXT_VARS = /* @__PURE__ */ new Set([
   "$source",
   "$target"
 ]);
-var CONTEXT_REFS = /* @__PURE__ */ new Set(["$store", "$refs", "$route", "$router", "$i18n", "$form", "$parent"]);
+var CONTEXT_REFS = /* @__PURE__ */ new Set(["$store", "$refs", "$route", "$router", "$i18n", "$form", "$sse", "$parent"]);
 function onSemanticTokens(documents2) {
   return (params) => {
     const document = documents2.get(params.textDocument.uri);
@@ -34252,6 +34310,23 @@ Properties: ${store.properties.join(", ")}`
       });
     }
   }
+  if (directive && partial.includes("$sse.")) {
+    const afterSse = partial.substring(partial.lastIndexOf("$sse.") + 5);
+    const sseProps = [
+      { name: "connecting", detail: "boolean \u2014 true while connecting or reconnecting" },
+      { name: "open", detail: "boolean \u2014 true when the EventSource connection is active" },
+      { name: "error", detail: "boolean \u2014 true when the connection closed with an error" }
+    ];
+    for (const prop of sseProps) {
+      if (afterSse && !prop.name.toLowerCase().startsWith(afterSse.toLowerCase())) continue;
+      items.push({
+        label: `$sse.${prop.name}`,
+        kind: import_node3.CompletionItemKind.Property,
+        detail: `No.JS: ${prop.detail}`,
+        sortText: `0-${prop.name}`
+      });
+    }
+  }
   if (directive && partial.includes("$i18n.")) {
     const afterI18n = partial.substring(partial.lastIndexOf("$i18n.") + 6);
     const i18nProps = [
@@ -34392,6 +34467,7 @@ var CONTEXT_KEY_DOCS = {
   "$router": "No.JS: **`$router`** \u2014 Router instance for programmatic navigation.\n\nUsage: `$router.push('/about')`",
   "$i18n": "No.JS: **`$i18n`** \u2014 Reactive i18n Proxy. Access translations as dot-notation properties.\n\nUsage: `$i18n.shell.sidebar.intro` resolves to the translation string.\n\nReserved properties: `locale` (current locale), `locales` (available locales), `t(key, params)` (classic lookup), `setLocale(code)` (switch locale).",
   "$form": "No.JS: **`$form`** \u2014 Form validation state and methods.\n\nProperties: `valid`, `dirty`, `touched`, `pending`, `submitting`, `errors`, `values`, `fields`, `firstError`, `errorCount`, `reset()`\n\nUsage: `$form.valid`, `$form.errors.email`, `$form.fields.email.touched`",
+  "$sse": "No.JS: **`$sse`** \u2014 SSE (Server-Sent Events) connection state.\n\nProperties: `connecting` (boolean \u2014 true while connecting/reconnecting), `open` (boolean \u2014 true when connection is active), `error` (boolean \u2014 true when connection closed with error)\n\nUsage: `$sse.connecting`, `$sse.open`, `$sse.error`\n\nAvailable inside elements with the `sse` directive.",
   "$el": "No.JS: **`$el`** \u2014 Reference to the current DOM element.",
   "$event": "No.JS: **`$event`** \u2014 The native DOM event object in event handlers.",
   "$parent": "No.JS: **`$parent`** \u2014 Reference to the parent component context.",
