@@ -281,6 +281,63 @@
       "category": "http"
     },
     {
+      "name": "sse",
+      "pattern": false,
+      "priority": 1,
+      "valueType": "url",
+      "valueDescription": "URL string or expression (supports {expr} interpolation)",
+      "requiresValue": true,
+      "companions": [
+        {
+          "name": "as",
+          "type": "identifier",
+          "description": "No.JS: Variable name for received data (default: \"data\")"
+        },
+        {
+          "name": "sse-event",
+          "type": "string",
+          "description": "No.JS: Named SSE event to listen for (default: \"message\")"
+        },
+        {
+          "name": "sse-insert",
+          "type": "enum",
+          "description": "No.JS: How incoming events are stored — replace overwrites, append/prepend accumulate into an array",
+          "values": [
+            "replace",
+            "append",
+            "prepend"
+          ]
+        },
+        {
+          "name": "sse-limit",
+          "type": "number",
+          "description": "No.JS: Maximum items to keep when using sse-insert append/prepend (prevents unbounded growth)"
+        },
+        {
+          "name": "sse-credentials",
+          "type": "boolean",
+          "description": "No.JS: Send credentials (cookies) with the EventSource connection"
+        },
+        {
+          "name": "into",
+          "type": "string",
+          "description": "No.JS: Store name to dual-write received data into"
+        },
+        {
+          "name": "error",
+          "type": "templateId",
+          "description": "No.JS: Template ID shown when the SSE connection closes with an error"
+        },
+        {
+          "name": "then",
+          "type": "expression",
+          "description": "No.JS: Expression executed on each received event ($event = parsed data)"
+        }
+      ],
+      "documentation": "Opens a Server-Sent Events (EventSource) connection to the given URL. Incoming events are parsed as JSON (with raw-string fallback) and stored in the context variable named by `as`.\n\n**Example:**\n```html\n<div sse=\"/events/notifications\" as=\"notification\">\n  <p bind=\"notification.message\"></p>\n</div>\n```\n\n**Feed (append mode):**\n```html\n<ul sse=\"/events/feed\" as=\"items\" sse-insert=\"append\" sse-limit=\"50\">\n  <li each=\"item in items\" bind=\"item.text\"></li>\n</ul>\n```\n\n**Context key:** `$sse` — `{ connecting, open, error }` booleans for connection state.\n\n**Companions:** `as`, `sse-event`, `sse-insert`, `sse-limit`, `sse-credentials`, `into`, `error`, `then`",
+      "category": "http"
+    },
+    {
       "name": "query",
       "pattern": false,
       "priority": 1,
@@ -1654,6 +1711,7 @@
     "$router",
     "$i18n",
     "$form",
+    "$sse",
     "$el",
     "$event",
     "$error",

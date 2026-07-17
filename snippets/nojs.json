@@ -440,5 +440,28 @@
       "</div>"
     ],
     "description": "Prefetch content on hover"
+  },
+  "No.JS SSE": {
+    "prefix": "sse",
+    "body": [
+      "<${1:div} sse=\"${2:/events}\" as=\"${3:data}\">",
+      "\t<${4:span} bind=\"${3:data}.$5\"></${4:span}>",
+      "</${1:div}>"
+    ],
+    "description": "No.JS Server-Sent Events stream with data binding"
+  },
+  "No.JS SSE Feed": {
+    "prefix": "sse-full",
+    "body": [
+      "<${1:div} sse=\"${2:/events/feed}\" as=\"${3:items}\" sse-insert=\"append\" sse-limit=\"${4:50}\" error=\"${8:sse-error-tpl}\">",
+      "  <span show=\"\\$sse.connecting\">Connecting...</span>",
+      "  <${5:div} each=\"${6:item} in ${3:items}\" bind=\"${6:item}.${7:text}\"></${5:div}>",
+      "</${1:div}>",
+      "",
+      "<template id=\"${8:sse-error-tpl}\">",
+      "\t<p>Connection lost</p>",
+      "</template>"
+    ],
+    "description": "No.JS SSE feed with append mode, limit, connection state, and error template"
   }
 }

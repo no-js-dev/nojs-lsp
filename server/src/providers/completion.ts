@@ -596,6 +596,25 @@ function getAttributeValueCompletions(context: CursorContext & { type: 'attribut
     }
   }
 
+  // $sse. sub-property completions
+  if (directive && partial.includes('$sse.')) {
+    const afterSse = partial.substring(partial.lastIndexOf('$sse.') + 5);
+    const sseProps: { name: string; detail: string }[] = [
+      { name: 'connecting', detail: 'boolean — true while connecting or reconnecting' },
+      { name: 'open', detail: 'boolean — true when the EventSource connection is active' },
+      { name: 'error', detail: 'boolean — true when the connection closed with an error' },
+    ];
+    for (const prop of sseProps) {
+      if (afterSse && !prop.name.toLowerCase().startsWith(afterSse.toLowerCase())) continue;
+      items.push({
+        label: `$sse.${prop.name}`,
+        kind: CompletionItemKind.Property,
+        detail: `No.JS: ${prop.detail}`,
+        sortText: `0-${prop.name}`,
+      });
+    }
+  }
+
   // $i18n. sub-property completions (reserved properties + dot-notation translation access)
   if (directive && partial.includes('$i18n.')) {
     const afterI18n = partial.substring(partial.lastIndexOf('$i18n.') + 6);
