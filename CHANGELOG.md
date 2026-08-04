@@ -2,7 +2,20 @@
 
 All notable changes to the **No.JS LSP** extension will be documented in this file.
 
-## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.20.0...HEAD)
+## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.20.1...HEAD)
+
+## [1.20.1](https://github.com/no-js-dev/nojs-lsp/compare/v1.20.0...v1.20.1) — 2026-08-04
+
+### Changed
+
+- Version alignment with NoJS Core v1.20.1
+
+### Dependencies
+
+- Bump `ts-jest` from 29.4.11 to 29.4.12
+- Bump `@types/node` from 26.0.1 to 26.1.1
+- Bump `actions/setup-node` from 6.4.0 to 7.0.0
+- Bump `actions/checkout` from 6.0.3 to 7.0.1
 
 ## [1.20.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.19.0...v1.20.0) — 2026-07-17
 
