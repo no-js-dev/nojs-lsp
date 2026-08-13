@@ -2,7 +2,13 @@
 
 All notable changes to the **No.JS LSP** extension will be documented in this file.
 
-## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.20.2...HEAD)
+## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.21.0...HEAD)
+
+## [1.21.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.20.2...v1.21.0) — 2026-08-13
+
+### Changed
+
+- Version sync with ecosystem release v1.21.0 (NoJS Core ADR-024 compiler support surface)
 
 ## [1.20.2](https://github.com/no-js-dev/nojs-lsp/compare/v1.20.1...v1.20.2) — 2026-08-05
 
