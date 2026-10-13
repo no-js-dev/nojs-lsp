@@ -5,11 +5,20 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __esm = (fn, res) => function __init() {
-  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+var __esm = (fn, res, err) => function __init() {
+  if (err) throw err[0];
+  try {
+    return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+  } catch (e) {
+    throw err = [e], e;
+  }
 };
 var __commonJS = (cb, mod) => function __require() {
-  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+  try {
+    return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+  } catch (e) {
+    throw mod = 0, e;
+  }
 };
 var __export = (target, all) => {
   for (var name in all)
@@ -2613,7 +2622,8 @@ ${JSON.stringify(message, null, 4)}`);
               }
             }
           }
-          tracer.log(`Sending response '${method} - (${message.id})'. Processing request took ${Date.now() - startTime}ms`, data);
+          const error = message.error ? ` Request failed: ${message.error.message} (${message.error.code}).` : "";
+          tracer.log(`Sending response '${method} - (${message.id})'. Processing request took ${Date.now() - startTime}ms.${error}`, data);
         } else {
           logLSPMessage("send-response", message);
         }
@@ -2953,7 +2963,6 @@ ${JSON.stringify(message, null, 4)}`);
               responsePromises.delete(id);
               responsePromise.reject(new messages_1.ResponseError(messages_1.ErrorCodes.MessageWriteError, error.message ? error.message : "Unknown reason"));
               logger.error(`Sending request failed.`);
-              throw error;
             }
           });
         },
@@ -4856,9 +4865,9 @@ var init_main = __esm({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/messages.js
+// node_modules/vscode-languageserver-protocol/lib/common/messages.js
 var require_messages2 = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/messages.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/messages.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.CM = exports2.ProtocolNotificationType = exports2.ProtocolNotificationType0 = exports2.ProtocolRequestType = exports2.ProtocolRequestType0 = exports2.RegistrationType = exports2.MessageDirection = void 0;
@@ -4939,9 +4948,9 @@ var require_messages2 = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/utils/is.js
+// node_modules/vscode-languageserver-protocol/lib/common/utils/is.js
 var require_is3 = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/utils/is.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/utils/is.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.boolean = boolean;
@@ -4983,9 +4992,9 @@ var require_is3 = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.implementation.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.implementation.js
 var require_protocol_implementation = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.implementation.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.implementation.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.ImplementationRequest = void 0;
@@ -5000,9 +5009,9 @@ var require_protocol_implementation = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.typeDefinition.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.typeDefinition.js
 var require_protocol_typeDefinition = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.typeDefinition.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.typeDefinition.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.TypeDefinitionRequest = void 0;
@@ -5017,9 +5026,9 @@ var require_protocol_typeDefinition = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.workspaceFolder.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.workspaceFolder.js
 var require_protocol_workspaceFolder = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.workspaceFolder.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.workspaceFolder.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.DidChangeWorkspaceFoldersNotification = exports2.WorkspaceFoldersRequest = void 0;
@@ -5041,9 +5050,9 @@ var require_protocol_workspaceFolder = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.configuration.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.configuration.js
 var require_protocol_configuration = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.configuration.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.configuration.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.ConfigurationRequest = void 0;
@@ -5058,9 +5067,9 @@ var require_protocol_configuration = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.colorProvider.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.colorProvider.js
 var require_protocol_colorProvider = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.colorProvider.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.colorProvider.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.ColorPresentationRequest = exports2.DocumentColorRequest = void 0;
@@ -5082,9 +5091,9 @@ var require_protocol_colorProvider = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.foldingRange.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.foldingRange.js
 var require_protocol_foldingRange = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.foldingRange.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.foldingRange.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.FoldingRangeRefreshRequest = exports2.FoldingRangeRequest = void 0;
@@ -5106,9 +5115,9 @@ var require_protocol_foldingRange = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.declaration.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.declaration.js
 var require_protocol_declaration = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.declaration.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.declaration.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.DeclarationRequest = void 0;
@@ -5123,9 +5132,9 @@ var require_protocol_declaration = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.selectionRange.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.selectionRange.js
 var require_protocol_selectionRange = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.selectionRange.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.selectionRange.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.SelectionRangeRequest = void 0;
@@ -5140,9 +5149,9 @@ var require_protocol_selectionRange = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.progress.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.progress.js
 var require_protocol_progress = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.progress.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.progress.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.WorkDoneProgressCancelNotification = exports2.WorkDoneProgressCreateRequest = exports2.WorkDoneProgress = void 0;
@@ -5172,9 +5181,9 @@ var require_protocol_progress = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.callHierarchy.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.callHierarchy.js
 var require_protocol_callHierarchy = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.callHierarchy.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.callHierarchy.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.CallHierarchyOutgoingCallsRequest = exports2.CallHierarchyIncomingCallsRequest = exports2.CallHierarchyPrepareRequest = void 0;
@@ -5203,9 +5212,9 @@ var require_protocol_callHierarchy = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.semanticTokens.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.semanticTokens.js
 var require_protocol_semanticTokens = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.semanticTokens.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.semanticTokens.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.SemanticTokensRefreshRequest = exports2.SemanticTokensRangeRequest = exports2.SemanticTokensDeltaRequest = exports2.SemanticTokensRequest = exports2.SemanticTokensRegistrationType = exports2.TokenFormat = void 0;
@@ -5253,9 +5262,9 @@ var require_protocol_semanticTokens = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.showDocument.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.showDocument.js
 var require_protocol_showDocument = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.showDocument.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.showDocument.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.ShowDocumentRequest = void 0;
@@ -5270,9 +5279,9 @@ var require_protocol_showDocument = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.linkedEditingRange.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.linkedEditingRange.js
 var require_protocol_linkedEditingRange = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.linkedEditingRange.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.linkedEditingRange.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.LinkedEditingRangeRequest = void 0;
@@ -5287,9 +5296,9 @@ var require_protocol_linkedEditingRange = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.fileOperations.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.fileOperations.js
 var require_protocol_fileOperations = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.fileOperations.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.fileOperations.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.WillDeleteFilesRequest = exports2.DidDeleteFilesNotification = exports2.DidRenameFilesNotification = exports2.WillRenameFilesRequest = exports2.DidCreateFilesNotification = exports2.WillCreateFilesRequest = exports2.FileOperationPatternKind = void 0;
@@ -5344,9 +5353,9 @@ var require_protocol_fileOperations = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.moniker.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.moniker.js
 var require_protocol_moniker = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.moniker.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.moniker.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.MonikerRequest = exports2.MonikerKind = exports2.UniquenessLevel = void 0;
@@ -5375,9 +5384,9 @@ var require_protocol_moniker = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.typeHierarchy.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.typeHierarchy.js
 var require_protocol_typeHierarchy = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.typeHierarchy.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.typeHierarchy.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.TypeHierarchySubtypesRequest = exports2.TypeHierarchySupertypesRequest = exports2.TypeHierarchyPrepareRequest = void 0;
@@ -5404,9 +5413,9 @@ var require_protocol_typeHierarchy = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.inlineValue.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.inlineValue.js
 var require_protocol_inlineValue = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.inlineValue.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.inlineValue.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.InlineValueRefreshRequest = exports2.InlineValueRequest = void 0;
@@ -5428,9 +5437,9 @@ var require_protocol_inlineValue = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.inlayHint.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.inlayHint.js
 var require_protocol_inlayHint = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.inlayHint.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.inlayHint.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.InlayHintRefreshRequest = exports2.InlayHintResolveRequest = exports2.InlayHintRequest = void 0;
@@ -5459,9 +5468,9 @@ var require_protocol_inlayHint = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.diagnostic.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.diagnostic.js
 var require_protocol_diagnostic = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.diagnostic.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.diagnostic.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
@@ -5544,9 +5553,9 @@ var require_protocol_diagnostic = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.notebook.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.notebook.js
 var require_protocol_notebook = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.notebook.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.notebook.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
@@ -5770,9 +5779,9 @@ var require_protocol_notebook = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.inlineCompletion.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.inlineCompletion.js
 var require_protocol_inlineCompletion = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.inlineCompletion.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.inlineCompletion.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.InlineCompletionRequest = void 0;
@@ -5787,9 +5796,9 @@ var require_protocol_inlineCompletion = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.textDocumentContent.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.textDocumentContent.js
 var require_protocol_textDocumentContent = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.textDocumentContent.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.textDocumentContent.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.TextDocumentContentRefreshRequest = exports2.TextDocumentContentRequest = void 0;
@@ -5810,9 +5819,9 @@ var require_protocol_textDocumentContent = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.js
+// node_modules/vscode-languageserver-protocol/lib/common/protocol.js
 var require_protocol = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/protocol.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/protocol.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
@@ -6538,9 +6547,9 @@ var require_protocol = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/connection.js
+// node_modules/vscode-languageserver-protocol/lib/common/connection.js
 var require_connection2 = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/connection.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/connection.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.createProtocolConnection = createProtocolConnection;
@@ -6554,9 +6563,9 @@ var require_connection2 = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/api.js
+// node_modules/vscode-languageserver-protocol/lib/common/api.js
 var require_api2 = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/common/api.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/common/api.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
@@ -9774,7 +9783,7 @@ var require_features = __commonJS({
       };
     })();
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.WorkspaceFeature = exports2.TextDocumentLanguageFeature = exports2.TextDocumentEventFeature = exports2.DynamicDocumentFeature = exports2.DynamicFeature = exports2.StaticFeature = exports2.LSPCancellationError = void 0;
+    exports2.DefaultDiagnosticCollectionProvider = exports2.DiagnosticCollectionSource = exports2.WorkspaceFeature = exports2.TextDocumentLanguageFeature = exports2.TextDocumentEventFeature = exports2.DynamicDocumentFeature = exports2.DynamicFeature = exports2.StaticFeature = exports2.LSPCancellationError = void 0;
     exports2.ensure = ensure;
     var vscode_1 = require("vscode");
     var vscode_languageserver_protocol_1 = require_api2();
@@ -9843,6 +9852,7 @@ var require_features = __commonJS({
       _selectorFilter;
       _listener;
       _selectors;
+      _onAboutToSendNotification;
       _onNotificationSent;
       static textDocumentFilter(selectors, textDocument) {
         for (const selector of selectors) {
@@ -9861,6 +9871,7 @@ var require_features = __commonJS({
         this._textDocument = textDocument;
         this._selectorFilter = selectorFilter;
         this._selectors = /* @__PURE__ */ new Map();
+        this._onAboutToSendNotification = new vscode_1.EventEmitter();
         this._onNotificationSent = new vscode_1.EventEmitter();
       }
       getStateInfo() {
@@ -9884,9 +9895,11 @@ var require_features = __commonJS({
       }
       async callback(data) {
         const doSend = async (data2) => {
+          const textDocument = this.getTextDocument(data2);
           const params = this._createParams(data2);
+          this.aboutToSendNotification(textDocument, this._type, params);
           await this._client.sendNotification(this._type, params);
-          this.notificationSent(this.getTextDocument(data2), this._type, params);
+          this.notificationSent(textDocument, this._type, params);
         };
         if (this.matches(data)) {
           const middleware = this._middleware();
@@ -9898,6 +9911,12 @@ var require_features = __commonJS({
           return false;
         }
         return !this._selectorFilter || this._selectorFilter(this._selectors.values(), data);
+      }
+      get onAboutToSendNotification() {
+        return this._onAboutToSendNotification.event;
+      }
+      aboutToSendNotification(textDocument, type, params) {
+        this._onAboutToSendNotification.fire({ textDocument, type, params });
       }
       get onNotificationSent() {
         return this._onNotificationSent.event;
@@ -10059,12 +10078,26 @@ var require_features = __commonJS({
       }
     };
     exports2.WorkspaceFeature = WorkspaceFeature;
+    var DiagnosticCollectionSource;
+    (function(DiagnosticCollectionSource2) {
+      DiagnosticCollectionSource2["push"] = "push";
+      DiagnosticCollectionSource2["pull"] = "pull";
+    })(DiagnosticCollectionSource || (exports2.DiagnosticCollectionSource = DiagnosticCollectionSource = {}));
+    var DefaultDiagnosticCollectionProvider = class {
+      create(name, _source) {
+        return name !== void 0 ? vscode_1.languages.createDiagnosticCollection(name) : vscode_1.languages.createDiagnosticCollection();
+      }
+      dispose(collection, _source) {
+        collection.dispose();
+      }
+    };
+    exports2.DefaultDiagnosticCollectionProvider = DefaultDiagnosticCollectionProvider;
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/balanced-match/dist/commonjs/index.js
+// node_modules/balanced-match/dist/commonjs/index.js
 var require_commonjs = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/balanced-match/dist/commonjs/index.js"(exports2) {
+  "node_modules/balanced-match/dist/commonjs/index.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.range = exports2.balanced = void 0;
@@ -10124,12 +10157,12 @@ var require_commonjs = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/brace-expansion/dist/commonjs/index.js
+// node_modules/brace-expansion/dist/commonjs/index.js
 var require_commonjs2 = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/brace-expansion/dist/commonjs/index.js"(exports2) {
+  "node_modules/brace-expansion/dist/commonjs/index.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.EXPANSION_MAX = void 0;
+    exports2.EXPANSION_MAX_REWRITES = exports2.EXPANSION_MAX_DEPTH = exports2.EXPANSION_MAX_LENGTH = exports2.EXPANSION_MAX = void 0;
     exports2.expand = expand;
     var balanced_match_1 = require_commonjs();
     var escSlash = "\0SLASH" + Math.random() + "\0";
@@ -10148,6 +10181,9 @@ var require_commonjs2 = __commonJS({
     var commaPattern = /\\,/g;
     var periodPattern = /\\\./g;
     exports2.EXPANSION_MAX = 1e5;
+    exports2.EXPANSION_MAX_LENGTH = 4e6;
+    exports2.EXPANSION_MAX_DEPTH = 1e3;
+    exports2.EXPANSION_MAX_REWRITES = 1e3;
     function numeric(str) {
       return !isNaN(str) ? parseInt(str, 10) : str.charCodeAt(0);
     }
@@ -10157,36 +10193,44 @@ var require_commonjs2 = __commonJS({
     function unescapeBraces(str) {
       return str.replace(escSlashPattern, "\\").replace(escOpenPattern, "{").replace(escClosePattern, "}").replace(escCommaPattern, ",").replace(escPeriodPattern, ".");
     }
+    function pushAll(target, items) {
+      for (let i = 0; i < items.length; i++) {
+        target.push(items[i]);
+      }
+    }
     function parseCommaParts(str) {
-      if (!str) {
-        return [""];
-      }
       const parts = [];
-      const m = (0, balanced_match_1.balanced)("{", "}", str);
-      if (!m) {
-        return str.split(",");
+      let carry = "";
+      for (; ; ) {
+        const m = (0, balanced_match_1.balanced)("{", "}", str);
+        if (!m) {
+          const tail = str.split(",");
+          tail[0] = carry + tail[0];
+          pushAll(parts, tail);
+          return parts;
+        }
+        const { pre, body, post } = m;
+        const p = pre.split(",");
+        p[0] = carry + p[0];
+        p[p.length - 1] += "{" + body + "}";
+        if (!post.length) {
+          pushAll(parts, p);
+          return parts;
+        }
+        carry = p.pop();
+        pushAll(parts, p);
+        str = post;
       }
-      const { pre, body, post } = m;
-      const p = pre.split(",");
-      p[p.length - 1] += "{" + body + "}";
-      const postParts = parseCommaParts(post);
-      if (post.length) {
-        ;
-        p[p.length - 1] += postParts.shift();
-        p.push.apply(p, postParts);
-      }
-      parts.push.apply(parts, p);
-      return parts;
     }
     function expand(str, options = {}) {
       if (!str) {
         return [];
       }
-      const { max = exports2.EXPANSION_MAX } = options;
+      const { max = exports2.EXPANSION_MAX, maxLength = exports2.EXPANSION_MAX_LENGTH, maxDepth = exports2.EXPANSION_MAX_DEPTH, maxRewrites = exports2.EXPANSION_MAX_REWRITES } = options;
       if (str.slice(0, 2) === "{}") {
         str = "\\{\\}" + str.slice(2);
       }
-      return expand_(escapeBraces(str), max, true).map(unescapeBraces);
+      return expand_(escapeBraces(str), max, maxLength, maxDepth, 0, maxRewrites, true).map(unescapeBraces);
     }
     function embrace(str) {
       return "{" + str + "}";
@@ -10200,102 +10244,159 @@ var require_commonjs2 = __commonJS({
     function gte(i, y) {
       return i >= y;
     }
-    function expand_(str, max, isTop) {
-      const expansions = [];
-      const m = (0, balanced_match_1.balanced)("{", "}", str);
-      if (!m)
-        return [str];
-      const pre = m.pre;
-      const post = m.post.length ? expand_(m.post, max, false) : [""];
-      if (/\$$/.test(m.pre)) {
-        for (let k = 0; k < post.length && k < max; k++) {
-          const expansion = pre + "{" + m.body + "}" + post[k];
-          expansions.push(expansion);
+    function combine(acc, pre, values, max, maxLength, dropEmpties) {
+      const out = [];
+      let length = 0;
+      for (let a = 0; a < acc.length; a++) {
+        for (let v = 0; v < values.length; v++) {
+          if (out.length >= max)
+            return out;
+          const expansion = acc[a] + pre + values[v];
+          if (dropEmpties && !expansion)
+            continue;
+          if (length + expansion.length > maxLength)
+            return out;
+          out.push(expansion);
+          length += expansion.length;
         }
-      } else {
+      }
+      return out;
+    }
+    function expandSequence(body, isAlphaSequence, max, maxLength) {
+      const n = body.split(/\.\./);
+      const N = [];
+      if (n[0] === void 0 || n[1] === void 0) {
+        return N;
+      }
+      const x = numeric(n[0]);
+      const y = numeric(n[1]);
+      const width = Math.max(n[0].length, n[1].length);
+      let incr = n.length === 3 && n[2] !== void 0 ? Math.max(Math.abs(numeric(n[2])), 1) : 1;
+      let test = lte;
+      const reverse = y < x;
+      if (reverse) {
+        incr *= -1;
+        test = gte;
+      }
+      const pad = n.some(isPadded);
+      let length = 0;
+      for (let i = x; test(i, y) && N.length < max; i += incr) {
+        let c;
+        if (isAlphaSequence) {
+          c = String.fromCharCode(i);
+          if (c === "\\") {
+            c = "";
+          }
+        } else {
+          c = String(i);
+          if (pad) {
+            const need = width - c.length;
+            if (need > 0) {
+              const z = new Array(need + 1).join("0");
+              if (i < 0) {
+                c = "-" + z + c.slice(1);
+              } else {
+                c = z + c;
+              }
+            }
+          }
+        }
+        if (length + c.length > maxLength)
+          break;
+        N.push(c);
+        length += c.length;
+      }
+      return N;
+    }
+    function expand_(str, max, maxLength, maxDepth, depth, maxRewrites, isTop) {
+      if (depth > maxDepth) {
+        return [str];
+      }
+      let acc = [""];
+      let rewrites = 0;
+      let dropEmpties = false;
+      let firstGroup = true;
+      for (; ; ) {
+        const m = (0, balanced_match_1.balanced)("{", "}", str);
+        if (!m) {
+          return combine(acc, str, [""], max, maxLength, dropEmpties);
+        }
+        const pre = m.pre;
+        if (/\$$/.test(pre)) {
+          acc = combine(acc, pre + "{" + m.body + "}", [""], max, maxLength, dropEmpties && !m.post.length);
+          firstGroup = false;
+          if (!m.post.length)
+            break;
+          str = m.post;
+          continue;
+        }
         const isNumericSequence = /^-?\d+\.\.-?\d+(?:\.\.-?\d+)?$/.test(m.body);
         const isAlphaSequence = /^[a-zA-Z]\.\.[a-zA-Z](?:\.\.-?\d+)?$/.test(m.body);
         const isSequence = isNumericSequence || isAlphaSequence;
         const isOptions = m.body.indexOf(",") >= 0;
         if (!isSequence && !isOptions) {
-          if (m.post.match(/,(?!,).*\}/)) {
+          if (rewrites < maxRewrites && m.post.match(/,(?!,).*\}/)) {
+            rewrites++;
             str = m.pre + "{" + m.body + escClose + m.post;
-            return expand_(str, max, true);
+            isTop = true;
+            continue;
           }
-          return [str];
+          return combine(acc, pre + "{" + m.body + "}" + m.post, [""], max, maxLength, dropEmpties);
         }
-        let n;
+        if (firstGroup) {
+          dropEmpties = isTop && !isSequence;
+          firstGroup = false;
+        }
+        let values;
         if (isSequence) {
-          n = m.body.split(/\.\./);
+          values = expandSequence(m.body, isAlphaSequence, max, maxLength);
         } else {
-          n = parseCommaParts(m.body);
+          let n = parseCommaParts(m.body);
           if (n.length === 1 && n[0] !== void 0) {
-            n = expand_(n[0], max, false).map(embrace);
+            n = expand_(n[0], max, maxLength, maxDepth, depth + 1, maxRewrites, false).map(embrace);
             if (n.length === 1) {
-              return post.map((p) => m.pre + n[0] + p);
+              acc = combine(acc, pre + n[0], [""], max, maxLength, dropEmpties && !m.post.length);
+              if (!m.post.length)
+                break;
+              str = m.post;
+              continue;
             }
           }
-        }
-        let N;
-        if (isSequence && n[0] !== void 0 && n[1] !== void 0) {
-          const x = numeric(n[0]);
-          const y = numeric(n[1]);
-          const width = Math.max(n[0].length, n[1].length);
-          let incr = n.length === 3 && n[2] !== void 0 ? Math.max(Math.abs(numeric(n[2])), 1) : 1;
-          let test = lte;
-          const reverse = y < x;
-          if (reverse) {
-            incr *= -1;
-            test = gte;
+          let dropsEmpties = dropEmpties && !m.post.length && !pre;
+          for (let d = 0; dropsEmpties && d < acc.length; d++) {
+            if (acc[d]) {
+              dropsEmpties = false;
+            }
           }
-          const pad = n.some(isPadded);
-          N = [];
-          for (let i = x; test(i, y) && N.length < max; i += incr) {
-            let c;
-            if (isAlphaSequence) {
-              c = String.fromCharCode(i);
-              if (c === "\\") {
-                c = "";
+          values = [];
+          let valuesLength = 0;
+          outer: for (let j = 0; j < n.length; j++) {
+            const expanded = expand_(n[j], max, maxLength, maxDepth, depth + 1, maxRewrites, false);
+            for (let k = 0; k < expanded.length; k++) {
+              const v = expanded[k];
+              if (dropsEmpties && !v)
+                continue;
+              if (values.length >= max || valuesLength + v.length > maxLength) {
+                break outer;
               }
-            } else {
-              c = String(i);
-              if (pad) {
-                const need = width - c.length;
-                if (need > 0) {
-                  const z = new Array(need + 1).join("0");
-                  if (i < 0) {
-                    c = "-" + z + c.slice(1);
-                  } else {
-                    c = z + c;
-                  }
-                }
-              }
-            }
-            N.push(c);
-          }
-        } else {
-          N = [];
-          for (let j = 0; j < n.length; j++) {
-            N.push.apply(N, expand_(n[j], max, false));
-          }
-        }
-        for (let j = 0; j < N.length; j++) {
-          for (let k = 0; k < post.length && expansions.length < max; k++) {
-            const expansion = pre + N[j] + post[k];
-            if (!isTop || isSequence || expansion) {
-              expansions.push(expansion);
+              values.push(v);
+              valuesLength += v.length;
             }
           }
         }
+        acc = combine(acc, pre, values, max, maxLength, dropEmpties && !m.post.length);
+        if (!m.post.length)
+          break;
+        str = m.post;
       }
-      return expansions;
+      return acc;
     }
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/minimatch/dist/commonjs/assert-valid-pattern.js
+// node_modules/minimatch/dist/commonjs/assert-valid-pattern.js
 var require_assert_valid_pattern = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/minimatch/dist/commonjs/assert-valid-pattern.js"(exports2) {
+  "node_modules/minimatch/dist/commonjs/assert-valid-pattern.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.assertValidPattern = void 0;
@@ -10312,9 +10413,9 @@ var require_assert_valid_pattern = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/minimatch/dist/commonjs/brace-expressions.js
+// node_modules/minimatch/dist/commonjs/brace-expressions.js
 var require_brace_expressions = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/minimatch/dist/commonjs/brace-expressions.js"(exports2) {
+  "node_modules/minimatch/dist/commonjs/brace-expressions.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.parseClass = void 0;
@@ -10429,9 +10530,9 @@ var require_brace_expressions = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/minimatch/dist/commonjs/unescape.js
+// node_modules/minimatch/dist/commonjs/unescape.js
 var require_unescape = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/minimatch/dist/commonjs/unescape.js"(exports2) {
+  "node_modules/minimatch/dist/commonjs/unescape.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.unescape = void 0;
@@ -10445,9 +10546,9 @@ var require_unescape = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/minimatch/dist/commonjs/ast.js
+// node_modules/minimatch/dist/commonjs/ast.js
 var require_ast = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/minimatch/dist/commonjs/ast.js"(exports2) {
+  "node_modules/minimatch/dist/commonjs/ast.js"(exports2) {
     "use strict";
     var _a;
     Object.defineProperty(exports2, "__esModule", { value: true });
@@ -11099,9 +11200,9 @@ var require_ast = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/minimatch/dist/commonjs/escape.js
+// node_modules/minimatch/dist/commonjs/escape.js
 var require_escape = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/minimatch/dist/commonjs/escape.js"(exports2) {
+  "node_modules/minimatch/dist/commonjs/escape.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.escape = void 0;
@@ -11115,9 +11216,9 @@ var require_escape = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/minimatch/dist/commonjs/index.js
+// node_modules/minimatch/dist/commonjs/index.js
 var require_commonjs3 = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/minimatch/dist/commonjs/index.js"(exports2) {
+  "node_modules/minimatch/dist/commonjs/index.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.unescape = exports2.escape = exports2.AST = exports2.Minimatch = exports2.match = exports2.makeRe = exports2.braceExpand = exports2.defaults = exports2.filter = exports2.GLOBSTAR = exports2.sep = exports2.minimatch = void 0;
@@ -12142,6 +12243,7 @@ var require_diagnostic = __commonJS({
       provider;
       diagnostics;
       openRequests;
+      pendingDocumentForgets;
       documentStates;
       workspaceErrorCounter;
       workspaceCancellation;
@@ -12153,10 +12255,18 @@ var require_diagnostic = __commonJS({
         this.isDisposed = false;
         this.onDidChangeDiagnosticsEmitter = new vscode_1.EventEmitter();
         this.provider = this.createProvider();
-        this.diagnostics = vscode_1.languages.createDiagnosticCollection(options.identifier);
+        this.diagnostics = this.createDiagnosticCollection();
         this.openRequests = /* @__PURE__ */ new Map();
+        this.pendingDocumentForgets = /* @__PURE__ */ new Map();
         this.documentStates = new DocumentPullStateTracker();
         this.workspaceErrorCounter = 0;
+      }
+      createDiagnosticCollection() {
+        if (this.client.clientOptions.diagnosticCollectionProvider === void 0) {
+          return vscode_1.languages.createDiagnosticCollection(this.options.identifier);
+        } else {
+          return this.client.clientOptions.diagnosticCollectionProvider.create(this.options.identifier, features_1.DiagnosticCollectionSource.pull);
+        }
       }
       knows(kind, document) {
         const uri = document instanceof vscode_1.Uri ? document : document.uri;
@@ -12177,6 +12287,9 @@ var require_diagnostic = __commonJS({
       }
       forget(kind, document) {
         this.documentStates.unTrack(kind, document);
+      }
+      cancelPendingForget(document) {
+        this.pendingDocumentForgets.delete(DocumentOrUri.asKey(document));
       }
       pull(document, cb) {
         if (this.isDisposed) {
@@ -12262,8 +12375,13 @@ var require_diagnostic = __commonJS({
           if (request !== void 0) {
             this.openRequests.set(key, { state: RequestStateKind.reschedule, document });
           } else {
+            const pendingForget = /* @__PURE__ */ Symbol();
+            this.pendingDocumentForgets.set(key, pendingForget);
             this.pull(document, () => {
-              this.forget(PullState.document, document);
+              if (this.pendingDocumentForgets.get(key) === pendingForget) {
+                this.pendingDocumentForgets.delete(key);
+                this.forget(PullState.document, document);
+              }
             });
           }
           this.forget(PullState.workspace, document);
@@ -12341,7 +12459,13 @@ var require_diagnostic = __commonJS({
                 return { kind: vsdiag.DocumentDiagnosticReportKind.full, items: [] };
               }
               return this.client.sendRequest(vscode_languageserver_protocol_1.DocumentDiagnosticRequest.type, params, token2).then(async (result2) => {
-                if (result2 === void 0 || result2 === null || this.isDisposed || token2.isCancellationRequested) {
+                if (this.isDisposed) {
+                  return { kind: vsdiag.DocumentDiagnosticReportKind.full, items: [] };
+                }
+                if (token2.isCancellationRequested) {
+                  throw new vscode_1.CancellationError();
+                }
+                if (result2 === void 0 || result2 === null) {
                   return { kind: vsdiag.DocumentDiagnosticReportKind.full, items: [] };
                 }
                 if (result2.kind === vscode_languageserver_protocol_1.DocumentDiagnosticReportKind.Full) {
@@ -12445,7 +12569,11 @@ var require_diagnostic = __commonJS({
           }
           this.openRequests.set(key, { state: RequestStateKind.outDated, document: request.document });
         }
-        this.diagnostics.dispose();
+        if (this.client.clientOptions.diagnosticCollectionProvider !== void 0) {
+          this.client.clientOptions.diagnosticCollectionProvider.dispose(this.diagnostics, features_1.DiagnosticCollectionSource.pull);
+        } else {
+          this.diagnostics.dispose();
+        }
       }
     };
     var BackgroundScheduler = class {
@@ -12617,10 +12745,11 @@ var require_diagnostic = __commonJS({
         const openFeature = client2.getFeature(vscode_languageserver_protocol_1.DidOpenTextDocumentNotification.method);
         disposables.push(openFeature.onNotificationSent((event) => {
           const textDocument = event.textDocument;
-          if (this.diagnosticRequestor.knowsSameVersion(PullState.document, textDocument)) {
-            return;
-          }
           if (matches(textDocument)) {
+            this.diagnosticRequestor.cancelPendingForget(textDocument);
+            if (this.diagnosticRequestor.knowsSameVersion(PullState.document, textDocument)) {
+              return;
+            }
             this.diagnosticRequestor.pull(textDocument, () => {
               addToBackgroundIfNeeded(textDocument);
             });
@@ -12630,6 +12759,7 @@ var require_diagnostic = __commonJS({
         disposables.push(notebookFeature.onOpenNotificationSent((event) => {
           for (const cell of event.getCells()) {
             if (matchesCell(cell)) {
+              this.diagnosticRequestor.cancelPendingForget(cell.document);
               this.diagnosticRequestor.pull(cell.document, () => {
                 addToBackgroundIfNeeded(cell.document);
               });
@@ -12735,7 +12865,7 @@ var require_diagnostic = __commonJS({
           }));
         }
         const closeFeature = client2.getFeature(vscode_languageserver_protocol_1.DidCloseTextDocumentNotification.method);
-        disposables.push(closeFeature.onNotificationSent((event) => {
+        disposables.push(closeFeature.onAboutToSendNotification((event) => {
           this.cleanUpDocument(event.textDocument);
         }));
         disposables.push(notebookFeature.onCloseNotificationSent((event) => {
@@ -14536,6 +14666,7 @@ var require_textSynchronization = __commonJS({
     var DidChangeTextDocumentFeature = class extends features_1.DynamicDocumentFeature {
       _listener;
       _changeData;
+      _onAboutToSendNotification;
       _onNotificationSent;
       _onPendingChangeAdded;
       _pendingTextDocumentChanges;
@@ -14543,10 +14674,14 @@ var require_textSynchronization = __commonJS({
       constructor(client2, pendingTextDocumentChanges) {
         super(client2);
         this._changeData = /* @__PURE__ */ new Map();
+        this._onAboutToSendNotification = new vscode_1.EventEmitter();
         this._onNotificationSent = new vscode_1.EventEmitter();
         this._onPendingChangeAdded = new vscode_1.EventEmitter();
         this._pendingTextDocumentChanges = pendingTextDocumentChanges;
         this._syncKind = vscode_languageserver_protocol_1.TextDocumentSyncKind.None;
+      }
+      get onAboutToSendNotification() {
+        return this._onAboutToSendNotification.event;
       }
       get onNotificationSent() {
         return this._onNotificationSent.event;
@@ -14603,6 +14738,7 @@ var require_textSynchronization = __commonJS({
             if (changeData.syncKind === vscode_languageserver_protocol_1.TextDocumentSyncKind.Incremental) {
               const didChange = async (event2) => {
                 const params = this._client.code2ProtocolConverter.asChangeTextDocumentParams(event2, uri, version);
+                this.aboutToSendNotification(event2.document, vscode_languageserver_protocol_1.DidChangeTextDocumentNotification.type, params);
                 await this._client.sendNotification(vscode_languageserver_protocol_1.DidChangeTextDocumentNotification.type, params);
                 this.notificationSent(event2.document, vscode_languageserver_protocol_1.DidChangeTextDocumentNotification.type, params);
               };
@@ -14621,6 +14757,9 @@ var require_textSynchronization = __commonJS({
           this._client.error(`Sending document notification ${vscode_languageserver_protocol_1.DidChangeTextDocumentNotification.type.method} failed`, error);
           throw error;
         });
+      }
+      aboutToSendNotification(textDocument, type, params) {
+        this._onAboutToSendNotification.fire({ textDocument, type, params });
       }
       notificationSent(textDocument, type, params) {
         this._onNotificationSent.fire({ textDocument, type, params });
@@ -18915,6 +19054,9 @@ var require_client = __commonJS({
       _traceOutputChannel;
       _traceLogLevel;
       _capabilities;
+      // undefined: allow lazy creation of the diagnostic collection.
+      // null: the diagnostic collection has been disposed and should not be
+      // recreated.
       _diagnostics;
       _syncedDocuments;
       _didChangeTextDocumentFeature;
@@ -18968,6 +19110,7 @@ var require_client = __commonJS({
           // 	interval: clientOptions.suspend?.interval ? Math.max(clientOptions.suspend.interval, defaultInterval) : defaultInterval
           // },
           diagnosticPullOptions: clientOptions.diagnosticPullOptions ?? { onChange: true, onSave: false },
+          diagnosticCollectionProvider: clientOptions.diagnosticCollectionProvider ?? new features_1.DefaultDiagnosticCollectionProvider(),
           notebookDocumentOptions: clientOptions.notebookDocumentOptions ?? {},
           textSynchronization: this.createTextSynchronizationOptions(clientOptions.textSynchronization)
         };
@@ -19072,6 +19215,12 @@ var require_client = __commonJS({
         return this._traceOutputChannel ? this._traceOutputChannel : this.outputChannel;
       }
       get diagnostics() {
+        if (this._diagnostics === null) {
+          return void 0;
+        }
+        if (this._diagnostics === void 0) {
+          this._diagnostics = this._clientOptions.diagnosticCollectionProvider.create(this._clientOptions.diagnosticCollectionName ?? this._id, features_1.DiagnosticCollectionSource.push);
+        }
         return this._diagnostics;
       }
       get state() {
@@ -19411,9 +19560,7 @@ ${this.data2String(data)}` : message;
         }
         const [promise, resolve, reject] = this.createOnStartPromise();
         this._onStart = promise;
-        if (this._diagnostics === void 0) {
-          this._diagnostics = vscode_1.languages.createDiagnosticCollection(this._clientOptions.diagnosticCollectionName ?? this._id);
-        }
+        this._diagnostics = void 0;
         for (const [method, handler] of this._notificationHandlers) {
           if (!this._pendingNotificationHandlers.has(method)) {
             this._pendingNotificationHandlers.set(method, handler);
@@ -19730,9 +19877,14 @@ ${this.data2String(data)}` : message;
         for (const feature of Array.from(this._features.entries()).map((entry) => entry[1]).reverse()) {
           feature.clear();
         }
-        if ((mode === ShutdownMode.Stop || mode === ShutdownMode.Restart) && this._diagnostics !== void 0) {
-          this._diagnostics.dispose();
-          this._diagnostics = void 0;
+        if (mode === ShutdownMode.Stop || mode === ShutdownMode.Restart) {
+          if (this._diagnostics === void 0) {
+            this._diagnostics = null;
+          }
+          if (this._diagnostics !== null) {
+            this._clientOptions.diagnosticCollectionProvider.dispose(this._diagnostics, features_1.DiagnosticCollectionSource.push);
+            this._diagnostics = null;
+          }
         }
         if (this._idleInterval !== void 0) {
           this._idleInterval.dispose();
@@ -19774,6 +19926,7 @@ ${this.data2String(data)}` : message;
             }
             for (const document of changes) {
               const params = this.code2ProtocolConverter.asChangeTextDocumentParams(document);
+              this._didChangeTextDocumentFeature.aboutToSendNotification(document, vscode_languageserver_protocol_1.DidChangeTextDocumentNotification.type, params);
               await connection.sendNotification(vscode_languageserver_protocol_1.DidChangeTextDocumentNotification.type, params);
               this._didChangeTextDocumentFeature.notificationSent(document, vscode_languageserver_protocol_1.DidChangeTextDocumentNotification.type, params);
             }
@@ -19796,7 +19949,7 @@ ${this.data2String(data)}` : message;
       _diagnosticQueue = /* @__PURE__ */ new Map();
       _diagnosticQueueState = { state: "idle" };
       handleDiagnostics(params) {
-        if (!this._diagnostics) {
+        if (this._diagnostics === null) {
           return;
         }
         const key = params.uri;
@@ -19841,10 +19994,13 @@ ${this.data2String(data)}` : message;
         });
       }
       setDiagnostics(uri, diagnostics) {
-        if (!this._diagnostics) {
+        if (this._diagnostics === null) {
           return;
         }
-        this._diagnostics.set(uri, diagnostics);
+        const diagnosticsCollection = this.diagnostics;
+        if (diagnosticsCollection !== void 0) {
+          diagnosticsCollection.set(uri, diagnostics);
+        }
       }
       getLocale() {
         return vscode_1.env.language;
@@ -19868,7 +20024,7 @@ ${this.data2String(data)}` : message;
           this.handleConnectionClosed().catch((error) => this.error(`Handling connection close failed`, error));
         };
         const transports = await this.createMessageTransports(this._clientOptions.stdioEncoding || "utf8");
-        this._connection = createConnection(transports.reader, transports.writer, errorHandler, closeHandler, this._clientOptions.connectionOptions);
+        this._connection = createConnection(transports.reader, transports.writer, errorHandler, closeHandler, this, this._clientOptions.connectionOptions);
         return this._connection;
       }
       async handleConnectionClosed() {
@@ -20287,8 +20443,26 @@ ${error.message}`, void 0, handlerResult.handled === true ? false : "force");
         (0, vscode_languageserver_protocol_1.RAL)().console.log(message);
       }
     };
-    function createConnection(input, output, errorHandler, closeHandler, options) {
-      const logger = new ConsoleLogger();
+    var OutputChannelLogger = class {
+      channelProvider;
+      constructor(channelProvider) {
+        this.channelProvider = channelProvider;
+      }
+      error(message) {
+        this.channelProvider.error(message, void 0, false);
+      }
+      warn(message) {
+        this.channelProvider.warn(message, void 0, false);
+      }
+      info(message) {
+        this.channelProvider.info(message, void 0, false);
+      }
+      log(message) {
+        this.channelProvider.info(message, void 0, false);
+      }
+    };
+    function createConnection(input, output, errorHandler, closeHandler, channelProvider, options) {
+      const logger = channelProvider !== void 0 ? new OutputChannelLogger(channelProvider) : new ConsoleLogger();
       const connection = (0, vscode_languageserver_protocol_1.createProtocolConnection)(input, output, logger, options);
       connection.onError((data) => {
         errorHandler(data[0], data[1], data[2]);
@@ -20784,7 +20958,7 @@ var require_main = __commonJS({
     var XDG_RUNTIME_DIR = process.env["XDG_RUNTIME_DIR"];
     var safeIpcPathLengths = /* @__PURE__ */ new Map([
       ["linux", 107],
-      ["darwin", 103]
+      ["darwin", 102]
     ]);
     function generateRandomPipeName() {
       if (process.platform === "win32") {
@@ -20850,7 +21024,14 @@ var require_main = __commonJS({
         server.on("error", reject);
         server.listen(port, "127.0.0.1", () => {
           server.removeListener("error", reject);
+          const address = server.address();
+          if (address === null || typeof address === "string") {
+            reject(new Error(`Unexpected server address: ${address}`));
+            return;
+          }
+          const boundPort = address.port;
           resolve({
+            port: () => boundPort,
             onConnected: () => {
               return connected;
             }
@@ -20887,9 +21068,9 @@ var require_main = __commonJS({
   }
 });
 
-// node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/node/main.js
+// node_modules/vscode-languageserver-protocol/lib/node/main.js
 var require_main2 = __commonJS({
-  "node_modules/vscode-languageclient/node_modules/vscode-languageserver-protocol/lib/node/main.js"(exports2) {
+  "node_modules/vscode-languageserver-protocol/lib/node/main.js"(exports2) {
     "use strict";
     var __createBinding = exports2 && exports2.__createBinding || (Object.create ? (function(o, m, k, k2) {
       if (k2 === void 0) k2 = k;
@@ -22221,6 +22402,7 @@ var require_main3 = __commonJS({
     })(ChildProcessInfo || (ChildProcessInfo = {}));
     var LanguageClient2 = class extends client_1.BaseLanguageClient {
       _serverOptions;
+      _stdioOptions;
       _forceDebug;
       _serverProcess;
       _isDetached;
@@ -22249,6 +22431,24 @@ var require_main3 = __commonJS({
         }
         super(id, name, clientOptions);
         this._serverOptions = serverOptions;
+        this._stdioOptions = clientOptions.stdioOptions ?? {
+          stdout: (input, outputChannel) => {
+            readline.createInterface({
+              input,
+              crlfDelay: Infinity,
+              terminal: false,
+              historySize: 0
+            }).on("line", (data) => outputChannel.info(data));
+          },
+          stderr: (input, outputChannel) => {
+            readline.createInterface({
+              input,
+              crlfDelay: Infinity,
+              terminal: false,
+              historySize: 0
+            }).on("line", (data) => outputChannel.error(data));
+          }
+        };
         this._forceDebug = forceDebug;
         this._isInDebugMode = forceDebug;
         try {
@@ -22355,22 +22555,8 @@ var require_main3 = __commonJS({
             throw new Error("Process created without stdio streams");
           }
         }
-        function pipeStdoutToLogOutputChannel(input, outputChannel) {
-          readline.createInterface({
-            input,
-            crlfDelay: Infinity,
-            terminal: false,
-            historySize: 0
-          }).on("line", (data) => outputChannel.info(data));
-        }
-        function pipeStderrToLogOutputChannel(input, outputChannel) {
-          readline.createInterface({
-            input,
-            crlfDelay: Infinity,
-            terminal: false,
-            historySize: 0
-          }).on("line", (data) => outputChannel.error(data));
-        }
+        const pipeStdout = this._stdioOptions.stdout;
+        const pipeStderr = this._stdioOptions.stderr;
         const server = this._serverOptions;
         if (Is2.func(server)) {
           return server().then((result) => {
@@ -22389,7 +22575,7 @@ var require_main3 = __commonJS({
                 cp2 = result;
                 this._isDetached = false;
               }
-              pipeStderrToLogOutputChannel(cp2.stderr, this.outputChannel);
+              pipeStderr(cp2.stderr, this.outputChannel);
               return { reader: new node_1.StreamMessageReader(cp2.stdout), writer: new node_1.StreamMessageWriter(cp2.stdin) };
             }
           });
@@ -22434,8 +22620,6 @@ var require_main3 = __commonJS({
               } else if (transport === TransportKind2.pipe) {
                 pipeName = (0, node_1.generateRandomPipeName)();
                 args.push(`--pipe=${pipeName}`);
-              } else if (Transport.isSocket(transport)) {
-                args.push(`--socket=${transport.port}`);
               }
               args.push(`--clientProcessId=${process.pid.toString()}`);
               if (transport === TransportKind2.ipc || transport === TransportKind2.stdio) {
@@ -22444,9 +22628,9 @@ var require_main3 = __commonJS({
                   return handleChildProcessStartError(serverProcess, `Launching server using runtime ${runtime} failed.`);
                 }
                 this._serverProcess = serverProcess;
-                pipeStderrToLogOutputChannel(serverProcess.stderr, this.outputChannel);
+                pipeStderr(serverProcess.stderr, this.outputChannel);
                 if (transport === TransportKind2.ipc) {
-                  pipeStdoutToLogOutputChannel(serverProcess.stdout, this.outputChannel);
+                  pipeStdout(serverProcess.stdout, this.outputChannel);
                   return Promise.resolve({ reader: new node_1.IPCMessageReader(serverProcess), writer: new node_1.IPCMessageWriter(serverProcess) });
                 } else {
                   return Promise.resolve({ reader: new node_1.StreamMessageReader(serverProcess.stdout), writer: new node_1.StreamMessageWriter(serverProcess.stdin) });
@@ -22458,21 +22642,22 @@ var require_main3 = __commonJS({
                     return handleChildProcessStartError(process2, `Launching server using runtime ${runtime} failed.`);
                   }
                   this._serverProcess = process2;
-                  pipeStderrToLogOutputChannel(process2.stderr, this.outputChannel);
-                  pipeStdoutToLogOutputChannel(process2.stdout, this.outputChannel);
+                  pipeStderr(process2.stderr, this.outputChannel);
+                  pipeStdout(process2.stdout, this.outputChannel);
                   return transport2.onConnected().then((protocol) => {
                     return { reader: protocol[0], writer: protocol[1] };
                   });
                 });
               } else if (Transport.isSocket(transport)) {
                 return (0, node_1.createClientSocketTransport)(transport.port).then((transport2) => {
+                  args.push(`--socket=${transport2.port()}`);
                   const process2 = cp.spawn(runtime, args, execOptions);
                   if (!process2 || !process2.pid) {
                     return handleChildProcessStartError(process2, `Launching server using runtime ${runtime} failed.`);
                   }
                   this._serverProcess = process2;
-                  pipeStderrToLogOutputChannel(process2.stderr, this.outputChannel);
-                  pipeStdoutToLogOutputChannel(process2.stdout, this.outputChannel);
+                  pipeStderr(process2.stderr, this.outputChannel);
+                  pipeStdout(process2.stdout, this.outputChannel);
                   return transport2.onConnected().then((protocol) => {
                     return { reader: protocol[0], writer: protocol[1] };
                   });
@@ -22489,8 +22674,6 @@ var require_main3 = __commonJS({
                 } else if (transport === TransportKind2.pipe) {
                   pipeName = (0, node_1.generateRandomPipeName)();
                   args.push(`--pipe=${pipeName}`);
-                } else if (Transport.isSocket(transport)) {
-                  args.push(`--socket=${transport.port}`);
                 }
                 args.push(`--clientProcessId=${process.pid.toString()}`);
                 const options = node.options ? { ...node.options } : /* @__PURE__ */ Object.create(null);
@@ -22502,9 +22685,9 @@ var require_main3 = __commonJS({
                   const sp = cp.fork(node.module, args || [], options);
                   assertStdio(sp);
                   this._serverProcess = sp;
-                  pipeStderrToLogOutputChannel(sp.stderr, this.outputChannel);
+                  pipeStderr(sp.stderr, this.outputChannel);
                   if (transport === TransportKind2.ipc) {
-                    pipeStdoutToLogOutputChannel(sp.stdout, this.outputChannel);
+                    pipeStdout(sp.stdout, this.outputChannel);
                     resolve({ reader: new node_1.IPCMessageReader(this._serverProcess), writer: new node_1.IPCMessageWriter(this._serverProcess) });
                   } else {
                     resolve({ reader: new node_1.StreamMessageReader(sp.stdout), writer: new node_1.StreamMessageWriter(sp.stdin) });
@@ -22514,19 +22697,20 @@ var require_main3 = __commonJS({
                     const sp = cp.fork(node.module, args || [], options);
                     assertStdio(sp);
                     this._serverProcess = sp;
-                    pipeStderrToLogOutputChannel(sp.stderr, this.outputChannel);
-                    pipeStdoutToLogOutputChannel(sp.stdout, this.outputChannel);
+                    pipeStderr(sp.stderr, this.outputChannel);
+                    pipeStdout(sp.stdout, this.outputChannel);
                     transport2.onConnected().then((protocol) => {
                       resolve({ reader: protocol[0], writer: protocol[1] });
                     }, reject);
                   }, reject);
                 } else if (Transport.isSocket(transport)) {
                   (0, node_1.createClientSocketTransport)(transport.port).then((transport2) => {
+                    args.push(`--socket=${transport2.port()}`);
                     const sp = cp.fork(node.module, args || [], options);
                     assertStdio(sp);
                     this._serverProcess = sp;
-                    pipeStderrToLogOutputChannel(sp.stderr, this.outputChannel);
-                    pipeStdoutToLogOutputChannel(sp.stdout, this.outputChannel);
+                    pipeStderr(sp.stderr, this.outputChannel);
+                    pipeStdout(sp.stdout, this.outputChannel);
                     transport2.onConnected().then((protocol) => {
                       resolve({ reader: protocol[0], writer: protocol[1] });
                     }, reject);
@@ -22544,8 +22728,6 @@ var require_main3 = __commonJS({
             } else if (transport === TransportKind2.pipe) {
               pipeName = (0, node_1.generateRandomPipeName)();
               args.push(`--pipe=${pipeName}`);
-            } else if (Transport.isSocket(transport)) {
-              args.push(`--socket=${transport.port}`);
             } else if (transport === TransportKind2.ipc) {
               throw new Error(`Transport kind ipc is not support for command executable`);
             }
@@ -22556,7 +22738,7 @@ var require_main3 = __commonJS({
               if (!serverProcess || !serverProcess.pid) {
                 return handleChildProcessStartError(serverProcess, `Launching server using command ${command.command} failed.`);
               }
-              pipeStderrToLogOutputChannel(serverProcess.stderr, this.outputChannel);
+              pipeStderr(serverProcess.stderr, this.outputChannel);
               this._serverProcess = serverProcess;
               this._isDetached = !!options.detached;
               return Promise.resolve({ reader: new node_1.StreamMessageReader(serverProcess.stdout), writer: new node_1.StreamMessageWriter(serverProcess.stdin) });
@@ -22568,22 +22750,23 @@ var require_main3 = __commonJS({
                 }
                 this._serverProcess = serverProcess;
                 this._isDetached = !!options.detached;
-                pipeStderrToLogOutputChannel(serverProcess.stderr, this.outputChannel);
-                pipeStdoutToLogOutputChannel(serverProcess.stdout, this.outputChannel);
+                pipeStderr(serverProcess.stderr, this.outputChannel);
+                pipeStdout(serverProcess.stdout, this.outputChannel);
                 return transport2.onConnected().then((protocol) => {
                   return { reader: protocol[0], writer: protocol[1] };
                 });
               });
             } else if (Transport.isSocket(transport)) {
               return (0, node_1.createClientSocketTransport)(transport.port).then((transport2) => {
+                args.push(`--socket=${transport2.port()}`);
                 const serverProcess = cp.spawn(command.command, args, options);
                 if (!serverProcess || !serverProcess.pid) {
                   return handleChildProcessStartError(serverProcess, `Launching server using command ${command.command} failed.`);
                 }
                 this._serverProcess = serverProcess;
                 this._isDetached = !!options.detached;
-                pipeStderrToLogOutputChannel(serverProcess.stderr, this.outputChannel);
-                pipeStdoutToLogOutputChannel(serverProcess.stdout, this.outputChannel);
+                pipeStderr(serverProcess.stderr, this.outputChannel);
+                pipeStdout(serverProcess.stdout, this.outputChannel);
                 return transport2.onConnected().then((protocol) => {
                   return { reader: protocol[0], writer: protocol[1] };
                 });
