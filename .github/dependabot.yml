@@ -5,6 +5,14 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
+    ignore:
+      # engines.vscode is ^1.75. vscode-languageclient 9+ requires VS Code
+      # >= 1.82 and throws on activation in older hosts.
+      - dependency-name: "vscode-languageclient"
+        versions: [">=9.0.0"]
+      # @types/vscode must not exceed engines.vscode (vsce enforces this).
+      - dependency-name: "@types/vscode"
+        versions: [">=1.76.0"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
