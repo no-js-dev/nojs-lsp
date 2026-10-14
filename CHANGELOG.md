@@ -4,6 +4,10 @@ All notable changes to the **No.JS LSP** extension will be documented in this fi
 
 ## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.21.1...HEAD)
 
+### Fixed
+
+- Restore activation on VS Code 1.75–1.90. `vscode-languageclient` 10.x (since v1.15.3) throws "The language client requires VS Code version ^1.91.0" on activation in older hosts, so the extension never started there despite `engines.vscode: ^1.75.0`. The client is pinned to `vscode-languageclient` 8.1.0 (`engines.vscode: ^1.67.0`) and `@types/vscode` to `~1.75.1`; the server is unchanged.
+
 ## [1.21.1](https://github.com/no-js-dev/nojs-lsp/compare/v1.21.0...v1.21.1) — 2026-08-14
 
 ### Changed
