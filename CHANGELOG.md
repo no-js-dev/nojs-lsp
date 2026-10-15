@@ -4,9 +4,20 @@ All notable changes to the **No.JS LSP** extension will be documented in this fi
 
 ## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.21.1...HEAD)
 
+### Changed
+
+- Hover and completion docs describe NoJS Core 1.22 behavior: the opt-in `strictBindings` flag on `bind-*` (`bind-on*` handlers rejected, `bind-srcdoc` sanitized), `const` / `let` handler-local variables in `on:*`, `i18n.escapeParams` for `t-html` params, `strictJsonld` on `page-jsonld`, `templates.pageRelative` on template `src`, and dot-segment escaping of `{expr}` path placeholders in `get`, `call` and `sse`
+- Docs: DevTools bridge notes what the bridge reads when the page sets `strictDevtools: true`; validators reference explains which names `NoJS.validator()` reserves since NoJS 1.22
+
 ### Fixed
 
 - Restore activation on VS Code 1.75–1.90. `vscode-languageclient` 10.x (since v1.15.3) throws "The language client requires VS Code version ^1.91.0" on activation in older hosts, so the extension never started there despite `engines.vscode: ^1.75.0`. The client is pinned to `vscode-languageclient` 8.1.0 (`engines.vscode: ^1.67.0`) and `@types/vscode` to `~1.75.1`; the server is unchanged.
+- `npx tsc --noEmit` passes again: the root `tsconfig.json` loads `@types/node` explicitly, since TypeScript 6 no longer includes it by default
+
+### Dependencies
+
+- Bump `vscode-languageserver` 10.1.0 → 10.1.2, `vscode-languageserver-textdocument` 1.0.13 → 1.0.15, `vscode-uri` 3.1.0 → 3.2.0
+- Bump dev tooling: `esbuild` 0.28.2, `jest` 30.5.2, `@types/jest` 30, `ts-jest` 29.4.14, `@vscode/vsce` 4.0.0, `@types/node` 26.6.5, `actions/setup-node` 7.1.0
 
 ## [1.21.1](https://github.com/no-js-dev/nojs-lsp/compare/v1.21.0...v1.21.1) — 2026-08-14
 
