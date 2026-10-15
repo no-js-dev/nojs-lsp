@@ -2,7 +2,6 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "types": ["jest", "node"],
-    "moduleResolution": "bundler",
     "rootDir": "."
   },
   "include": ["client/src/**/*.ts", "server/src/**/*.ts", "test/**/*.ts"],
