@@ -36,6 +36,7 @@ scripts/**
 
 # Agent / AI artifacts
 .claude/**
+CLAUDE.md
 
 # Design files
 .design/**
