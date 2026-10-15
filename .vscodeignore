@@ -27,7 +27,12 @@ server/node_modules/**
 # VCS / CI
 .git/**
 .github/**
+.githooks/**
 .gitignore
+
+# Release tooling
+scripts/**
+.versionrc.json
 
 # Agent / AI artifacts
 .claude/**

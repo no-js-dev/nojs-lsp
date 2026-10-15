@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, 'release-*', 'release/**']
     tags:
       - 'v*'
   pull_request:
@@ -34,6 +34,9 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Version check
+        run: npm run version:check
 
       - name: Compile
         run: npm run compile

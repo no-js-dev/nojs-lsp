@@ -1,0 +1,19 @@
+{
+  "source": { "file": "package.json", "key": "version" },
+  "files": [
+    { "file": "package-lock.json", "regex": "^  \"version\": \"{v}\",$" },
+    { "file": "package-lock.json", "regex": "^    \"\": \\{\\n      \"name\": \"[^\"]+\",\\n      \"version\": \"{v}\",$" },
+    { "file": "docs/index.html", "pattern": "version: '{v}' }\">" },
+    { "file": "docs/404.html", "pattern": "version: '{v}' }\">" },
+    { "file": "docs/getting-started.md", "pattern": "code --install-extension nojs-lsp-{v}.vsix" }
+  ],
+  "hooks": { "dir": ".githooks" },
+  "reviewAllowlist": [],
+  "scanExclude": [
+    "CHANGELOG.md",
+    "node_modules/",
+    ".github/reviews/",
+    "*.pen",
+    "package-lock.json"
+  ]
+}

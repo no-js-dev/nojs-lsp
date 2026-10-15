@@ -110,7 +110,10 @@
     "watch": "node esbuild.mjs --watch",
     "test": "jest",
     "package": "vsce package",
-    "vscode:prepublish": "npm run compile"
+    "vscode:prepublish": "npm run compile",
+    "version:sync": "node scripts/version.mjs sync",
+    "version:check": "node scripts/version.mjs check",
+    "prepare": "node scripts/version.mjs install"
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",
