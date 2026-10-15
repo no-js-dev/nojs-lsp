@@ -229,7 +229,7 @@
           "description": "No.JS: IntersectionObserver rootMargin for scroll/visible triggers (e.g. '200px')"
         }
       ],
-      "documentation": "Performs an HTTP GET request and makes response data available.\n\n**Example:**\n```html\n<div get=\"/api/users\" as=\"users\" loading=\"spinner-tpl\">\n  <li each=\"user in users\" bind=\"user.name\">\n</div>\n```\n\n**Companions:** `as`, `loading`, `error`, `empty`, `success`, `then`, `redirect`, `confirm`, `refresh`, `cached`, `body`, `headers`, `var`, `into`, `retry`, `retry-delay`, `params`, `debounce`, `skeleton`, `get-trigger`, `get-trigger-label`, `get-insert`, `get-page`, `get-cursor`, `get-cursor-field`, `get-threshold`",
+      "documentation": "Performs an HTTP GET request and makes response data available.\n\n**Example:**\n```html\n<div get=\"/api/users\" as=\"users\" loading=\"spinner-tpl\">\n  <li each=\"user in users\" bind=\"user.name\">\n</div>\n```\n\n**Companions:** `as`, `loading`, `error`, `empty`, `success`, `then`, `redirect`, `confirm`, `refresh`, `cached`, `body`, `headers`, `var`, `into`, `retry`, `retry-delay`, `params`, `debounce`, `skeleton`, `get-trigger`, `get-trigger-label`, `get-insert`, `get-page`, `get-cursor`, `get-cursor-field`, `get-threshold`\n\n**URL placeholders:** `{expr}` values are encoded with `encodeURIComponent`. In the path part, a value that is exactly `.` or `..` is escaped to `%252E` / `%252E%252E` (NoJS 1.22+), so it cannot point the request at a parent path. Query-string and fragment values are unchanged.",
       "category": "http"
     },
     {
@@ -334,7 +334,7 @@
           "description": "No.JS: Expression executed on each received event ($event = parsed data)"
         }
       ],
-      "documentation": "Opens a Server-Sent Events (EventSource) connection to the given URL. Incoming events are parsed as JSON (with raw-string fallback) and stored in the context variable named by `as`.\n\n**Example:**\n```html\n<div sse=\"/events/notifications\" as=\"notification\">\n  <p bind=\"notification.message\"></p>\n</div>\n```\n\n**Feed (append mode):**\n```html\n<ul sse=\"/events/feed\" as=\"items\" sse-insert=\"append\" sse-limit=\"50\">\n  <li each=\"item in items\" bind=\"item.text\"></li>\n</ul>\n```\n\n**Context key:** `$sse` — `{ connecting, open, error }` booleans for connection state.\n\n**Companions:** `as`, `sse-event`, `sse-insert`, `sse-limit`, `sse-credentials`, `into`, `error`, `then`",
+      "documentation": "Opens a Server-Sent Events (EventSource) connection to the given URL. Incoming events are parsed as JSON (with raw-string fallback) and stored in the context variable named by `as`.\n\n**Example:**\n```html\n<div sse=\"/events/notifications\" as=\"notification\">\n  <p bind=\"notification.message\"></p>\n</div>\n```\n\n**Feed (append mode):**\n```html\n<ul sse=\"/events/feed\" as=\"items\" sse-insert=\"append\" sse-limit=\"50\">\n  <li each=\"item in items\" bind=\"item.text\"></li>\n</ul>\n```\n\n**Context key:** `$sse` — `{ connecting, open, error }` booleans for connection state.\n\n**Companions:** `as`, `sse-event`, `sse-insert`, `sse-limit`, `sse-credentials`, `into`, `error`, `then`\n\n**URL placeholders:** `{expr}` values are encoded with `encodeURIComponent`. In the path part, a value that is exactly `.` or `..` is escaped to `%252E` / `%252E%252E` (NoJS 1.22+), so it cannot point the request at a parent path. Query-string and fragment values are unchanged.",
       "category": "http"
     },
     {
@@ -1040,7 +1040,7 @@
           "description": "No.JS: Custom request headers object"
         }
       ],
-      "documentation": "HTTP call triggered by user action.\n\n**Example:**\n```html\n<button call=\"/api/delete/1\" method=\"delete\" confirm=\"Are you sure?\" loading=\"spinner-tpl\">\n```\n\n**Companions:** `method`, `as`, `loading`, `into`, `success`, `error`, `then`, `redirect`, `confirm`, `body`, `headers`",
+      "documentation": "HTTP call triggered by user action.\n\n**Example:**\n```html\n<button call=\"/api/delete/1\" method=\"delete\" confirm=\"Are you sure?\" loading=\"spinner-tpl\">\n```\n\n**Companions:** `method`, `as`, `loading`, `into`, `success`, `error`, `then`, `redirect`, `confirm`, `body`, `headers`\n\n**URL placeholders:** `{expr}` values are encoded with `encodeURIComponent`. In the path part, a value that is exactly `.` or `..` is escaped to `%252E` / `%252E%252E` (NoJS 1.22+), so it cannot point the request at a parent path. Query-string and fragment values are unchanged.",
       "category": "http"
     },
     {
@@ -1119,10 +1119,10 @@
         {
           "name": "t-html",
           "type": "boolean",
-          "description": "No.JS: Render translation as sanitized HTML (via _sanitizeHtml()) instead of plain text"
+          "description": "No.JS: Render translation as sanitized HTML (via _sanitizeHtml()) instead of plain text. `t-*` param values are inserted as HTML unless `i18n.escapeParams` is `true` (NoJS 1.22+)."
         }
       ],
-      "documentation": "i18n translation. Value is the translation key.\n\n**Example:**\n```html\n<span t=\"greeting\" t-name=\"World\">\n```\n\n**Expression proxy:** Use `$i18n.[path]` in expressions to access translations as reactive dot-notation properties — e.g. `bind=\"$i18n.labels.email\"`. Fully reactive: locale switches update bindings in real-time.\n\n**Companions:** `t-*` (interpolation parameters), `t-html`\n\nInterpolation params are passed as `t-{param}` attributes.\n\n**Limitation:** Do not use `t` and `bind` on the same element — both write text content and the last-processed directive wins silently.",
+      "documentation": "i18n translation. Value is the translation key.\n\n**Example:**\n```html\n<span t=\"greeting\" t-name=\"World\">\n```\n\n**Expression proxy:** Use `$i18n.[path]` in expressions to access translations as reactive dot-notation properties — e.g. `bind=\"$i18n.labels.email\"`. Fully reactive: locale switches update bindings in real-time.\n\n**Companions:** `t-*` (interpolation parameters), `t-html`\n\nInterpolation params are passed as `t-{param}` attributes.\n\n**Limitation:** Do not use `t` and `bind` on the same element — both write text content and the last-processed directive wins silently.\n\n**`t-html` params:** `t-*` values are inserted as HTML (the final string is still sanitized). Set `i18n.escapeParams: true` (NoJS 1.22+) to render them as text.",
       "category": "i18n"
     },
     {
@@ -1547,7 +1547,7 @@
       "valueDescription": "JSON-LD template in element body with {placeholder} expressions",
       "requiresValue": false,
       "companions": [],
-      "documentation": "Creates or updates `<script type=\"application/ld+json\" data-nojs>` in `<head>`. Unlike other head directives, the JSON-LD template is written as the **element body** (not the attribute value). Use `{expression}` placeholders for dynamic values. Place on a `<div hidden>` element.\n\n**Example:**\n```html\n<div hidden page-jsonld>\n  {\n    \"@context\": \"https://schema.org\",\n    \"@type\": \"Product\",\n    \"name\": \"{product.name}\",\n    \"offers\": { \"@type\": \"Offer\", \"price\": \"{product.price}\" }\n  }\n</div>\n```\n\nThe `data-nojs` marker distinguishes this tag from hand-written JSON-LD. Structural JSON braces are not interpreted as placeholders — only `{variable}` patterns matching an identifier are.",
+      "documentation": "Creates or updates `<script type=\"application/ld+json\" data-nojs>` in `<head>`. Unlike other head directives, the JSON-LD template is written as the **element body** (not the attribute value). Use `{expression}` placeholders for dynamic values. Place on a `<div hidden>` element.\n\n**Example:**\n```html\n<div hidden page-jsonld>\n  {\n    \"@context\": \"https://schema.org\",\n    \"@type\": \"Product\",\n    \"name\": \"{product.name}\",\n    \"offers\": { \"@type\": \"Offer\", \"price\": \"{product.price}\" }\n  }\n</div>\n```\n\nThe `data-nojs` marker distinguishes this tag from hand-written JSON-LD. Structural JSON braces are not interpreted as placeholders — only `{variable}` patterns matching an identifier are.\n\n**`strictJsonld` (opt-in, NoJS 1.22+):** with `NoJS.config({ strictJsonld: true })`, values inside JSON strings are escaped as JSON string content and `<` becomes `\\u003c`, so a value cannot add properties or make the output invalid JSON. The default output is unchanged from v1.21.1.",
       "category": "head"
     },
     {
@@ -1581,7 +1581,7 @@
       "valueType": "expression",
       "valueDescription": "JS expression",
       "requiresValue": true,
-      "documentation": "Dynamically binds an HTML attribute to a JS expression.\n\n**Example:**\n```html\n<a bind-href=\"url\">Link</a>\n<img bind-src=\"imageUrl\">\n```\n\n**Boolean attributes:** `disabled`, `readonly`, `checked`, `selected`, `hidden`, `required`\n\n**Common targets:** `href`, `src`, `class`, `title`, `alt`, `placeholder`, `action`, `value`",
+      "documentation": "Dynamically binds an HTML attribute to a JS expression.\n\n**Example:**\n```html\n<a bind-href=\"url\">Link</a>\n<img bind-src=\"imageUrl\">\n```\n\n**Boolean attributes:** `disabled`, `readonly`, `checked`, `selected`, `hidden`, `required`\n\n**Common targets:** `href`, `src`, `class`, `title`, `alt`, `placeholder`, `action`, `value`\n\n**`strictBindings` (opt-in, NoJS 1.22+):** with `NoJS.config({ strictBindings: true })`, event-handler attributes (`bind-on*` names without a hyphen, e.g. `bind-onclick`, `bind-onerror`) are rejected with a `[Security]` warning — use `on:*` instead — and `bind-srcdoc` values go through the `bind-html` sanitizer. Off by default; once enabled it cannot be turned off after `init()`.",
       "commonTargets": [
         "href",
         "src",
@@ -1634,7 +1634,7 @@
       "valueType": "statement",
       "valueDescription": "JS statement(s)",
       "requiresValue": true,
-      "documentation": "Listens for DOM events and executes JS statement(s).\n\n**Example:**\n```html\n<button on:click=\"count++\">Increment</button>\n<form on:submit.prevent=\"handleSubmit()\">\n<input on:keydown.enter=\"search()\">\n```\n\n**Modifiers:** `.prevent`, `.stop`, `.once`, `.self`, `.debounce`, `.throttle`\n**Key modifiers:** `.enter`, `.escape`, `.tab`, `.space`, `.delete`, `.backspace`, `.up`, `.down`, `.left`, `.right`, `.ctrl`, `.alt`, `.shift`, `.meta`\n\n**Handler variables:** `$event`, `$el`",
+      "documentation": "Listens for DOM events and executes JS statement(s).\n\n**Example:**\n```html\n<button on:click=\"count++\">Increment</button>\n<form on:submit.prevent=\"handleSubmit()\">\n<input on:keydown.enter=\"search()\">\n```\n\n**Modifiers:** `.prevent`, `.stop`, `.once`, `.self`, `.debounce`, `.throttle`\n**Key modifiers:** `.enter`, `.escape`, `.tab`, `.space`, `.delete`, `.backspace`, `.up`, `.down`, `.left`, `.right`, `.ctrl`, `.alt`, `.shift`, `.meta`\n\n**Handler variables:** `$event`, `$el`\n\n**Local variables (NoJS 1.22+):** declare handler-local values with `const` / `let`; they are visible to the following statements of the same handler and are never written to state.\n```html\n<button on:click=\"const m = items.splice(0, 1)[0]; items.splice(2, 0, m)\">Rotate</button>\n```\nReassigning a `const` throws a `TypeError`. A `const` without a value, declaring a name twice, destructuring and `$`-prefixed names are rejected with a warning.",
       "commonEvents": [
         "click",
         "submit",

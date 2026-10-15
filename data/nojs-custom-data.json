@@ -33,7 +33,7 @@
       "name": "get",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: HTTP GET request.\n\n```html\n<div get=\"/api/users\" as=\"users\" loading=\"spinner-tpl\">\n```\n\n**Companions:** `as`, `loading`, `error`, `empty`, `success`, `then`, `redirect`, `confirm`, `refresh`, `cached`, `body`, `headers`, `var`, `into`, `retry`, `retry-delay`, `params`, `debounce`"
+        "value": "No.JS: HTTP GET request.\n\n```html\n<div get=\"/api/users\" as=\"users\" loading=\"spinner-tpl\">\n```\n\n**Companions:** `as`, `loading`, `error`, `empty`, `success`, `then`, `redirect`, `confirm`, `refresh`, `cached`, `body`, `headers`, `var`, `into`, `retry`, `retry-delay`, `params`, `debounce`\n\n**URL placeholders:** `{expr}` values are encoded with `encodeURIComponent`. In the path part, a value that is exactly `.` or `..` is escaped to `%252E` / `%252E%252E` (NoJS 1.22+), so it cannot point the request at a parent path. Query-string and fragment values are unchanged."
       }
     },
     {
@@ -181,7 +181,7 @@
       "name": "call",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: HTTP call triggered by user action (e.g., button click).\n\n```html\n<button call=\"/api/delete/1\" method=\"delete\" confirm=\"Are you sure?\" loading=\"spinner-tpl\">\n```\n\n**Companions:** `method`, `as`, `loading`, `into`, `success`, `error`, `then`, `redirect`, `confirm`, `body`, `headers`"
+        "value": "No.JS: HTTP call triggered by user action (e.g., button click).\n\n```html\n<button call=\"/api/delete/1\" method=\"delete\" confirm=\"Are you sure?\" loading=\"spinner-tpl\">\n```\n\n**Companions:** `method`, `as`, `loading`, `into`, `success`, `error`, `then`, `redirect`, `confirm`, `body`, `headers`\n\n**URL placeholders:** `{expr}` values are encoded with `encodeURIComponent`. In the path part, a value that is exactly `.` or `..` is escaped to `%252E` / `%252E%252E` (NoJS 1.22+), so it cannot point the request at a parent path. Query-string and fragment values are unchanged."
       }
     },
     {
@@ -223,7 +223,7 @@
       "name": "t",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: i18n translation. Value is the translation key.\n\n```html\n<span t=\"greeting\" t-name=\"World\">\n```\n\n**Expression proxy:** Use `$i18n.[path]` in expressions to access translations as reactive dot-notation properties — e.g. `bind=\"$i18n.labels.email\"`. Fully reactive: locale switches update bindings in real-time.\n\n**Companions:** `t-*` (interpolation params), `t-html`\n\n**Limitation:** Do not use with `bind` on the same element — both write text content."
+        "value": "No.JS: i18n translation. Value is the translation key.\n\n```html\n<span t=\"greeting\" t-name=\"World\">\n```\n\n**Expression proxy:** Use `$i18n.[path]` in expressions to access translations as reactive dot-notation properties — e.g. `bind=\"$i18n.labels.email\"`. Fully reactive: locale switches update bindings in real-time.\n\n**Companions:** `t-*` (interpolation params), `t-html`\n\n**Limitation:** Do not use with `bind` on the same element — both write text content.\n\n**`t-html` params:** `t-*` values are inserted as HTML (the final string is still sanitized). Set `i18n.escapeParams: true` (NoJS 1.22+) to render them as text."
       }
     },
     {
@@ -501,7 +501,7 @@
       "name": "t-html",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Companion for `t`. Renders the translation value as sanitized HTML (via `_sanitizeHtml()`) instead of plain text.\n\n```html\n<div t=\"legal.notice\" t-html></div>\n```"
+        "value": "No.JS: Companion for `t`. Renders the translation value as sanitized HTML (via `_sanitizeHtml()`) instead of plain text.\n\n```html\n<div t=\"legal.notice\" t-html></div>\n```\n\n`t-*` param values are inserted as HTML unless `i18n.escapeParams` is `true` (NoJS 1.22+)."
       },
       "valueSet": "v"
     },
@@ -603,7 +603,7 @@
       "name": "src",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Template source URL for `route-view` or `<template>`.\n\n```html\n<div route-view src=\"./pages/\">\n<template src=\"./components/header.tpl\">\n```"
+        "value": "No.JS: Template source URL for `route-view` or `<template>`.\n\n```html\n<div route-view src=\"./pages/\">\n<template src=\"./components/header.tpl\">\n```\n\nBy default a `src` that is not an absolute URL is prefixed with the nearest `base` attribute, else `baseApiUrl` (a `./` path inside a remote template resolves against that template's folder). Set `NoJS.config({ templates: { pageRelative: true } })` (NoJS 1.22+) to resolve it against the page instead."
       }
     },
     {
@@ -853,7 +853,7 @@
       "name": "page-jsonld",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Reactively sets `<script type=\"application/ld+json\" data-nojs>` in `<head>`. Value is either a No.JS expression evaluating to an object, or a JSON string with `{interpolation}` placeholders.\n\n```html\n<div hidden page-jsonld>\n  { \"@type\": \"Product\", \"name\": \"{product.name}\" }\n</div>\n```\n\nThe `data-nojs` marker distinguishes it from hand-written JSON-LD so they can coexist."
+        "value": "No.JS: Reactively sets `<script type=\"application/ld+json\" data-nojs>` in `<head>`. Value is either a No.JS expression evaluating to an object, or a JSON string with `{interpolation}` placeholders.\n\n```html\n<div hidden page-jsonld>\n  { \"@type\": \"Product\", \"name\": \"{product.name}\" }\n</div>\n```\n\nThe `data-nojs` marker distinguishes it from hand-written JSON-LD so they can coexist.\n\n**`strictJsonld` (opt-in, NoJS 1.22+):** with `NoJS.config({ strictJsonld: true })`, values inside JSON strings are escaped as JSON string content and `<` becomes `\\u003c`, so a value cannot add properties or make the output invalid JSON. The default output is unchanged from v1.21.1."
       }
     },
     {
@@ -919,7 +919,7 @@
       "name": "sse",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Opens a Server-Sent Events (EventSource) connection. Value is a URL (supports `{expr}` interpolation). Incoming events are parsed as JSON (raw-string fallback) and stored in the context variable named by `as`.\n\n```html\n<div sse=\"/events/notifications\" as=\"notification\">\n  <p bind=\"notification.message\"></p>\n  <span show=\"$sse.connecting\">Connecting...</span>\n</div>\n```\n\n**Context key:** `$sse` — `{ connecting, open, error }` booleans.\n\n**Companions:** `as`, `sse-event`, `sse-insert`, `sse-limit`, `sse-credentials`, `into`, `error`, `then`"
+        "value": "No.JS: Opens a Server-Sent Events (EventSource) connection. Value is a URL (supports `{expr}` interpolation). Incoming events are parsed as JSON (raw-string fallback) and stored in the context variable named by `as`.\n\n```html\n<div sse=\"/events/notifications\" as=\"notification\">\n  <p bind=\"notification.message\"></p>\n  <span show=\"$sse.connecting\">Connecting...</span>\n</div>\n```\n\n**Context key:** `$sse` — `{ connecting, open, error }` booleans.\n\n**Companions:** `as`, `sse-event`, `sse-insert`, `sse-limit`, `sse-credentials`, `into`, `error`, `then`\n\n**URL placeholders:** `{expr}` values are encoded with `encodeURIComponent`. In the path part, a value that is exactly `.` or `..` is escaped to `%252E` / `%252E%252E` (NoJS 1.22+), so it cannot point the request at a parent path. Query-string and fragment values are unchanged."
       }
     },
     {
