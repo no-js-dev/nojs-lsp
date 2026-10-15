@@ -47,6 +47,10 @@ msedge --remote-debugging-port=9222
 
 Navigate to your No.JS application in the browser. The bridge will automatically discover and connect to a page tab that exposes `window.__NOJS_DEVTOOLS__`.
 
+The page exposes `window.__NOJS_DEVTOOLS__` only when it sets `NoJS.config({ devtools: true })` and runs on a local host (`localhost`, `127.0.0.1`, `0.0.0.0`, `*.localhost`, or an empty hostname such as `file://`).
+
+**`strictDevtools` (opt-in, NoJS 1.22+):** if the page also sets `strictDevtools: true`, NoJS redacts sensitive names (tokens, passwords, secrets, API keys, sessions…) at every depth in store and element snapshots. Values the bridge reads through `inspectStore()`, `getStoreProperty()` and `inspectElement()` then show `"[REDACTED]"` for those keys, and circular references show `"[Circular]"`. With the default (`false`) the bridge sees every key, as in earlier releases.
+
 ---
 
 ## Connection Flow

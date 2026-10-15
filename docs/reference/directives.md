@@ -220,6 +220,8 @@ Performs an HTTP GET request and makes response data available.
 </div>
 ```
 
+**URL placeholders:** `{expr}` values are encoded with `encodeURIComponent`. In the path part, a value that is exactly `.` or `..` is escaped to `%252E` / `%252E%252E` (NoJS 1.22+), so it cannot point the request at a parent path (`/api/users/{id}` with `id = ".."` used to request `/api/`). Query-string and fragment values are unchanged. This applies to every HTTP verb directive, `call` and `sse`.
+
 #### `post`
 
 Performs an HTTP POST request. Same companions as `get`.
@@ -744,7 +746,7 @@ i18n translation. Value is the translation key. Interpolation parameters are pas
 
 | Name | Type | Description |
 |------|------|-------------|
-| `t-html` | boolean | Render translation as sanitized HTML (via `_sanitizeHtml()`) instead of plain text |
+| `t-html` | boolean | Render translation as sanitized HTML (via `_sanitizeHtml()`) instead of plain text. `t-*` param values are inserted as HTML unless `i18n.escapeParams` is `true` (NoJS 1.22+) |
 
 ```html
 <span t="greeting">
@@ -752,6 +754,8 @@ i18n translation. Value is the translation key. Interpolation parameters are pas
 <div t="content.rich" t-html>
 <span bind="$i18n.labels.email">
 ```
+
+**`t-html` params:** `t-*` values are inserted as HTML (the final string is still sanitized). Set `i18n.escapeParams: true` (NoJS 1.22+) to render them as text.
 
 #### `i18n-ns`
 
@@ -933,6 +937,8 @@ Creates or updates `<script type="application/ld+json" data-nojs>` in `<head>`. 
 </div>
 ```
 
+**`strictJsonld` (opt-in, NoJS 1.22+):** with `NoJS.config({ strictJsonld: true })`, values inside JSON strings are escaped as JSON string content and `<` becomes `<`, so a value cannot add properties or make the output invalid JSON. The default output is unchanged from v1.21.1.
+
 ---
 
 ### Routing
@@ -1038,6 +1044,8 @@ Dynamically binds an HTML attribute to a JS expression. The suffix is the target
 
 Boolean attributes (`disabled`, `readonly`, `checked`, `selected`, `hidden`, `required`) are added/removed based on truthiness.
 
+**`strictBindings` (opt-in, NoJS 1.22+):** with `NoJS.config({ strictBindings: true })`, event-handler attributes (`bind-on*` names without a hyphen, e.g. `bind-onclick`, `bind-onerror`) are rejected with a `[Security]` warning — use `on:*` instead — and `bind-srcdoc` values go through the `bind-html` sanitizer. Names with a hyphen (`bind-onboarding-step`) still bind. Off by default; once enabled it cannot be turned off after `init()`.
+
 ### `class-*`
 
 Conditionally applies CSS class(es). The suffix is the class name to toggle.
@@ -1110,6 +1118,14 @@ Listens for DOM events and executes JS statement(s). The suffix is the event nam
 <input on:keydown.enter="search()">
 <div on:scroll.throttle="onScroll()">
 ```
+
+**Local variables (NoJS 1.22+):** separate statements with `;` and declare handler-local values with `const` / `let`. They are visible to the following statements of the same handler and are never written to state.
+
+```html
+<button on:click="const m = items.splice(0, 1)[0]; items.splice(2, 0, m)">Rotate</button>
+```
+
+Reassigning a `const` throws a `TypeError`. A `const` without a value, declaring a name twice, destructuring and `$`-prefixed names are rejected with a warning.
 
 See also: [Event Handler Variables](#event-handler-variables).
 
