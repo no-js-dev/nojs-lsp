@@ -96,7 +96,7 @@
       "name": "if",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Conditionally renders element. Removes from DOM when false.\n\n```html\n<div if=\"isLoggedIn\">Welcome!</div>\n<div else>Please log in</div>\n```\n\n**Companions:** `then`, `else`, `animate-enter`, `animate-leave`, `transition`, `animate-duration`\n\n**Limitation:** Do not place `if` and a loop on the same element. Use the loop's `filter` attribute or a wrapper element."
+        "value": "No.JS: Conditionally renders the element's content. When the expression is false the content is cleared (or the `else` template is rendered), but the element itself stays in the DOM; use `show`/`hide` to hide its box.\n\n```html\n<div if=\"isLoggedIn\">Welcome!</div>\n<div else>Please log in</div>\n```\n\n**Companions:** `then`, `else`, `animate-enter`, `animate-leave`, `transition`, `animate-duration`\n\n**Limitation:** Do not place `if` and a loop on the same element. Use the loop's `filter` attribute or a wrapper element."
       }
     },
     {
@@ -380,7 +380,7 @@
       "name": "into",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Companion for HTTP directives, `call`, and `sse`. Store name to dual-write response/event data into.\n\n```html\n<button call=\"/api/cart\" into=\"cart\">\n<div sse=\"/events\" as=\"data\" into=\"live\">\n```"
+        "value": "No.JS: Companion for HTTP directives, `call`, and `sse`. Also writes the response/event data to a global store, at `$store.<into>.<as>` (`as` defaults to `data`). The store is created if it does not exist.\n\n```html\n<button call=\"/api/cart\" into=\"cart\">  <!-- $store.cart.data -->\n<div sse=\"/events\" as=\"msg\" into=\"live\">  <!-- $store.live.msg -->\n```"
       }
     },
     {

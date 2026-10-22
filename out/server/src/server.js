@@ -30912,7 +30912,7 @@ var directives_default = {
         {
           name: "into",
           type: "string",
-          description: "No.JS: Store name to put response into"
+          description: "No.JS: Store to write the response to, at `$store.<into>.<as>` (`as` defaults to `data`)"
         },
         {
           name: "retry",
@@ -31079,7 +31079,7 @@ var directives_default = {
         {
           name: "into",
           type: "string",
-          description: "No.JS: Store name to dual-write received data into"
+          description: "No.JS: Store to also write received data to, at `$store.<into>.<as>` (`as` defaults to `data`)"
         },
         {
           name: "error",
@@ -31171,7 +31171,7 @@ var directives_default = {
         {
           name: "into",
           type: "string",
-          description: "No.JS: Store name to put response into"
+          description: "No.JS: Store to write the response to, at `$store.<into>.<as>` (`as` defaults to `data`)"
         },
         {
           name: "retry",
@@ -31302,7 +31302,7 @@ var directives_default = {
           description: "No.JS: Animation duration in ms"
         }
       ],
-      documentation: 'Conditionally renders the element. Removes from DOM when expression is false.\n\n**Example:**\n```html\n<div if="isLoggedIn">Welcome!</div>\n<div else-if="isGuest">Hello Guest</div>\n<div else>Please log in</div>\n```\n\n**Companions:** `then`, `else`, `animate-enter`, `animate-leave`, `transition`, `animate-duration`\n\n**Limitation:** Do not place `if` and a loop (`each`/`foreach`/`for`) on the same element \u2014 the condition cannot filter individual items. Use the loop\'s `filter` attribute or wrap the loop in a container with `if`.',
+      documentation: 'Conditionally renders the element\'s content. When the expression is false the content is cleared (or the `else` template is rendered), but the element itself stays in the DOM; use `show`/`hide` to hide its box.\n\n**Example:**\n```html\n<div if="isLoggedIn">Welcome!</div>\n<div else-if="isGuest">Hello Guest</div>\n<div else>Please log in</div>\n```\n\n**Companions:** `then`, `else`, `animate-enter`, `animate-leave`, `transition`, `animate-duration`\n\n**Limitation:** Do not place `if` and a loop (`each`/`foreach`/`for`) on the same element \u2014 the condition cannot filter individual items. Use the loop\'s `filter` attribute or wrap the loop in a container with `if`.',
       category: "conditional"
     },
     {
@@ -31760,7 +31760,7 @@ var directives_default = {
         {
           name: "into",
           type: "string",
-          description: "No.JS: Store name for response"
+          description: "No.JS: Store to write the response to, at `$store.<into>.<as>` (`as` defaults to `data`)"
         },
         {
           name: "success",

@@ -181,7 +181,7 @@ Performs an HTTP GET request and makes response data available.
 | `body` | expression | Request body expression |
 | `headers` | expression | Custom request headers object |
 | `var` | identifier | Variable name for additional data |
-| `into` | string | Store name to put response into |
+| `into` | string | Store to write the response to, at `$store.<into>.<as>` (`as` defaults to `data`) |
 | `retry` | number | Number of retry attempts |
 | `retry-delay` | number | Delay between retries in ms |
 | `params` | expression | Query parameters object |
@@ -280,7 +280,7 @@ HTTP call triggered by user action. Supports a `method` companion to specify the
 | `method` | string | HTTP method (default: get) |
 | `as` | identifier | Variable name for response data (default: "data") |
 | `loading` | templateId | Template ID shown while loading |
-| `into` | string | Store name for response |
+| `into` | string | Store to write the response to, at `$store.<into>.<as>` (`as` defaults to `data`) |
 | `success` | templateId | Template ID on success |
 | `error` | templateId | Template ID on error |
 | `then` | expression | Expression on success |
@@ -356,7 +356,7 @@ Directives for conditional rendering and visibility toggling.
 
 #### `if`
 
-Conditionally renders the element. Removes from DOM when expression is false.
+Conditionally renders the element's content. When the expression is false the content is cleared (or the `else` template is rendered), but the element itself stays in the DOM; use `show`/`hide` to hide its box.
 
 - **Value type:** expression (boolean) — required
 - **Priority:** 10

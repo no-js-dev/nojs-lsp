@@ -49,7 +49,7 @@ Performs an HTTP GET request and makes response data available.
 - `body` — Request body expression
 - `headers` — Custom request headers object
 - `var` — Variable name for additional data
-- `into` — Store name to put response into
+- `into` — Store to write the response to, at `$store.<into>.<as>` (`as` defaults to `data`)
 - `retry` — Number of retry attempts
 - `retry-delay` — Delay between retries in ms
 - `params` — Query parameters object
