@@ -167,6 +167,21 @@ Custom validation using an expression. The expression receives the field `value`
        error-custom="Value must be an even number" />
 ```
 
+### Registering your own rules
+
+`NoJS.validator(name, fn)` registers a rule that `validate` can use by name. Add the name to [`nojs.customValidators`](configuration.md#nojscustomvalidators) so the LSP completes it and does not report it as unknown.
+
+Only `required`, `email`, `url`, `min` and `max` are reserved: `NoJS.validator()` refuses to override them. Since NoJS 1.22 every other name can be registered, including `minlength`, `maxlength`, `pattern`, `match`, `number`, `integer`, `alpha` and `alphanumeric` (NoJS 1.15–1.21 refused them too). The `validate` directive has no rule with those names, so register them before `@no-js-dev/nojs-elements` loads if you want to use them in `validate`:
+
+```html
+<script>
+  NoJS.validator('minlength', (value, len) =>
+    String(value).length >= Number(len) || `Must be at least ${len} characters`);
+</script>
+
+<input name="username" validate="required|minlength:3" />
+```
+
 ---
 
 ## Companion Attributes
