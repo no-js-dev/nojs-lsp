@@ -8,11 +8,12 @@ import {
   TextDocuments,
 } from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
-import { parseHtmlDocument, getCursorContext, CursorContext } from '../html-parser';
+import { parseHtmlDocument, getCursorContext, CursorContext, getAncestorAttributeNames, isSubmitButton } from '../html-parser';
 import {
   getAllDirectives,
   getPatterns,
   getCompanionsForDirectives,
+  getChildAttributes,
   getAllFilters,
   getAllValidators,
   getAnimations,
@@ -229,6 +230,27 @@ function getAttributeNameCompletions(context: CursorContext & { type: 'attribute
       insertTextFormat: InsertTextFormat.Snippet,
       sortText: `2-${comp.name}`,
       data: { type: 'companion', name: comp.name } as CompletionData,
+    });
+  }
+
+  // 4b. Attributes a directive on an ancestor gives this element
+  //     (auto-disable on a submit button inside <form validate>)
+  const node = context.element.node;
+  for (const { directive, attribute } of getChildAttributes(getAncestorAttributeNames(node), isSubmitButton(node))) {
+    if (existingAttrs.has(attribute.name)) continue;
+    if (partial && !attribute.name.toLowerCase().startsWith(partial)) continue;
+    items.push({
+      label: attribute.name,
+      kind: CompletionItemKind.Field,
+      detail: `No.JS: Attribute for \`${directive}\` (${attribute.type})`,
+      documentation: {
+        kind: MarkupKind.Markdown,
+        value: attribute.description + getPluginRequirementNote(attribute.name),
+      },
+      insertText: `${attribute.name}="$1"`,
+      insertTextFormat: InsertTextFormat.Snippet,
+      sortText: `2-${attribute.name}`,
+      data: { type: 'companion', name: attribute.name } as CompletionData,
     });
   }
 
@@ -495,6 +517,19 @@ function getAttributeValueCompletions(context: CursorContext & { type: 'attribut
         kind: CompletionItemKind.EnumMember,
         detail: `No.JS: ${m.detail}`,
         sortText: `0-${m.name}`,
+      });
+    }
+    return items;
+  }
+
+  // auto-disable attribute values (NoJS Elements 1.23+)
+  if (attrName === 'auto-disable') {
+    if (!partial || 'off'.startsWith(partial.toLowerCase())) {
+      items.push({
+        label: 'off',
+        kind: CompletionItemKind.EnumMember,
+        detail: 'No.JS: The button keeps its own disabled state; the form still blocks an invalid submit',
+        sortText: '0-off',
       });
     }
     return items;

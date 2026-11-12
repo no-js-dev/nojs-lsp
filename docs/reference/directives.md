@@ -692,6 +692,12 @@ On a **field**: pipe-separated rules. Outside a `<form validate>`, the field val
 | `as` | identifier | Expose per-field validation state as a context variable |
 | `success` | templateId | Success template for form |
 
+**On submit buttons inside the form** (`<button>` without `type="button"`, `<input type="submit">`):
+
+| Name | Type | Description |
+|------|------|-------------|
+| `auto-disable` | string | `off` (NoJS Elements 1.23+): the button keeps its own disabled state (`bind-disabled`), or stays clickable so a click on an invalid form shows every error. The form still blocks an invalid submit. Without it, the button is disabled while the form is invalid or submitting |
+
 ```html
 <form validate="" error-class="is-invalid" validate-on="input blur">
   <input name="email" validate="required|email" error-required="Email is required" />

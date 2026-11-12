@@ -9,6 +9,7 @@ Synced with NoJS Core 1.23 and NoJS Elements 1.23. The new opt-in flags default 
 ### Added
 
 - `validate-empty` (Elements [#112](https://github.com/no-js-dev/nojs-elements/pull/112)): companion of `validate` in hover and completion, HTML custom data entry, and `check` / `skip` value completions. `skip` lets an empty value pass `min`, `max` and `url`; the default is `check`
+- `auto-disable` (Elements [#116](https://github.com/no-js-dev/nojs-elements/pull/116)): completion and hover on a submit button (`<button>` without `type="button"`, `<input type="submit">`) inside an element with `validate`, HTML custom data entry, and the `off` value completion. `off` keeps the button's own disabled state; the form still blocks an invalid submit. Directives can declare such descendant attributes with `childAttributes`
 - Lifecycle hooks have descriptions in `on:` completions and on hover; `on:unmounted` describes the opt-in `strictUnmounted` flag (Core [#427](https://github.com/no-js-dev/nojs/pull/427))
 - `route-view` hover describes the opt-in `router.strictOutlets` flag (Core [#428](https://github.com/no-js-dev/nojs/pull/428))
 - `$form.endSubmit()` in `$form.` completions and the `$form` hover

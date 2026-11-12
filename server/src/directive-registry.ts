@@ -6,6 +6,8 @@ export interface CompanionMeta {
   name: string;
   type: string;
   description: string;
+  /** childAttributes only: `submit` limits the attribute to submit buttons */
+  on?: 'submit';
 }
 
 export interface DirectiveMeta {
@@ -99,7 +101,7 @@ const companionPluginMap = new Map<string, string>();
 const companionPluginPrefixes: { prefix: string; plugin: string }[] = [];
 for (const d of data.directives) {
   if (!d.plugin) continue;
-  for (const c of d.companions) {
+  for (const c of [...d.companions, ...(d.childAttributes ?? [])]) {
     if (c.name.endsWith('*')) {
       companionPluginPrefixes.push({ prefix: c.name.slice(0, -1), plugin: d.plugin });
     } else if (!companionPluginMap.has(c.name)) {
@@ -191,6 +193,34 @@ export function isCompanion(attrName: string, elementDirectives: string[]): bool
     }
   }
   return false;
+}
+
+/** A child attribute together with the ancestor directive that provides it */
+export interface ChildAttributeMatch {
+  directive: string;
+  attribute: CompanionMeta;
+}
+
+/**
+ * Attributes that directives on ancestors give an element (`childAttributes`),
+ * e.g. `auto-disable` on a submit button inside `<form validate>`.
+ * `ancestorDirectives` lists the attribute names of each ancestor, nearest first.
+ */
+export function getChildAttributes(ancestorDirectives: string[][], isSubmitButton: boolean): ChildAttributeMatch[] {
+  const matches: ChildAttributeMatch[] = [];
+  const seen = new Set<string>();
+  for (const attrs of ancestorDirectives) {
+    for (const name of attrs) {
+      const dir = directiveMap.get(name);
+      for (const attribute of dir?.childAttributes ?? []) {
+        if (attribute.on === 'submit' && !isSubmitButton) continue;
+        if (seen.has(attribute.name)) continue;
+        seen.add(attribute.name);
+        matches.push({ directive: name, attribute });
+      }
+    }
+  }
+  return matches;
 }
 
 /** Get companion attributes for directives present on an element */

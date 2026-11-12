@@ -19,6 +19,8 @@ import {
   isHttpDirective,
   getAllDirectiveNames,
   getAllCompanionNames,
+  getChildAttributes,
+  getRequiredPlugin,
 } from '../../server/src/directive-registry';
 
 describe('DirectiveRegistry', () => {
@@ -300,6 +302,16 @@ describe('DirectiveRegistry — NoJS 1.23 sync', () => {
     }
     expect(getLifecycleEventDoc('click')).toBeUndefined();
     expect(getLifecycleEventDoc('')).toBeUndefined();
+  });
+
+  it('gives submit buttons inside validate the auto-disable attribute', () => {
+    const forButton = getChildAttributes([['name'], ['validate']], true);
+    expect(forButton.map(m => [m.directive, m.attribute.name])).toEqual([['validate', 'auto-disable']]);
+    expect(forButton[0].attribute.description).toContain('`off`');
+    expect(getChildAttributes([['validate']], false)).toEqual([]);
+    expect(getChildAttributes([['state']], true)).toEqual([]);
+    expect(getRequiredPlugin('auto-disable')).toBe('@no-js-dev/nojs-elements');
+    expect(getDirective('validate')!.companions.map(c => c.name)).not.toContain('auto-disable');
   });
 
   it('lists validate-empty as a validate companion', () => {

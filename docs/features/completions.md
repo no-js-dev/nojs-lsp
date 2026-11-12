@@ -258,7 +258,7 @@ When a directive is already present on an element, the LSP suggests its companio
 | `each`, `for` | *(same as `foreach` — aliases with identical companions)* |
 | `trigger` | `trigger-data` |
 | `use` | `var-*` |
-| `validate` | `error`, `error-*`, `error-class`, `validate-on`, `validate-if`, `validate-empty`, `as`, `success` |
+| `validate` | `error`, `error-*`, `error-class`, `validate-on`, `validate-if`, `validate-empty`, `as`, `success`; `auto-disable` on submit buttons inside the form |
 | `t` | `t-html` |
 | `drag` | `drag-type`, `drag-effect`, `drag-handle`, `drag-image`, `drag-image-offset`, `drag-disabled`, `drag-class`, `drag-ghost-class`, `drag-group` |
 | `drop` | `drop-accept`, `drop-effect`, `drop-class`, `drop-reject-class`, `drop-disabled`, `drop-max`, `drop-sort`, `drop-placeholder`, `drop-placeholder-class` |
@@ -615,6 +615,7 @@ Several directives offer value completions for known enumerated values:
 | `drop-effect` | Drop effect type | `copy`, `move`, `link`, `none` |
 | `validate-on` | Validation trigger | `input`, `blur`, `focusout`, `submit` |
 | `validate-empty` | Empty-value handling (NoJS Elements 1.23+) | `check`, `skip` |
+| `auto-disable` | Submit button inside `<form validate>` (NoJS Elements 1.23+) | `off` |
 
 ```html
 <button call="/api/delete/1" method="DELETE">
