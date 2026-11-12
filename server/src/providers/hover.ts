@@ -5,7 +5,7 @@ import {
   TextDocuments,
 } from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
-import { parseHtmlDocument, getElementAtOffset, ElementInfo } from '../html-parser';
+import { parseHtmlDocument, getElementAtOffset, ElementInfo, getAncestorAttributeNames, isSubmitButton } from '../html-parser';
 import {
   matchDirective,
   getFilter,
@@ -21,6 +21,7 @@ import {
   getLoopContextVars,
   getEventModifiers,
   getPluginRequirementNote,
+  getChildAttributes,
 } from '../directive-registry';
 import type { DevToolsBridge } from '../devtools-bridge';
 
@@ -253,6 +254,13 @@ function getCompanionDescription(attrName: string, element: ElementInfo): string
           + getPluginRequirementNote(attrName);
       }
     }
+  }
+
+  const child = getChildAttributes(getAncestorAttributeNames(element.node), isSubmitButton(element.node))
+    .find(m => m.attribute.name === attrName);
+  if (child) {
+    return `No.JS: **\`${attrName}\`** — Attribute for submit buttons inside an element with \`${child.directive}\`\n\n${child.attribute.description}`
+      + getPluginRequirementNote(attrName);
   }
 
   return null;

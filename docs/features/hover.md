@@ -163,6 +163,20 @@ Persist state to localStorage
 
 Companion hover works for all 39 directives and their companion attributes, including wildcard companions like `var-*`, `error-*`, and `t-*`.
 
+An attribute that a directive gives to elements inside it is described on those elements. `auto-disable` on a submit button inside `<form validate>` (NoJS Elements 1.23+):
+
+```html
+<form validate>
+  <input name="email" validate="required|email" />
+  <!-- Hovering over "auto-disable" -->
+  <button type="submit" auto-disable="off">Sign up</button>
+</form>
+```
+
+```markdown
+No.JS: **`auto-disable`** — Attribute for submit buttons inside an element with `validate`
+```
+
 ---
 
 ## Filter Hover

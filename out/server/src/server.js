@@ -31851,7 +31851,15 @@ var directives_default = {
           description: "No.JS: Success template for form"
         }
       ],
-      documentation: 'Declarative form validation (NoJS Elements).\n\n**On a form:** creates `$form` with `valid`, `dirty`, `touched`, `submitting`, `pending`, `errors`, `values`, `fields`, `firstError`, `errorCount`, `reset()` and `endSubmit()`. Invalid submits are blocked; a valid submit sets `$form.submitting` until the form\'s `post` / `put` / `patch` / `delete` request settles or an `on:submit` handler calls `$form.endSubmit()`.\n\n**On a field:** pipe-separated rules (`required|email`). Outside a `<form validate>`, the field validates itself on `input` and renders its `error="#tpl"` template with `err.message`.\n\n**Example:**\n```html\n<form validate="" error-class="is-invalid" validate-on="input focusout">\n  <input name="email" validate="required|email" error-required="Email is required" />\n  <span if="$form.errors.email" bind="$form.errors.email"></span>\n</form>\n```\n\n**Built-in rules:** `required`, `email`, `url`, `min`, `max`, `custom:name`. Native attributes (`required`, `minlength`, `maxlength`, `pattern`, `min`, `max`, `step`, `type`) are also checked and reported under their own names (`error-minlength`).\n\n**Empty values (Elements 1.23):** by default `min`, `max` and `url` also check an empty field (`min:1` fails it). Opt-in `validate-empty="skip"` on the form or field lets it pass; the default is `check`.\n\n**Error templates:** `error="#id"` / `error-{rule}="#id"`. Inside a form the template renders once per field, after the `<template>`, with `$error`, `$rule` and `err.message`.\n\n**Companions:** `error`, `error-*`, `error-class`, `validate-on`, `validate-if`, `validate-empty`, `as`, `success`',
+      childAttributes: [
+        {
+          name: "auto-disable",
+          type: "string",
+          on: "submit",
+          description: "No.JS: `off` turns off the automatic disabling for this submit button, so its own `bind-disabled` decides (or it stays clickable and a click on an invalid form shows every error). The form still blocks an invalid submit. Without it, the button is disabled while the form is invalid or submitting (NoJS Elements 1.23+)"
+        }
+      ],
+      documentation: 'Declarative form validation (NoJS Elements).\n\n**On a form:** creates `$form` with `valid`, `dirty`, `touched`, `submitting`, `pending`, `errors`, `values`, `fields`, `firstError`, `errorCount`, `reset()` and `endSubmit()`. Invalid submits are blocked; a valid submit sets `$form.submitting` until the form\'s `post` / `put` / `patch` / `delete` request settles or an `on:submit` handler calls `$form.endSubmit()`.\n\n**On a field:** pipe-separated rules (`required|email`). Outside a `<form validate>`, the field validates itself on `input` and renders its `error="#tpl"` template with `err.message`.\n\n**Example:**\n```html\n<form validate="" error-class="is-invalid" validate-on="input focusout">\n  <input name="email" validate="required|email" error-required="Email is required" />\n  <span if="$form.errors.email" bind="$form.errors.email"></span>\n</form>\n```\n\n**Built-in rules:** `required`, `email`, `url`, `min`, `max`, `custom:name`. Native attributes (`required`, `minlength`, `maxlength`, `pattern`, `min`, `max`, `step`, `type`) are also checked and reported under their own names (`error-minlength`).\n\n**Empty values (Elements 1.23):** by default `min`, `max` and `url` also check an empty field (`min:1` fails it). Opt-in `validate-empty="skip"` on the form or field lets it pass; the default is `check`.\n\n**Error templates:** `error="#id"` / `error-{rule}="#id"`. Inside a form the template renders once per field, after the `<template>`, with `$error`, `$rule` and `err.message`.\n\n**Submit buttons (Elements 1.23):** disabled while the form is invalid or submitting; this replaces a `bind-disabled` on the same button. Opt-in `auto-disable="off"` on a submit button turns that off for the button.\n\n**Companions:** `error`, `error-*`, `error-class`, `validate-on`, `validate-if`, `validate-empty`, `as`, `success`. On submit buttons: `auto-disable`',
       category: "form"
     },
     {
@@ -32858,7 +32866,7 @@ var companionPluginMap = /* @__PURE__ */ new Map();
 var companionPluginPrefixes = [];
 for (const d2 of data.directives) {
   if (!d2.plugin) continue;
-  for (const c2 of d2.companions) {
+  for (const c2 of [...d2.companions, ...d2.childAttributes ?? []]) {
     if (c2.name.endsWith("*")) {
       companionPluginPrefixes.push({ prefix: c2.name.slice(0, -1), plugin: d2.plugin });
     } else if (!companionPluginMap.has(c2.name)) {
@@ -32921,6 +32929,22 @@ function isCompanion(attrName, elementDirectives) {
     }
   }
   return false;
+}
+function getChildAttributes(ancestorDirectives, isSubmitButton2) {
+  const matches = [];
+  const seen = /* @__PURE__ */ new Set();
+  for (const attrs of ancestorDirectives) {
+    for (const name of attrs) {
+      const dir = directiveMap.get(name);
+      for (const attribute of dir?.childAttributes ?? []) {
+        if (attribute.on === "submit" && !isSubmitButton2) continue;
+        if (seen.has(attribute.name)) continue;
+        seen.add(attribute.name);
+        matches.push({ directive: name, attribute });
+      }
+    }
+  }
+  return matches;
 }
 function getCompanionsForDirectives(elementDirectives) {
   const companions = [];
@@ -33241,6 +33265,21 @@ function findStores(htmlDoc, text) {
     }
   }
   return stores;
+}
+function unquote(value) {
+  return (value ?? "").replace(/^["']|["']$/g, "").trim().toLowerCase();
+}
+function isSubmitButton(node) {
+  const type = unquote(node.attributes?.type);
+  if (node.tag === "button") return type !== "button";
+  return node.tag === "input" && type === "submit";
+}
+function getAncestorAttributeNames(node) {
+  const result = [];
+  for (let p2 = node.parent; p2; p2 = p2.parent) {
+    if (p2.tag) result.push(Object.keys(p2.attributes ?? {}));
+  }
+  return result;
 }
 function getSiblings(node) {
   const parent = node.parent;
@@ -34005,6 +34044,24 @@ function getAttributeNameCompletions(context, wsData, docText) {
       data: { type: "companion", name: comp.name }
     });
   }
+  const node = context.element.node;
+  for (const { directive, attribute } of getChildAttributes(getAncestorAttributeNames(node), isSubmitButton(node))) {
+    if (existingAttrs.has(attribute.name)) continue;
+    if (partial && !attribute.name.toLowerCase().startsWith(partial)) continue;
+    items.push({
+      label: attribute.name,
+      kind: import_node3.CompletionItemKind.Field,
+      detail: `No.JS: Attribute for \`${directive}\` (${attribute.type})`,
+      documentation: {
+        kind: import_node3.MarkupKind.Markdown,
+        value: attribute.description + getPluginRequirementNote(attribute.name)
+      },
+      insertText: `${attribute.name}="$1"`,
+      insertTextFormat: import_node3.InsertTextFormat.Snippet,
+      sortText: `2-${attribute.name}`,
+      data: { type: "companion", name: attribute.name }
+    });
+  }
   for (const dir of wsData.customDirectives) {
     if (existingAttrs.has(dir.name)) continue;
     if (partial && !dir.name.toLowerCase().startsWith(partial)) continue;
@@ -34254,6 +34311,17 @@ ${v2.description}
         kind: import_node3.CompletionItemKind.EnumMember,
         detail: `No.JS: ${m2.detail}`,
         sortText: `0-${m2.name}`
+      });
+    }
+    return items;
+  }
+  if (attrName === "auto-disable") {
+    if (!partial || "off".startsWith(partial.toLowerCase())) {
+      items.push({
+        label: "off",
+        kind: import_node3.CompletionItemKind.EnumMember,
+        detail: "No.JS: The button keeps its own disabled state; the form still blocks an invalid submit",
+        sortText: "0-off"
       });
     }
     return items;
@@ -34612,6 +34680,12 @@ function getCompanionDescription(attrName, element) {
 ${comp.description}` + getPluginRequirementNote(attrName);
       }
     }
+  }
+  const child = getChildAttributes(getAncestorAttributeNames(element.node), isSubmitButton(element.node)).find((m2) => m2.attribute.name === attrName);
+  if (child) {
+    return `No.JS: **\`${attrName}\`** \u2014 Attribute for submit buttons inside an element with \`${child.directive}\`
+
+${child.attribute.description}` + getPluginRequirementNote(attrName);
   }
   return null;
 }
