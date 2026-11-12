@@ -8,15 +8,17 @@ import {
   TextDocuments,
 } from 'vscode-languageserver/node';
 import { TextDocument } from 'vscode-languageserver-textdocument';
-import { parseHtmlDocument, getCursorContext, CursorContext } from '../html-parser';
+import { parseHtmlDocument, getCursorContext, CursorContext, getAncestorAttributeNames, isSubmitButton } from '../html-parser';
 import {
   getAllDirectives,
   getPatterns,
   getCompanionsForDirectives,
+  getChildAttributes,
   getAllFilters,
   getAllValidators,
   getAnimations,
   getLifecycleEvents,
+  getLifecycleEventDoc,
   getContextKeys,
   getLoopContextVars,
   getEventHandlerVars,
@@ -128,6 +130,9 @@ function getAttributeNameCompletions(context: CursorContext & { type: 'attribute
           label: fullName,
           kind: CompletionItemKind.Event,
           detail: `No.JS: Lifecycle event`,
+          documentation: getLifecycleEventDoc(lc)
+            ? { kind: MarkupKind.Markdown, value: getLifecycleEventDoc(lc)! }
+            : undefined,
           sortText: `1-${fullName}`,
           data: { type: 'lifecycle', name: fullName } as CompletionData,
         });
@@ -225,6 +230,27 @@ function getAttributeNameCompletions(context: CursorContext & { type: 'attribute
       insertTextFormat: InsertTextFormat.Snippet,
       sortText: `2-${comp.name}`,
       data: { type: 'companion', name: comp.name } as CompletionData,
+    });
+  }
+
+  // 4b. Attributes a directive on an ancestor gives this element
+  //     (auto-disable on a submit button inside <form validate>)
+  const node = context.element.node;
+  for (const { directive, attribute } of getChildAttributes(getAncestorAttributeNames(node), isSubmitButton(node))) {
+    if (existingAttrs.has(attribute.name)) continue;
+    if (partial && !attribute.name.toLowerCase().startsWith(partial)) continue;
+    items.push({
+      label: attribute.name,
+      kind: CompletionItemKind.Field,
+      detail: `No.JS: Attribute for \`${directive}\` (${attribute.type})`,
+      documentation: {
+        kind: MarkupKind.Markdown,
+        value: attribute.description + getPluginRequirementNote(attribute.name),
+      },
+      insertText: `${attribute.name}="$1"`,
+      insertTextFormat: InsertTextFormat.Snippet,
+      sortText: `2-${attribute.name}`,
+      data: { type: 'companion', name: attribute.name } as CompletionData,
     });
   }
 
@@ -478,6 +504,37 @@ function getAttributeValueCompletions(context: CursorContext & { type: 'attribut
     return items;
   }
 
+  // validate-empty attribute values (NoJS Elements 1.23+)
+  if (attrName === 'validate-empty') {
+    const modes = [
+      { name: 'check', detail: 'Default: min, max and url also check an empty value' },
+      { name: 'skip', detail: 'An empty value passes min, max and url; only required reports it' },
+    ];
+    for (const m of modes) {
+      if (partial && !m.name.startsWith(partial.toLowerCase())) continue;
+      items.push({
+        label: m.name,
+        kind: CompletionItemKind.EnumMember,
+        detail: `No.JS: ${m.detail}`,
+        sortText: `0-${m.name}`,
+      });
+    }
+    return items;
+  }
+
+  // auto-disable attribute values (NoJS Elements 1.23+)
+  if (attrName === 'auto-disable') {
+    if (!partial || 'off'.startsWith(partial.toLowerCase())) {
+      items.push({
+        label: 'off',
+        kind: CompletionItemKind.EnumMember,
+        detail: 'No.JS: The button keeps its own disabled state; the form still blocks an invalid submit',
+        sortText: '0-off',
+      });
+    }
+    return items;
+  }
+
   // i18n key completions for t="..." and t-html="..."
   if (attrName === 't' || attrName === 't-html') {
     for (const keyInfo of wsData.i18nKeys) {
@@ -575,15 +632,16 @@ function getAttributeValueCompletions(context: CursorContext & { type: 'attribut
     const formProps: { name: string; detail: string }[] = [
       { name: 'valid', detail: 'boolean — true when all fields pass validation' },
       { name: 'dirty', detail: 'boolean — true when any field value has changed' },
-      { name: 'touched', detail: 'boolean — true when any field has been focused' },
-      { name: 'pending', detail: 'boolean — true when async validators are running' },
-      { name: 'submitting', detail: 'boolean — true during form submission' },
+      { name: 'touched', detail: 'boolean — true when any field has lost focus (or after a submit attempt)' },
+      { name: 'pending', detail: 'boolean — reserved for async validators; stays false (validators run synchronously)' },
+      { name: 'submitting', detail: 'boolean — true from a valid submit until the form request settles or endSubmit() runs' },
       { name: 'errors', detail: 'object — { fieldName: errorMessage } for interacted fields' },
       { name: 'values', detail: 'object — { fieldName: currentValue }' },
       { name: 'fields', detail: 'object — { fieldName: { valid, dirty, touched, error, value } }' },
       { name: 'firstError', detail: 'string | null — first error message by priority' },
       { name: 'errorCount', detail: 'number — count of errors on interacted fields' },
-      { name: 'reset()', detail: 'function — reset form state and re-validate' },
+      { name: 'reset()', detail: 'function — clear dirty/touched/submitting, native form.reset(), re-validate (model state is not reset)' },
+      { name: 'endSubmit()', detail: 'function — set submitting back to false and re-validate; call it from an on:submit handler' },
     ];
     for (const prop of formProps) {
       if (afterForm && !prop.name.toLowerCase().startsWith(afterForm.toLowerCase())) continue;

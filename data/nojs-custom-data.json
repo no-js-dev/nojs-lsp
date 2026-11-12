@@ -188,7 +188,7 @@
       "name": "validate",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Form validation with pristine-aware errors. **Requires `@no-js-dev/nojs-elements` plugin since v1.13.0.**\n\n```html\n<form validate=\"\" error-class=\"is-invalid\" validate-on=\"input blur\">\n  <input name=\"email\" validate=\"required|email\" error-required=\"Email is required\" />\n</form>\n```\n\nBuilt-in validators: `required`, `email`, `url`, `min`, `max`, `custom`\n\n**Companions:** `error`, `error-*`, `error-class`, `validate-on`, `validate-if`, `as`, `success`"
+        "value": "No.JS: Declarative form validation. **Requires `@no-js-dev/nojs-elements` plugin since v1.13.0.**\n\n```html\n<form validate=\"\" error-class=\"is-invalid\" validate-on=\"input focusout\">\n  <input name=\"email\" validate=\"required|email\" error-required=\"Email is required\" />\n</form>\n```\n\nBuilt-in rules: `required`, `email`, `url`, `min`, `max`, `custom:name`; native attributes (`minlength`, `pattern`, ...) are also checked.\n\nOn a form, creates `$form` (`valid`, `errors`, `fields`, `submitting`, `reset()`, `endSubmit()`, ...).\n\n**Companions:** `error`, `error-*`, `error-class`, `validate-on`, `validate-if`, `validate-empty`, `as`, `success`. On submit buttons: `auto-disable`"
       }
     },
     {
@@ -211,6 +211,36 @@
         "kind": "markdown",
         "value": "No.JS: Conditional validation expression. Field is only validated when expression is truthy. **Requires `@no-js-dev/nojs-elements` plugin since v1.13.0.**\n\n```html\n<input name=\"company\" validate=\"required\" validate-if=\"isBusinessAccount\" />\n```"
       }
+    },
+    {
+      "name": "validate-empty",
+      "description": {
+        "kind": "markdown",
+        "value": "No.JS: Opt-in empty-value handling for `min`, `max` and `url`. **Requires `@no-js-dev/nojs-elements` plugin since v1.23.0.**\n\n```html\n<form validate=\"\" validate-empty=\"skip\">\n  <input name=\"age\" type=\"number\" validate=\"min:18\" />\n  <input name=\"qty\" type=\"number\" validate=\"min:1\" validate-empty=\"check\" />\n</form>\n```\n\n**Values:** `check` (default: `min:1` fails an empty field, `url` fails `\"\"`), `skip` (an empty or whitespace-only value passes; only `required` reports it).\n\nSet on the form (default for all fields) or on a field (wins)."
+      },
+      "values": [
+        {
+          "name": "check",
+          "description": "Default: min, max and url also check an empty value"
+        },
+        {
+          "name": "skip",
+          "description": "An empty value passes min, max and url; only required reports it"
+        }
+      ]
+    },
+    {
+      "name": "auto-disable",
+      "description": {
+        "kind": "markdown",
+        "value": "No.JS: Opt-out of the automatic disabling of a submit button in a `<form validate>`. **Requires `@no-js-dev/nojs-elements` plugin since v1.23.0.**\n\n```html\n<form validate=\"\" post=\"/api/profile\">\n  <input name=\"name\" model=\"name\" validate=\"required\" />\n  <button type=\"submit\" auto-disable=\"off\" bind-disabled=\"!$form.valid || !$form.dirty || $form.submitting\">Save</button>\n</form>\n```\n\n**Value:** `off` — the button keeps its own disabled state (`bind-disabled`), or stays clickable and a click on an invalid form shows every error. The form still blocks an invalid submit.\n\nWithout the attribute, submit buttons (`<button>` without `type=\"button\"`, `<input type=\"submit\">`) are disabled while the form is invalid or submitting."
+      },
+      "values": [
+        {
+          "name": "off",
+          "description": "The button keeps its own disabled state; the form still blocks an invalid submit"
+        }
+      ]
     },
     {
       "name": "error-boundary",

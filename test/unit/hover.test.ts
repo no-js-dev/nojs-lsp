@@ -221,3 +221,45 @@ describe('HoverProvider', () => {
     expect(value).not.toContain('Requires the `@no-js-dev/nojs-elements` plugin');
   });
 });
+
+describe('HoverProvider — NoJS 1.23 sync', () => {
+  const text = (h: Hover | null) => (h ? (typeof h.contents === 'string' ? h.contents : (h.contents as any).value) : '');
+
+  it('describes strictUnmounted when hovering on:unmounted', async () => {
+    const content = '<div on:unmounted="cleanup()"></div>';
+    const value = text(await getHover(content, 8));
+    expect(value).toContain('**Lifecycle hook:**');
+    expect(value).toContain('strictUnmounted: true');
+  });
+
+  it('adds no lifecycle line for a DOM event', async () => {
+    const value = text(await getHover('<button on:click="go()"></button>', 10));
+    expect(value).not.toContain('**Lifecycle hook:**');
+  });
+
+  it('describes router.strictOutlets when hovering route-view', async () => {
+    const value = text(await getHover('<aside route-view="sidebar"></aside>', 9));
+    expect(value).toContain('router.strictOutlets');
+  });
+
+  it('describes auto-disable on a submit button inside <form validate>', async () => {
+    const content = '<form validate><input name="a" validate="required"><button auto-disable="off">Go</button></form>';
+    const value = text(await getHover(content, content.indexOf('auto-disable') + 3));
+    expect(value).toContain('auto-disable');
+    expect(value).toContain('`validate`');
+    expect(value).toContain('bind-disabled');
+    expect(value).toContain('@no-js-dev/nojs-elements');
+  });
+
+  it('gives no auto-disable hover outside a validated form', async () => {
+    const content = '<form><button auto-disable="off">Go</button></form>';
+    expect(await getHover(content, content.indexOf('auto-disable') + 3)).toBeNull();
+  });
+
+  it('describes validate-empty as a validate companion', async () => {
+    const content = '<form validate validate-empty="skip"></form>';
+    const value = text(await getHover(content, content.indexOf('validate-empty') + 3));
+    expect(value).toContain('validate-empty');
+    expect(value).toContain('skip');
+  });
+});

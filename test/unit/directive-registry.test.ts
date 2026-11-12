@@ -11,6 +11,7 @@ import {
   getCompanionsForDirectives,
   getAnimations,
   getLifecycleEvents,
+  getLifecycleEventDoc,
   getContextKeys,
   getLoopContextVars,
   getEventHandlerVars,
@@ -18,6 +19,8 @@ import {
   isHttpDirective,
   getAllDirectiveNames,
   getAllCompanionNames,
+  getChildAttributes,
+  getRequiredPlugin,
 } from '../../server/src/directive-registry';
 
 describe('DirectiveRegistry', () => {
@@ -187,9 +190,21 @@ describe('DirectiveRegistry', () => {
   });
 
   describe('Validators', () => {
-    it('returns all validators', () => {
-      const validators = getAllValidators();
-      expect(validators.length).toBeGreaterThanOrEqual(10);
+    it('returns exactly the rules of the Elements validate directive', () => {
+      const names = getAllValidators().map(v => v.name).sort();
+      expect(names).toEqual(['custom', 'email', 'max', 'min', 'required', 'url']);
+    });
+
+    it('does not list native constraint attributes as validate rules', () => {
+      for (const native of ['minlength', 'maxlength', 'pattern', 'step']) {
+        expect(getValidator(native)).toBeUndefined();
+      }
+    });
+
+    it('documents that custom:name passes no rule arguments', () => {
+      const custom = getValidator('custom')!;
+      expect(custom.example).toBe('validate="custom:phone"');
+      expect(custom.description).toContain('(value, formValues)');
     });
 
     it('includes known validators', () => {
@@ -271,5 +286,43 @@ describe('DirectiveRegistry', () => {
       expect(names.size).toBeGreaterThan(0);
       expect(names.has('as')).toBe(true);
     });
+  });
+});
+
+describe('DirectiveRegistry — NoJS 1.23 sync', () => {
+  it('documents strictUnmounted on the unmounted lifecycle event', () => {
+    const doc = getLifecycleEventDoc('unmounted');
+    expect(doc).toContain('strictUnmounted: true');
+    expect(doc).toContain('default `false`');
+  });
+
+  it('has a description for every lifecycle event and none for unknown names', () => {
+    for (const ev of getLifecycleEvents()) {
+      expect(getLifecycleEventDoc(ev)).toBeDefined();
+    }
+    expect(getLifecycleEventDoc('click')).toBeUndefined();
+    expect(getLifecycleEventDoc('')).toBeUndefined();
+  });
+
+  it('gives submit buttons inside validate the auto-disable attribute', () => {
+    const forButton = getChildAttributes([['name'], ['validate']], true);
+    expect(forButton.map(m => [m.directive, m.attribute.name])).toEqual([['validate', 'auto-disable']]);
+    expect(forButton[0].attribute.description).toContain('`off`');
+    expect(getChildAttributes([['validate']], false)).toEqual([]);
+    expect(getChildAttributes([['state']], true)).toEqual([]);
+    expect(getRequiredPlugin('auto-disable')).toBe('@no-js-dev/nojs-elements');
+    expect(getDirective('validate')!.companions.map(c => c.name)).not.toContain('auto-disable');
+  });
+
+  it('lists validate-empty as a validate companion', () => {
+    const validate = getDirective('validate')!;
+    const comp = validate.companions.find(c => c.name === 'validate-empty');
+    expect(comp).toBeDefined();
+    expect(comp!.description).toContain('skip');
+    expect(validate.documentation).toContain('endSubmit()');
+  });
+
+  it('documents router.strictOutlets on route-view', () => {
+    expect(getDirective('route-view')!.documentation).toContain('strictOutlets: true');
   });
 });

@@ -2,7 +2,7 @@
 
 Complete reference for all No.JS form validators supported by the LSP. Data sourced from `server/src/data/validators.json`.
 
-**10 built-in validators** for declarative form validation.
+**6 `validate` rules** (`required`, `email`, `url`, `min`, `max`, `custom`) for declarative form validation, plus the native constraint attributes that `validate` also checks (`minlength`, `maxlength`, `pattern`, `step`, ...). Validation runs in the `@no-js-dev/nojs-elements` plugin.
 
 Validators are pipe-separated rules applied to form elements via the `validate` attribute:
 
@@ -38,11 +38,23 @@ See also: [Completions](../features/completions.md) · [validate directive](../r
 | `url` | Field must be a valid URL | — | `validate="url"` |
 | `min` | Minimum numeric value | `value` (number) | `validate="min:5"` |
 | `max` | Maximum numeric value | `value` (number) | `validate="max:100"` |
-| `minlength` | Minimum string length (native ValidityState) | `length` (number) | `minlength="3"` |
-| `maxlength` | Maximum string length (native ValidityState) | `length` (number) | `maxlength="50"` |
-| `pattern` | Regex pattern the value must match (native ValidityState) | `regex` (string) | `pattern="[A-Za-z]+"` |
-| `step` | Numeric step constraint (native ValidityState) | `value` (number) | `step="0.01"` |
-| `custom` | Custom validation function | `expression` (expression) | `validate="custom:value.length % 2 === 0"` |
+| `custom` | Runs a validator registered with `NoJS.validator()` | `name` (string) | `validate="custom:phone"` |
+
+`email` passes an empty value. By default `url`, `min` and `max` also check an empty value: `min` and `max` compare it as `0` and `url` fails `""`. See [Empty Values](#empty-values-validate-empty).
+
+### Native constraint attributes
+
+These are HTML attributes, not `validate` rules: `validate` checks them through the browser's `ValidityState` and reports them under their own names, so `error-<name>` works. Writing them as rules (`validate="minlength:3"`) does nothing, and the LSP reports it.
+
+| Attribute | Description | Example |
+|-----------|-------------|---------|
+| `required` | Value must not be empty | `required` |
+| `minlength` | Minimum string length | `minlength="3"` |
+| `maxlength` | Maximum string length | `maxlength="50"` |
+| `pattern` | Regex the value must match | `pattern="[A-Za-z]+"` |
+| `min` / `max` | Numeric or date range | `min="1"` |
+| `step` | Numeric step constraint | `step="0.01"` |
+| `type` | `email`, `url`, `number`, `date`, ... | `type="email"` |
 
 ---
 
@@ -106,7 +118,7 @@ Maximum numeric value.
        error-max="Maximum quantity is 99" />
 ```
 
-### `minlength`
+### `minlength` (native attribute)
 
 Minimum string length. Uses native ValidityState.
 
@@ -119,7 +131,7 @@ Minimum string length. Uses native ValidityState.
        error-minlength="Password must be at least 8 characters" />
 ```
 
-### `maxlength`
+### `maxlength` (native attribute)
 
 Maximum string length. Uses native ValidityState.
 
@@ -131,7 +143,7 @@ Maximum string length. Uses native ValidityState.
           error-maxlength="Bio cannot exceed 500 characters"></textarea>
 ```
 
-### `pattern`
+### `pattern` (native attribute)
 
 Regex pattern the value must match. Uses native ValidityState.
 
@@ -143,7 +155,7 @@ Regex pattern the value must match. Uses native ValidityState.
        error-pattern="Enter a 5-digit ZIP code" />
 ```
 
-### `step`
+### `step` (native attribute)
 
 Numeric step constraint. Uses native ValidityState.
 
@@ -157,15 +169,35 @@ Numeric step constraint. Uses native ValidityState.
 
 ### `custom`
 
-Custom validation using an expression. The expression receives the field `value` and must return a truthy value to pass.
+Runs the validator registered with `NoJS.validator(name, fn)`. The validator receives `(value, formValues)`; rule arguments after the name are not passed. It returns an error string to fail, `true` or a falsy value to pass. To pass arguments, use the validator's name as the rule instead (`validate="match:password"` calls it with `(value, 'password', formValues)`).
 
-- **Arguments:** `expression` (expression, required) — a JavaScript expression that evaluates to truthy/falsy
+- **Arguments:** `name` (string, required) — the registered validator name
 
 ```html
-<input name="even" type="number"
-       validate="custom:value % 2 === 0"
-       error-custom="Value must be an even number" />
+<script>
+  NoJS.validator('even', (value) => Number(value) % 2 === 0 || 'Value must be an even number');
+</script>
+
+<input name="even" type="number" validate="custom:even" />
 ```
+
+### Empty Values (`validate-empty`)
+
+`validate-empty` (NoJS Elements 1.23+) is opt-in, on the form or on a field (the field wins):
+
+| Value | Behavior |
+|-------|----------|
+| `check` (default) | `min`, `max` and `url` also check an empty value: `min:1` fails an empty field and `url` fails `""` |
+| `skip` | An empty or whitespace-only value passes `min`, `max` and `url`; only `required` reports it |
+
+```html
+<form validate="" validate-empty="skip">
+  <input name="age" type="number" validate="min:18" />
+  <input name="qty" type="number" validate="min:1" validate-empty="check" />
+</form>
+```
+
+The LSP completes `check` / `skip` in `validate-empty`.
 
 ### Registering your own rules
 
@@ -182,6 +214,13 @@ Only `required`, `email`, `url`, `min` and `max` are reserved: `NoJS.validator()
 <input name="username" validate="required|minlength:3" />
 ```
 
+Then add `minlength` to `nojs.customValidators`; otherwise the LSP points you to the native `minlength` attribute.
+
+```html
+<!-- Without a registered validator, use the native attribute -->
+<input name="username" validate="required" minlength="3" />
+```
+
 ---
 
 ## Companion Attributes
@@ -195,6 +234,7 @@ The `validate` directive supports these companion attributes:
 | `error-class` | string | CSS class(es) applied to invalid fields |
 | `validate-on` | string | Validation trigger events (space-separated: `input`, `blur`, `focusout`, `submit`) |
 | `validate-if` | expression | Conditional expression; field is only validated when truthy |
+| `validate-empty` | string | `check` (default) or `skip`: whether `min`, `max` and `url` check an empty value |
 | `as` | identifier | Expose per-field validation state as a context variable |
 | `success` | templateId | Success template for form |
 
@@ -208,14 +248,16 @@ When `validate` is placed on a `<form>` element, No.JS creates a `$form` reactiv
 |----------|------|-------------|
 | `$form.valid` | boolean | `true` when all fields pass validation |
 | `$form.dirty` | boolean | `true` when any field value has changed |
-| `$form.touched` | boolean | `true` when any field has been focused |
-| `$form.pending` | boolean | `true` when async validation is in progress |
+| `$form.touched` | boolean | `true` when any field has lost focus (or after a submit attempt) |
+| `$form.submitting` | boolean | `true` from a valid submit until the form's HTTP request settles or `$form.endSubmit()` runs |
+| `$form.pending` | boolean | Reserved for async validators; stays `false` (validators run synchronously) |
 | `$form.errors` | object | Error messages keyed by field name (e.g. `$form.errors.email`) |
 | `$form.values` | object | Current field values keyed by field name |
-| `$form.fields` | object | Per-field metadata (valid, dirty, touched, errors) |
-| `$form.firstError` | string | The first error message across all fields |
-| `$form.errorCount` | number | Total number of validation errors |
-| `$form.reset()` | function | Resets all fields to initial state, clears errors |
+| `$form.fields` | object | Per-field state: `valid`, `dirty`, `touched`, `error`, `value` |
+| `$form.firstError` | string | The first visible error message |
+| `$form.errorCount` | number | Number of fields with a visible error |
+| `$form.reset()` | function | Clears dirty / touched / submitting, calls the native `form.reset()` and re-validates (`model` state is not reset) |
+| `$form.endSubmit()` | function | Sets `submitting` back to `false`; call it at the end of an `on:submit` handler |
 
 ### Usage examples
 
@@ -264,7 +306,7 @@ Custom validators are then available in `validate` attribute values:
   <div>
     <label>Name</label>
     <input name="name"
-           validate="required|minlength:2"
+           validate="required" minlength="2"
            error-required="Name is required"
            error-minlength="Name must be at least 2 characters" />
     <span if="$form.errors.name" class="error" bind="$form.errors.name"></span>
@@ -302,7 +344,7 @@ Custom validators are then available in `validate` attribute values:
   <div>
     <label>Website</label>
     <input name="website" type="url"
-           validate="url"
+           validate="url" validate-empty="skip"
            error-url="Enter a valid URL" />
     <span if="$form.errors.website" class="error" bind="$form.errors.website"></span>
   </div>

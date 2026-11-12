@@ -353,6 +353,26 @@ export function findStores(htmlDoc: HTMLDocument, text: string): Map<string, { s
   return stores;
 }
 
+function unquote(value: string | null | undefined): string {
+  return (value ?? '').replace(/^["']|["']$/g, '').trim().toLowerCase();
+}
+
+/** A control `<form validate>` disables: `<button>` without `type="button"`, or `<input type="submit">` */
+export function isSubmitButton(node: HtmlNode): boolean {
+  const type = unquote(node.attributes?.type);
+  if (node.tag === 'button') return type !== 'button';
+  return node.tag === 'input' && type === 'submit';
+}
+
+/** Attribute names of each ancestor element, nearest first */
+export function getAncestorAttributeNames(node: HtmlNode): string[][] {
+  const result: string[][] = [];
+  for (let p = node.parent; p; p = p.parent) {
+    if (p.tag) result.push(Object.keys(p.attributes ?? {}));
+  }
+  return result;
+}
+
 /** Get siblings of a node (nodes sharing the same parent) */
 export function getSiblings(node: HtmlNode): HtmlNode[] {
   const parent = node.parent;
