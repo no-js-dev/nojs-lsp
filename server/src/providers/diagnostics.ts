@@ -30,10 +30,13 @@ import { validateExpressionSyntax } from '../expression-analyzer';
 
 const SOURCE = 'nojs';
 
+/** Native constraint attributes that validate reads, but that are not `validate` rules */
+const NATIVE_CONSTRAINTS = new Set(['minlength', 'maxlength', 'pattern', 'step']);
+
 export async function validateTextDocument(
   document: TextDocument,
   connection: Connection,
-  options?: { validationEnabled?: boolean }
+  options?: { validationEnabled?: boolean; customValidators?: string[] }
 ): Promise<void> {
   // Skip validation if disabled via settings
   if (options?.validationEnabled === false) {
@@ -121,8 +124,8 @@ export async function validateTextDocument(
         }
       }
 
-      // 4. Unknown filter in expression
-      if (value && value.includes('|') && isDirective(name)) {
+      // 4. Unknown filter in expression (`validate` holds `|`-separated rules, not filters)
+      if (value && value.includes('|') && isDirective(name) && name !== 'validate') {
         const pipes = value.split('|').slice(1);
         for (const pipe of pipes) {
           const filterName = pipe.trim().split(':')[0].trim();
@@ -194,14 +197,16 @@ export async function validateTextDocument(
       if (name === 'validate' && value) {
         const rules = value.split('|').map(r => r.trim().split(':')[0].trim());
         for (const rule of rules) {
-          if (rule && !getValidator(rule)) {
+          if (rule && !getValidator(rule) && !options?.customValidators?.includes(rule)) {
             const ruleOffset = value.indexOf(rule);
             const start = valueStart + ruleOffset;
             const range = toRange(document, start, start + rule.length);
             diagnostics.push({
               severity: DiagnosticSeverity.Warning,
               range,
-              message: `No.JS: Unknown validator "${rule}". Available: ${getAllValidators().map(v => v.name).join(', ')}.`,
+              message: NATIVE_CONSTRAINTS.has(rule)
+                ? `No.JS: "${rule}" is not a validate rule. Use the native ${rule}="..." attribute (checked by validate and reported as error-${rule}), or register a validator with NoJS.validator() and add it to nojs.customValidators.`
+                : `No.JS: Unknown validator "${rule}". Available: ${getAllValidators().map(v => v.name).join(', ')}.`,
               source: SOURCE,
             });
           }

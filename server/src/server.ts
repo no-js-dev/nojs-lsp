@@ -162,6 +162,7 @@ function validateDoc(document: TextDocument) {
       const settings = await getDocumentSettings(uri);
       validateTextDocument(document, connection, {
         validationEnabled: settings.validation.enabled,
+        customValidators: settings.customValidators,
       });
     }, 200)
   );

@@ -17,6 +17,7 @@ import {
   isHttpDirective,
   getAnimations,
   getLifecycleEvents,
+  getLifecycleEventDoc,
   getLoopContextVars,
   getEventModifiers,
   getPluginRequirementNote,
@@ -154,7 +155,7 @@ const CONTEXT_KEY_DOCS: Record<string, string> = {
   '$route': 'No.JS: **`$route`** — Current route information (path, params, query, hash, matched).\n\nUsage: `$route.params.id`, `$route.matched`',
   '$router': 'No.JS: **`$router`** — Router instance for programmatic navigation.\n\nUsage: `$router.push(\'/about\')`',
   '$i18n': 'No.JS: **`$i18n`** — Reactive i18n Proxy. Access translations as dot-notation properties.\n\nUsage: `$i18n.shell.sidebar.intro` resolves to the translation string.\n\nReserved properties: `locale` (current locale), `locales` (available locales), `t(key, params)` (classic lookup), `setLocale(code)` (switch locale).',
-  '$form': 'No.JS: **`$form`** — Form validation state and methods.\n\nProperties: `valid`, `dirty`, `touched`, `pending`, `submitting`, `errors`, `values`, `fields`, `firstError`, `errorCount`, `reset()`\n\nUsage: `$form.valid`, `$form.errors.email`, `$form.fields.email.touched`',
+  '$form': 'No.JS: **`$form`** — Form validation state and methods.\n\nProperties: `valid`, `dirty`, `touched`, `pending`, `submitting`, `errors`, `values`, `fields`, `firstError`, `errorCount`, `reset()`, `endSubmit()`\n\nUsage: `$form.valid`, `$form.errors.email`, `$form.fields.email.touched`',
   '$sse': 'No.JS: **`$sse`** — SSE (Server-Sent Events) connection state.\n\nProperties: `connecting` (boolean — true while connecting/reconnecting), `open` (boolean — true when connection is active), `error` (boolean — true when connection closed with error)\n\nUsage: `$sse.connecting`, `$sse.open`, `$sse.error`\n\nAvailable inside elements with the `sse` directive.',
   '$el': 'No.JS: **`$el`** — Reference to the current DOM element.',
   '$event': 'No.JS: **`$event`** — The native DOM event object in event handlers.',
@@ -216,8 +217,13 @@ function buildPatternHover(pat: PatternMeta, attrName: string): string {
   if (suffix) {
     if (pat.name === 'on:*') {
       lines.push(`**Event:** \`${suffix}\``);
-      // Check for modifiers
       const parts = suffix.split('.');
+      const lifecycleDoc = getLifecycleEventDoc(parts[0]);
+      if (lifecycleDoc) {
+        lines.push('');
+        lines.push(`**Lifecycle hook:** ${lifecycleDoc}`);
+      }
+      // Check for modifiers
       if (parts.length > 1) {
         lines.push(`**Modifiers:** ${parts.slice(1).map(m => `\`${m}\``).join(', ')}`);
       }

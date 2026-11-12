@@ -17,6 +17,7 @@ import {
   getAllValidators,
   getAnimations,
   getLifecycleEvents,
+  getLifecycleEventDoc,
   getContextKeys,
   getLoopContextVars,
   getEventHandlerVars,
@@ -128,6 +129,9 @@ function getAttributeNameCompletions(context: CursorContext & { type: 'attribute
           label: fullName,
           kind: CompletionItemKind.Event,
           detail: `No.JS: Lifecycle event`,
+          documentation: getLifecycleEventDoc(lc)
+            ? { kind: MarkupKind.Markdown, value: getLifecycleEventDoc(lc)! }
+            : undefined,
           sortText: `1-${fullName}`,
           data: { type: 'lifecycle', name: fullName } as CompletionData,
         });
@@ -478,6 +482,24 @@ function getAttributeValueCompletions(context: CursorContext & { type: 'attribut
     return items;
   }
 
+  // validate-empty attribute values (NoJS Elements 1.23+)
+  if (attrName === 'validate-empty') {
+    const modes = [
+      { name: 'check', detail: 'Default: min, max and url also check an empty value' },
+      { name: 'skip', detail: 'An empty value passes min, max and url; only required reports it' },
+    ];
+    for (const m of modes) {
+      if (partial && !m.name.startsWith(partial.toLowerCase())) continue;
+      items.push({
+        label: m.name,
+        kind: CompletionItemKind.EnumMember,
+        detail: `No.JS: ${m.detail}`,
+        sortText: `0-${m.name}`,
+      });
+    }
+    return items;
+  }
+
   // i18n key completions for t="..." and t-html="..."
   if (attrName === 't' || attrName === 't-html') {
     for (const keyInfo of wsData.i18nKeys) {
@@ -575,15 +597,16 @@ function getAttributeValueCompletions(context: CursorContext & { type: 'attribut
     const formProps: { name: string; detail: string }[] = [
       { name: 'valid', detail: 'boolean — true when all fields pass validation' },
       { name: 'dirty', detail: 'boolean — true when any field value has changed' },
-      { name: 'touched', detail: 'boolean — true when any field has been focused' },
-      { name: 'pending', detail: 'boolean — true when async validators are running' },
-      { name: 'submitting', detail: 'boolean — true during form submission' },
+      { name: 'touched', detail: 'boolean — true when any field has lost focus (or after a submit attempt)' },
+      { name: 'pending', detail: 'boolean — reserved for async validators; stays false (validators run synchronously)' },
+      { name: 'submitting', detail: 'boolean — true from a valid submit until the form request settles or endSubmit() runs' },
       { name: 'errors', detail: 'object — { fieldName: errorMessage } for interacted fields' },
       { name: 'values', detail: 'object — { fieldName: currentValue }' },
       { name: 'fields', detail: 'object — { fieldName: { valid, dirty, touched, error, value } }' },
       { name: 'firstError', detail: 'string | null — first error message by priority' },
       { name: 'errorCount', detail: 'number — count of errors on interacted fields' },
-      { name: 'reset()', detail: 'function — reset form state and re-validate' },
+      { name: 'reset()', detail: 'function — clear dirty/touched/submitting, native form.reset(), re-validate (model state is not reset)' },
+      { name: 'endSubmit()', detail: 'function — set submitting back to false and re-validate; call it from an on:submit handler' },
     ];
     for (const prop of formProps) {
       if (afterForm && !prop.name.toLowerCase().startsWith(afterForm.toLowerCase())) continue;

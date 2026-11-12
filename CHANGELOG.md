@@ -4,6 +4,28 @@ All notable changes to the **No.JS LSP** extension will be documented in this fi
 
 ## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.22.0...HEAD)
 
+Synced with NoJS Core 1.23 and NoJS Elements 1.23. The new opt-in flags default to `false`, so v1.22.0 behavior is unchanged without them.
+
+### Added
+
+- `validate-empty` (Elements [#112](https://github.com/no-js-dev/nojs-elements/pull/112)): companion of `validate` in hover and completion, HTML custom data entry, and `check` / `skip` value completions. `skip` lets an empty value pass `min`, `max` and `url`; the default is `check`
+- Lifecycle hooks have descriptions in `on:` completions and on hover; `on:unmounted` describes the opt-in `strictUnmounted` flag (Core [#427](https://github.com/no-js-dev/nojs/pull/427))
+- `route-view` hover describes the opt-in `router.strictOutlets` flag (Core [#428](https://github.com/no-js-dev/nojs/pull/428))
+- `$form.endSubmit()` in `$form.` completions and the `$form` hover
+
+### Changed
+
+- `validate` hover and custom data describe the Elements 1.23 behavior: `$form.submitting` until the request settles or `endSubmit()` runs, native constraint attributes, error templates rendered once per field with `$error`, `$rule` and `err.message`, and the empty-value rules
+- The `form` snippet calls `$form.endSubmit()` and relies on the automatic submit-button disabling
+
+### Fixed
+
+- Validator metadata matches the Elements `validate` directive: `minlength`, `maxlength`, `pattern` and `step` are no longer offered as `validate` rules (they are native attributes, and `validate="minlength:3"` does nothing); using one as a rule gets a warning that points to the native attribute. `custom` takes a validator name (`custom:phone`), not an expression. `$form.pending` and `$form.touched` descriptions match the implementation
+- `validate="required|email"` no longer reports `email` as an unknown filter: `validate` values are rule lists, not expressions
+- Names in `nojs.customValidators` are no longer reported as unknown validators, as the setting documents
+- The `form` snippet used `disabled="!$form.valid"`, which core does not evaluate, so the submit button stayed disabled
+- Docs: the lifecycle example uses `on:` hooks, the validators reference lists the 6 rules, the native constraint attributes and `validate-empty`, and `$form.fields` lists `error` (there is no `errors` array)
+
 ## [1.22.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.21.1...v1.22.0) — 2026-11-10
 
 Synced with NoJS Core 1.22. Core's opt-in hardening flags all default to `false`, so v1.21.1 behavior is unchanged without them.

@@ -237,6 +237,19 @@ export function getLifecycleEvents(): string[] {
   return data.lifecycleEvents;
 }
 
+const LIFECYCLE_EVENT_DOCS: Record<string, string> = {
+  init: 'Runs once when the directive is first processed.',
+  mounted: 'Runs once the element is in the document and its child directives are processed.',
+  updated: 'Runs on every DOM mutation inside the element (child list, attributes, text).',
+  unmounted: 'Runs when the element is removed from the document. By default it fires only for removals made by your own code (`el.remove()`): `if`, `each` and route changes dispose the element first, so it does not run, and a keyed `each` row that moves fires it. Opt-in `NoJS.config({ strictUnmounted: true })` (NoJS 1.23+, default `false`) fires it once, on the next microtask, when a directive removes the element, and not for a row that only moved.',
+  error: 'Runs when an error is thrown in the element\'s subtree.',
+};
+
+/** Markdown description of a lifecycle event (`unmounted`, ...), or undefined */
+export function getLifecycleEventDoc(name: string): string | undefined {
+  return LIFECYCLE_EVENT_DOCS[name];
+}
+
 /** Context keys like $refs, $store, etc. */
 export function getContextKeys(): string[] {
   return data.contextKeys;

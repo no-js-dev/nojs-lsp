@@ -1,14 +1,10 @@
 {
   "validators": [
-    { "name": "required", "description": "No.JS: Field must not be empty.", "args": [], "example": "validate=\"required\"" },
-    { "name": "email", "description": "No.JS: Field must be a valid email address.", "args": [], "example": "validate=\"email\"" },
-    { "name": "url", "description": "No.JS: Field must be a valid URL.", "args": [], "example": "validate=\"url\"" },
-    { "name": "min", "description": "No.JS: Minimum numeric value.", "args": [{ "name": "value", "type": "number", "required": true }], "example": "validate=\"min:5\"" },
-    { "name": "max", "description": "No.JS: Maximum numeric value.", "args": [{ "name": "value", "type": "number", "required": true }], "example": "validate=\"max:100\"" },
-    { "name": "minlength", "description": "No.JS: Minimum string length (native ValidityState).", "args": [{ "name": "length", "type": "number", "required": true }], "example": "minlength=\"3\"" },
-    { "name": "maxlength", "description": "No.JS: Maximum string length (native ValidityState).", "args": [{ "name": "length", "type": "number", "required": true }], "example": "maxlength=\"50\"" },
-    { "name": "pattern", "description": "No.JS: Regex pattern the value must match (native ValidityState).", "args": [{ "name": "regex", "type": "string", "required": true }], "example": "pattern=\"[A-Za-z]+\"" },
-    { "name": "step", "description": "No.JS: Numeric step constraint (native ValidityState).", "args": [{ "name": "value", "type": "number", "required": true }], "example": "step=\"0.01\"" },
-    { "name": "custom", "description": "No.JS: Custom validation function.", "args": [{ "name": "expression", "type": "expression", "required": true }], "example": "validate=\"custom:value.length % 2 === 0\"" }
+    { "name": "required", "description": "No.JS: Field must not be empty (whitespace-only counts as empty).", "args": [], "example": "validate=\"required\"" },
+    { "name": "email", "description": "No.JS: Field must be a valid email address (user@domain.tld). An empty value passes.", "args": [], "example": "validate=\"email\"" },
+    { "name": "url", "description": "No.JS: Field must parse with new URL(). Fails an empty value unless validate-empty=\"skip\".", "args": [], "example": "validate=\"url\"" },
+    { "name": "min", "description": "No.JS: Minimum numeric value (not a length). An empty value counts as 0 unless validate-empty=\"skip\".", "args": [{ "name": "value", "type": "number", "required": true }], "example": "validate=\"min:5\"" },
+    { "name": "max", "description": "No.JS: Maximum numeric value (not a length). An empty value counts as 0 unless validate-empty=\"skip\".", "args": [{ "name": "value", "type": "number", "required": true }], "example": "validate=\"max:100\"" },
+    { "name": "custom", "description": "No.JS: Runs the validator registered with NoJS.validator(name, fn); it receives (value, formValues), no rule arguments.", "args": [{ "name": "name", "type": "string", "required": true }], "example": "validate=\"custom:phone\"" }
   ]
 }

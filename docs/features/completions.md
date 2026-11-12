@@ -216,6 +216,8 @@ Suggests 25 common DOM events plus 5 lifecycle events:
 
 `mounted`, `init`, `updated`, `unmounted`, `error`
 
+Each lifecycle completion carries a description. `on:unmounted` notes that by default it does not fire when `if`, `each` or a route change removes the element, and that the opt-in `NoJS.config({ strictUnmounted: true })` (NoJS 1.23+, default `false`) makes it fire once in that case. Hovering `on:unmounted` shows the same text.
+
 ```html
 <!-- Type "on:" to see all events -->
 <button on:click="count++">
@@ -256,7 +258,7 @@ When a directive is already present on an element, the LSP suggests its companio
 | `each`, `for` | *(same as `foreach` — aliases with identical companions)* |
 | `trigger` | `trigger-data` |
 | `use` | `var-*` |
-| `validate` | `error`, `error-*`, `error-class`, `validate-on`, `validate-if`, `as`, `success` |
+| `validate` | `error`, `error-*`, `error-class`, `validate-on`, `validate-if`, `validate-empty`, `as`, `success` |
 | `t` | `t-html` |
 | `drag` | `drag-type`, `drag-effect`, `drag-handle`, `drag-image`, `drag-image-offset`, `drag-disabled`, `drag-class`, `drag-ghost-class`, `drag-group` |
 | `drop` | `drop-accept`, `drop-effect`, `drop-class`, `drop-reject-class`, `drop-disabled`, `drop-max`, `drop-sort`, `drop-placeholder`, `drop-placeholder-class` |
@@ -389,7 +391,7 @@ Argument position tracks per colon — the first `:` shows the first argument, t
 
 ## Validator Completions
 
-Inside `validate="..."` attribute values, the LSP suggests all 10 built-in validators plus custom validators from settings.
+Inside `validate="..."` attribute values, the LSP suggests the 6 built-in rules plus custom validators from settings. Native constraints (`minlength`, `maxlength`, `pattern`, `step`) are attributes, not rules, so they are not suggested here.
 
 | Validator | Arguments | Description |
 |-----------|-----------|-------------|
@@ -398,16 +400,12 @@ Inside `validate="..."` attribute values, the LSP suggests all 10 built-in valid
 | `url` | — | Valid URL |
 | `min` | `value` (number) | Minimum numeric value |
 | `max` | `value` (number) | Maximum numeric value |
-| `minlength` | `length` (number) | Minimum string length |
-| `maxlength` | `length` (number) | Maximum string length |
-| `pattern` | `regex` (string) | Regex the value must match |
-| `step` | `value` (number) | Numeric step constraint |
-| `custom` | `expression` | Custom validation function |
+| `custom` | `name` (string) | Runs a validator registered with `NoJS.validator()` |
 
 ```html
 <input validate="required|email">
 <input validate="required|min:5|max:100">
-<input validate="custom:value.length % 2 === 0">
+<input validate="custom:phone">
 ```
 
 Custom validators from settings:
@@ -499,15 +497,16 @@ When typing `$form.` inside expressions, the LSP suggests form context propertie
 |----------|------|-------------|
 | `$form.valid` | `boolean` | All fields pass validation |
 | `$form.dirty` | `boolean` | Any field value has changed |
-| `$form.touched` | `boolean` | Any field has been focused |
-| `$form.pending` | `boolean` | Async validators running |
-| `$form.submitting` | `boolean` | Form submission in progress |
+| `$form.touched` | `boolean` | Any field has lost focus (or after a submit attempt) |
+| `$form.pending` | `boolean` | Reserved for async validators; stays `false` |
+| `$form.submitting` | `boolean` | From a valid submit until the form request settles or `endSubmit()` runs |
 | `$form.errors` | `object` | `{ fieldName: errorMessage }` |
 | `$form.values` | `object` | `{ fieldName: currentValue }` |
 | `$form.fields` | `object` | `{ fieldName: { valid, dirty, touched, error, value } }` |
 | `$form.firstError` | `string \| null` | First error message by priority |
 | `$form.errorCount` | `number` | Count of errors |
-| `$form.reset()` | `function` | Reset form state |
+| `$form.reset()` | `function` | Reset form state and call the native `form.reset()` (`model` state is not reset) |
+| `$form.endSubmit()` | `function` | Set `submitting` back to `false` (call it from an `on:submit` handler) |
 
 ### `$store` Sub-Properties
 
@@ -615,6 +614,7 @@ Several directives offer value completions for known enumerated values:
 | `drag-effect` | Drag effect type | `copy`, `move`, `link`, `none` |
 | `drop-effect` | Drop effect type | `copy`, `move`, `link`, `none` |
 | `validate-on` | Validation trigger | `input`, `blur`, `focusout`, `submit` |
+| `validate-empty` | Empty-value handling (NoJS Elements 1.23+) | `check`, `skip` |
 
 ```html
 <button call="/api/delete/1" method="DELETE">
