@@ -2,7 +2,9 @@
 
 All notable changes to the **No.JS LSP** extension will be documented in this file.
 
-## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.22.0...HEAD)
+## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.23.0...HEAD)
+
+## [1.23.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.22.0...v1.23.0) — 2026-11-12
 
 Synced with NoJS Core 1.23 and NoJS Elements 1.23. The new opt-in flags default to `false`, so v1.22.0 behavior is unchanged without them.
 
