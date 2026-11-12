@@ -123,10 +123,12 @@ Internationalization helper for translations.
 
 Form validation state and methods. Available inside `<form validate>` blocks.
 
-**Properties:** `valid`, `dirty`, `touched`, `pending`, `submitting`, `errors`, `values`, `fields`, `firstError`, `errorCount`, `reset()`
+**Properties:** `valid`, `dirty`, `touched`, `pending`, `submitting`, `errors`, `values`, `fields`, `firstError`, `errorCount`, `reset()`, `endSubmit()`
+
+A form handled by `on:submit` keeps `submitting` (and its submit buttons disabled) until the handler calls `$form.endSubmit()`; a form with `post` / `put` / `patch` / `delete` resets it when the request settles.
 
 ```html
-<form validate="" on:submit.prevent="submitForm()">
+<form validate="" on:submit.prevent="submitForm(); $form.endSubmit()">
   <input name="email" validate="required|email">
   <span if="$form.errors.email" bind="$form.errors.email"></span>
   <button bind-disabled="!$form.valid">Submit</button>

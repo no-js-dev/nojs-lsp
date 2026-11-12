@@ -31836,6 +31836,11 @@ var directives_default = {
           description: "No.JS: Conditional expression; field is only validated when truthy"
         },
         {
+          name: "validate-empty",
+          type: "string",
+          description: "No.JS: Opt-in empty-value handling: `skip` lets an empty value pass `min`, `max` and `url` (`required` still reports it); default `check`. On the form (default for all fields) or on a field (wins)"
+        },
+        {
           name: "as",
           type: "identifier",
           description: "No.JS: Expose per-field validation state as a context variable"
@@ -31846,7 +31851,7 @@ var directives_default = {
           description: "No.JS: Success template for form"
         }
       ],
-      documentation: 'Form validation with pristine-aware errors.\n\n**On a form:** creates `$form` context with `valid`, `dirty`, `touched`, `pending`, `errors`, `values`, `fields`, `firstError`, `errorCount`, `reset()`.\n\n**On a field:** standalone validation with error template.\n\n**Example:**\n```html\n<form validate="" error-class="is-invalid" validate-on="input blur">\n  <input name="email" validate="required|email" error-required="Email is required" />\n  <span if="$form.errors.email" bind="$form.errors.email"></span>\n</form>\n```\n\n**Built-in validators:** `required`, `email`, `url`, `min`, `max`, `custom`\n\n**Companions:** `error`, `error-*`, `error-class`, `validate-on`, `validate-if`, `as`, `success`',
+      documentation: 'Declarative form validation (NoJS Elements).\n\n**On a form:** creates `$form` with `valid`, `dirty`, `touched`, `submitting`, `pending`, `errors`, `values`, `fields`, `firstError`, `errorCount`, `reset()` and `endSubmit()`. Invalid submits are blocked; a valid submit sets `$form.submitting` until the form\'s `post` / `put` / `patch` / `delete` request settles or an `on:submit` handler calls `$form.endSubmit()`.\n\n**On a field:** pipe-separated rules (`required|email`). Outside a `<form validate>`, the field validates itself on `input` and renders its `error="#tpl"` template with `err.message`.\n\n**Example:**\n```html\n<form validate="" error-class="is-invalid" validate-on="input focusout">\n  <input name="email" validate="required|email" error-required="Email is required" />\n  <span if="$form.errors.email" bind="$form.errors.email"></span>\n</form>\n```\n\n**Built-in rules:** `required`, `email`, `url`, `min`, `max`, `custom:name`. Native attributes (`required`, `minlength`, `maxlength`, `pattern`, `min`, `max`, `step`, `type`) are also checked and reported under their own names (`error-minlength`).\n\n**Empty values (Elements 1.23):** by default `min`, `max` and `url` also check an empty field (`min:1` fails it). Opt-in `validate-empty="skip"` on the form or field lets it pass; the default is `check`.\n\n**Error templates:** `error="#id"` / `error-{rule}="#id"`. Inside a form the template renders once per field, after the `<template>`, with `$error`, `$rule` and `err.message`.\n\n**Companions:** `error`, `error-*`, `error-class`, `validate-on`, `validate-if`, `validate-empty`, `as`, `success`',
       category: "form"
     },
     {
@@ -32233,7 +32238,7 @@ var directives_default = {
           description: "No.JS: View Transition API preset or custom name for route changes. Built-in presets: slide, fade, scale, none."
         }
       ],
-      documentation: 'Route rendering outlet. Displays the template matching the current route.\n\nUses the **View Transition API** by default for route transitions (configurable via `router.viewTransition`). The `transition` attribute accepts built-in presets or a custom name.\n\n**Built-in presets:**\n- `slide` \u2014 horizontal slide between old and new content\n- `fade` \u2014 crossfade between old and new content\n- `scale` \u2014 scale down old content, scale up new content\n- `none` \u2014 disable transition animation\n\nCSS uses `::view-transition-old(route-content)` / `::view-transition-new(route-content)` pseudo-elements.\n\n**Example:**\n```html\n<div route-view src="pages" transition="slide"></div>\n\n<!-- Named outlet -->\n<div route-view="sidebar" src="panels" transition="fade"></div>\n```\n\n**Config:** `router.viewTransition` (default: `true`)\n\n**Companions:** `src`, `ext`, `route-index`, `i18n-ns`, `transition`',
+      documentation: 'Route rendering outlet. Displays the template matching the current route.\n\nUses the **View Transition API** by default for route transitions (configurable via `router.viewTransition`). The `transition` attribute accepts built-in presets or a custom name.\n\n**Built-in presets:**\n- `slide` \u2014 horizontal slide between old and new content\n- `fade` \u2014 crossfade between old and new content\n- `scale` \u2014 scale down old content, scale up new content\n- `none` \u2014 disable transition animation\n\nCSS uses `::view-transition-old(route-content)` / `::view-transition-new(route-content)` pseudo-elements.\n\n**Example:**\n```html\n<div route-view src="pages" transition="slide"></div>\n\n<!-- Named outlet -->\n<div route-view="sidebar" src="panels" transition="fade"></div>\n```\n\n**Named outlets and `router.templates`:** by default every outlet without its own `src`, named outlets included, also looks the active route up in the `router.templates` folder, so on a route with no `outlet="name"` template a named outlet requests `pages/<route>.tpl` and can render the `route="*"` wildcard or the built-in 404. Opt-in `NoJS.config({ router: { strictOutlets: true } })` (NoJS 1.23+, default `false`) keeps that lookup for the default outlet only: a named outlet without `src` is then filled only by `outlet="name"` routes and cleared otherwise.\n\n**Config:** `router.viewTransition` (default: `true`), `router.strictOutlets` (default: `false`)\n\n**Companions:** `src`, `ext`, `route-index`, `i18n-ns`, `transition`',
       category: "routing"
     },
     {
@@ -32392,7 +32397,7 @@ var directives_default = {
       valueType: "statement",
       valueDescription: "JS statement(s)",
       requiresValue: true,
-      documentation: 'Listens for DOM events and executes JS statement(s).\n\n**Example:**\n```html\n<button on:click="count++">Increment</button>\n<form on:submit.prevent="handleSubmit()">\n<input on:keydown.enter="search()">\n```\n\n**Modifiers:** `.prevent`, `.stop`, `.once`, `.self`, `.debounce`, `.throttle`\n**Key modifiers:** `.enter`, `.escape`, `.tab`, `.space`, `.delete`, `.backspace`, `.up`, `.down`, `.left`, `.right`, `.ctrl`, `.alt`, `.shift`, `.meta`\n\n**Handler variables:** `$event`, `$el`\n\n**Local variables (NoJS 1.22+):** declare handler-local values with `const` / `let`; they are visible to the following statements of the same handler and are never written to state.\n```html\n<button on:click="const m = items.splice(0, 1)[0]; items.splice(2, 0, m)">Rotate</button>\n```\nReassigning a `const` throws a `TypeError`. A `const` without a value, declaring a name twice, destructuring and `$`-prefixed names are rejected with a warning.',
+      documentation: 'Listens for DOM events and executes JS statement(s).\n\n**Example:**\n```html\n<button on:click="count++">Increment</button>\n<form on:submit.prevent="handleSubmit()">\n<input on:keydown.enter="search()">\n```\n\n**Modifiers:** `.prevent`, `.stop`, `.once`, `.self`, `.debounce`, `.throttle`\n**Key modifiers:** `.enter`, `.escape`, `.tab`, `.space`, `.delete`, `.backspace`, `.up`, `.down`, `.left`, `.right`, `.ctrl`, `.alt`, `.shift`, `.meta`\n\n**Handler variables:** `$event`, `$el`\n\n**Local variables (NoJS 1.22+):** declare handler-local values with `const` / `let`; they are visible to the following statements of the same handler and are never written to state.\n```html\n<button on:click="const m = items.splice(0, 1)[0]; items.splice(2, 0, m)">Rotate</button>\n```\nReassigning a `const` throws a `TypeError`. A `const` without a value, declaring a name twice, destructuring and `$`-prefixed names are rejected with a warning.\n\n**Lifecycle hooks:** `on:init`, `on:mounted`, `on:updated`, `on:unmounted`, `on:error`. By default `on:unmounted` fires only when your own code removes the element (`el.remove()`): `if`, `each` and route changes dispose the element before removing it, so the hook does not run, and a keyed `each` row that moves fires it. Opt-in `NoJS.config({ strictUnmounted: true })` (NoJS 1.23+, default `false`) fires it once, on the next microtask, when a directive removes the element, and not for a row that only moved. `if` keeps its own element, so put the hook on an element inside it.',
       commonEvents: [
         "click",
         "submit",
@@ -32821,16 +32826,12 @@ var filters_default = {
 // server/src/data/validators.json
 var validators_default = {
   validators: [
-    { name: "required", description: "No.JS: Field must not be empty.", args: [], example: 'validate="required"' },
-    { name: "email", description: "No.JS: Field must be a valid email address.", args: [], example: 'validate="email"' },
-    { name: "url", description: "No.JS: Field must be a valid URL.", args: [], example: 'validate="url"' },
-    { name: "min", description: "No.JS: Minimum numeric value.", args: [{ name: "value", type: "number", required: true }], example: 'validate="min:5"' },
-    { name: "max", description: "No.JS: Maximum numeric value.", args: [{ name: "value", type: "number", required: true }], example: 'validate="max:100"' },
-    { name: "minlength", description: "No.JS: Minimum string length (native ValidityState).", args: [{ name: "length", type: "number", required: true }], example: 'minlength="3"' },
-    { name: "maxlength", description: "No.JS: Maximum string length (native ValidityState).", args: [{ name: "length", type: "number", required: true }], example: 'maxlength="50"' },
-    { name: "pattern", description: "No.JS: Regex pattern the value must match (native ValidityState).", args: [{ name: "regex", type: "string", required: true }], example: 'pattern="[A-Za-z]+"' },
-    { name: "step", description: "No.JS: Numeric step constraint (native ValidityState).", args: [{ name: "value", type: "number", required: true }], example: 'step="0.01"' },
-    { name: "custom", description: "No.JS: Custom validation function.", args: [{ name: "expression", type: "expression", required: true }], example: 'validate="custom:value.length % 2 === 0"' }
+    { name: "required", description: "No.JS: Field must not be empty (whitespace-only counts as empty).", args: [], example: 'validate="required"' },
+    { name: "email", description: "No.JS: Field must be a valid email address (user@domain.tld). An empty value passes.", args: [], example: 'validate="email"' },
+    { name: "url", description: 'No.JS: Field must parse with new URL(). Fails an empty value unless validate-empty="skip".', args: [], example: 'validate="url"' },
+    { name: "min", description: 'No.JS: Minimum numeric value (not a length). An empty value counts as 0 unless validate-empty="skip".', args: [{ name: "value", type: "number", required: true }], example: 'validate="min:5"' },
+    { name: "max", description: 'No.JS: Maximum numeric value (not a length). An empty value counts as 0 unless validate-empty="skip".', args: [{ name: "value", type: "number", required: true }], example: 'validate="max:100"' },
+    { name: "custom", description: "No.JS: Runs the validator registered with NoJS.validator(name, fn); it receives (value, formValues), no rule arguments.", args: [{ name: "name", type: "string", required: true }], example: 'validate="custom:phone"' }
   ]
 };
 
@@ -32951,6 +32952,16 @@ function getValidator(name) {
 }
 function getLifecycleEvents() {
   return data.lifecycleEvents;
+}
+var LIFECYCLE_EVENT_DOCS = {
+  init: "Runs once when the directive is first processed.",
+  mounted: "Runs once the element is in the document and its child directives are processed.",
+  updated: "Runs on every DOM mutation inside the element (child list, attributes, text).",
+  unmounted: "Runs when the element is removed from the document. By default it fires only for removals made by your own code (`el.remove()`): `if`, `each` and route changes dispose the element first, so it does not run, and a keyed `each` row that moves fires it. Opt-in `NoJS.config({ strictUnmounted: true })` (NoJS 1.23+, default `false`) fires it once, on the next microtask, when a directive removes the element, and not for a row that only moved.",
+  error: "Runs when an error is thrown in the element's subtree."
+};
+function getLifecycleEventDoc(name) {
+  return LIFECYCLE_EVENT_DOCS[name];
 }
 function getContextKeys() {
   return data.contextKeys;
@@ -33905,6 +33916,7 @@ function getAttributeNameCompletions(context, wsData, docText) {
           label: fullName,
           kind: import_node3.CompletionItemKind.Event,
           detail: `No.JS: Lifecycle event`,
+          documentation: getLifecycleEventDoc(lc) ? { kind: import_node3.MarkupKind.Markdown, value: getLifecycleEventDoc(lc) } : void 0,
           sortText: `1-${fullName}`,
           data: { type: "lifecycle", name: fullName }
         });
@@ -34230,6 +34242,22 @@ ${v2.description}
     }
     return items;
   }
+  if (attrName === "validate-empty") {
+    const modes = [
+      { name: "check", detail: "Default: min, max and url also check an empty value" },
+      { name: "skip", detail: "An empty value passes min, max and url; only required reports it" }
+    ];
+    for (const m2 of modes) {
+      if (partial && !m2.name.startsWith(partial.toLowerCase())) continue;
+      items.push({
+        label: m2.name,
+        kind: import_node3.CompletionItemKind.EnumMember,
+        detail: `No.JS: ${m2.detail}`,
+        sortText: `0-${m2.name}`
+      });
+    }
+    return items;
+  }
   if (attrName === "t" || attrName === "t-html") {
     for (const keyInfo of wsData.i18nKeys) {
       if (partial && !keyInfo.key.toLowerCase().startsWith(partial.toLowerCase())) continue;
@@ -34322,15 +34350,16 @@ Properties: ${store.properties.join(", ")}`
     const formProps = [
       { name: "valid", detail: "boolean \u2014 true when all fields pass validation" },
       { name: "dirty", detail: "boolean \u2014 true when any field value has changed" },
-      { name: "touched", detail: "boolean \u2014 true when any field has been focused" },
-      { name: "pending", detail: "boolean \u2014 true when async validators are running" },
-      { name: "submitting", detail: "boolean \u2014 true during form submission" },
+      { name: "touched", detail: "boolean \u2014 true when any field has lost focus (or after a submit attempt)" },
+      { name: "pending", detail: "boolean \u2014 reserved for async validators; stays false (validators run synchronously)" },
+      { name: "submitting", detail: "boolean \u2014 true from a valid submit until the form request settles or endSubmit() runs" },
       { name: "errors", detail: "object \u2014 { fieldName: errorMessage } for interacted fields" },
       { name: "values", detail: "object \u2014 { fieldName: currentValue }" },
       { name: "fields", detail: "object \u2014 { fieldName: { valid, dirty, touched, error, value } }" },
       { name: "firstError", detail: "string | null \u2014 first error message by priority" },
       { name: "errorCount", detail: "number \u2014 count of errors on interacted fields" },
-      { name: "reset()", detail: "function \u2014 reset form state and re-validate" }
+      { name: "reset()", detail: "function \u2014 clear dirty/touched/submitting, native form.reset(), re-validate (model state is not reset)" },
+      { name: "endSubmit()", detail: "function \u2014 set submitting back to false and re-validate; call it from an on:submit handler" }
     ];
     for (const prop of formProps) {
       if (afterForm && !prop.name.toLowerCase().startsWith(afterForm.toLowerCase())) continue;
@@ -34498,7 +34527,7 @@ var CONTEXT_KEY_DOCS = {
   "$route": "No.JS: **`$route`** \u2014 Current route information (path, params, query, hash, matched).\n\nUsage: `$route.params.id`, `$route.matched`",
   "$router": "No.JS: **`$router`** \u2014 Router instance for programmatic navigation.\n\nUsage: `$router.push('/about')`",
   "$i18n": "No.JS: **`$i18n`** \u2014 Reactive i18n Proxy. Access translations as dot-notation properties.\n\nUsage: `$i18n.shell.sidebar.intro` resolves to the translation string.\n\nReserved properties: `locale` (current locale), `locales` (available locales), `t(key, params)` (classic lookup), `setLocale(code)` (switch locale).",
-  "$form": "No.JS: **`$form`** \u2014 Form validation state and methods.\n\nProperties: `valid`, `dirty`, `touched`, `pending`, `submitting`, `errors`, `values`, `fields`, `firstError`, `errorCount`, `reset()`\n\nUsage: `$form.valid`, `$form.errors.email`, `$form.fields.email.touched`",
+  "$form": "No.JS: **`$form`** \u2014 Form validation state and methods.\n\nProperties: `valid`, `dirty`, `touched`, `pending`, `submitting`, `errors`, `values`, `fields`, `firstError`, `errorCount`, `reset()`, `endSubmit()`\n\nUsage: `$form.valid`, `$form.errors.email`, `$form.fields.email.touched`",
   "$sse": "No.JS: **`$sse`** \u2014 SSE (Server-Sent Events) connection state.\n\nProperties: `connecting` (boolean \u2014 true while connecting/reconnecting), `open` (boolean \u2014 true when connection is active), `error` (boolean \u2014 true when connection closed with error)\n\nUsage: `$sse.connecting`, `$sse.open`, `$sse.error`\n\nAvailable inside elements with the `sse` directive.",
   "$el": "No.JS: **`$el`** \u2014 Reference to the current DOM element.",
   "$event": "No.JS: **`$event`** \u2014 The native DOM event object in event handlers.",
@@ -34553,6 +34582,11 @@ function buildPatternHover(pat, attrName) {
     if (pat.name === "on:*") {
       lines.push(`**Event:** \`${suffix}\``);
       const parts = suffix.split(".");
+      const lifecycleDoc = getLifecycleEventDoc(parts[0]);
+      if (lifecycleDoc) {
+        lines.push("");
+        lines.push(`**Lifecycle hook:** ${lifecycleDoc}`);
+      }
       if (parts.length > 1) {
         lines.push(`**Modifiers:** ${parts.slice(1).map((m2) => `\`${m2}\``).join(", ")}`);
       }
@@ -34767,6 +34801,7 @@ function validateExpressionSyntax(expr) {
 
 // server/src/providers/diagnostics.ts
 var SOURCE = "nojs";
+var NATIVE_CONSTRAINTS = /* @__PURE__ */ new Set(["minlength", "maxlength", "pattern", "step"]);
 async function validateTextDocument(document, connection2, options) {
   if (options?.validationEnabled === false) {
     connection2.sendDiagnostics({ uri: document.uri, diagnostics: [] });
@@ -34830,7 +34865,7 @@ async function validateTextDocument(document, connection2, options) {
           }
         }
       }
-      if (value && value.includes("|") && isDirective(name)) {
+      if (value && value.includes("|") && isDirective(name) && name !== "validate") {
         const pipes = value.split("|").slice(1);
         for (const pipe of pipes) {
           const filterName = pipe.trim().split(":")[0].trim();
@@ -34892,14 +34927,14 @@ async function validateTextDocument(document, connection2, options) {
       if (name === "validate" && value) {
         const rules = value.split("|").map((r2) => r2.trim().split(":")[0].trim());
         for (const rule of rules) {
-          if (rule && !getValidator(rule)) {
+          if (rule && !getValidator(rule) && !options?.customValidators?.includes(rule)) {
             const ruleOffset = value.indexOf(rule);
             const start = valueStart + ruleOffset;
             const range = toRange(document, start, start + rule.length);
             diagnostics.push({
               severity: import_node5.DiagnosticSeverity.Warning,
               range,
-              message: `No.JS: Unknown validator "${rule}". Available: ${getAllValidators().map((v2) => v2.name).join(", ")}.`,
+              message: NATIVE_CONSTRAINTS.has(rule) ? `No.JS: "${rule}" is not a validate rule. Use the native ${rule}="..." attribute (checked by validate and reported as error-${rule}), or register a validator with NoJS.validator() and add it to nojs.customValidators.` : `No.JS: Unknown validator "${rule}". Available: ${getAllValidators().map((v2) => v2.name).join(", ")}.`,
               source: SOURCE
             });
           }
@@ -36335,7 +36370,8 @@ function validateDoc(document) {
       validationTimers.delete(uri);
       const settings = await getDocumentSettings(uri);
       validateTextDocument(document, connection, {
-        validationEnabled: settings.validation.enabled
+        validationEnabled: settings.validation.enabled,
+        customValidators: settings.customValidators
       });
     }, 200)
   );

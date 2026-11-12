@@ -670,11 +670,11 @@ Synchronously clones an inline template into the current position. Used on `<tem
 
 #### `validate`
 
-Form validation with pristine-aware errors.
+Declarative form validation (`@no-js-dev/nojs-elements`).
 
-On a **form**: creates `$form` context with `valid`, `dirty`, `touched`, `pending`, `errors`, `values`, `fields`, `firstError`, `errorCount`, `reset()`.
+On a **form**: creates `$form` context with `valid`, `dirty`, `touched`, `submitting`, `pending`, `errors`, `values`, `fields`, `firstError`, `errorCount`, `reset()` and `endSubmit()`. Invalid submits are blocked; an `on:submit` handler calls `$form.endSubmit()` when done.
 
-On a **field**: standalone validation with error template.
+On a **field**: pipe-separated rules. Outside a `<form validate>`, the field validates itself on `input` and renders its `error="#tpl"` template with `err.message`. Inside a form, an error template renders once per field, after the `<template>`, with `$error`, `$rule` and `err.message`.
 
 - **Value type:** string (pipe-separated validator rules) — required
 - **Priority:** 30
@@ -688,6 +688,7 @@ On a **field**: standalone validation with error template.
 | `error-class` | string | CSS class(es) applied to invalid fields |
 | `validate-on` | string | Validation trigger events (space-separated: `input`, `blur`, `focusout`, `submit`) |
 | `validate-if` | expression | Conditional expression; field is only validated when truthy |
+| `validate-empty` | string | `check` (default) or `skip` (NoJS Elements 1.23+): with `skip`, an empty value passes `min`, `max` and `url` |
 | `as` | identifier | Expose per-field validation state as a context variable |
 | `success` | templateId | Success template for form |
 
@@ -699,7 +700,7 @@ On a **field**: standalone validation with error template.
 </form>
 ```
 
-Built-in validators: `required`, `email`, `url`, `min`, `max`, `custom`.
+Built-in rules: `required`, `email`, `url`, `min`, `max`, `custom:name`. Native attributes (`minlength`, `maxlength`, `pattern`, `step`, `type`) are checked too, as attributes. See [Validators](validators.md).
 
 ---
 
@@ -998,6 +999,8 @@ Route rendering outlet. Displays the template matching the current route.
 <div route-view="sidebar" src="panels"></div>
 ```
 
+By default every outlet without its own `src`, named outlets included, also looks the active route up in the `router.templates` folder: on a route with no `outlet="name"` template, a named outlet requests `pages/<route>.tpl` and can render the `route="*"` wildcard or the built-in 404. The opt-in `NoJS.config({ router: { strictOutlets: true } })` (NoJS 1.23+, default `false`) keeps that lookup for the default outlet only, so a named outlet without `src` is cleared instead.
+
 #### `guard`
 
 Route guard that prevents navigation when the expression is falsy.
@@ -1133,20 +1136,24 @@ See also: [Event Handler Variables](#event-handler-variables).
 
 ## Lifecycle Events
 
-Lifecycle attributes execute statements at specific points in an element's lifecycle.
+Lifecycle hooks are `on:*` events that execute statements at specific points in an element's lifecycle.
 
 | Event | Description |
 |-------|-------------|
 | `mounted` | Element has been inserted into the DOM |
 | `init` | Element is initialized (before first render) |
 | `updated` | Element's reactive data has changed |
-| `unmounted` | Element has been removed from the DOM |
+| `unmounted` | Element has been removed from the DOM by your code. With `strictUnmounted: true`, also when `if`, `each` or a route change removes it |
 | `error` | An error occurred during processing |
 
 ```html
-<div state="{ data: null }" mounted="data = loadData()" unmounted="cleanup()">
-<div updated="console.log('re-rendered')">
+<div on:mounted="ready = true" on:updated="console.log('re-rendered')"></div>
+<div if="open">
+  <section on:unmounted="console.log('closed')">...</section>
+</div>
 ```
+
+By default `on:unmounted` only sees removals made by your own code (`el.remove()`): `if`, `each` and route changes dispose the element before removing it, so the hook does not run, and a keyed `each` row that moves fires it. The opt-in `NoJS.config({ strictUnmounted: true })` (NoJS 1.23+, default `false`) fires it once, on the next microtask, when a directive removes the element, and not for a row that only moved. `if` keeps its own element, so the example puts the hook on an element inside it.
 
 ---
 

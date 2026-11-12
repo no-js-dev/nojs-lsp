@@ -11,6 +11,7 @@ import {
   getCompanionsForDirectives,
   getAnimations,
   getLifecycleEvents,
+  getLifecycleEventDoc,
   getContextKeys,
   getLoopContextVars,
   getEventHandlerVars,
@@ -187,9 +188,21 @@ describe('DirectiveRegistry', () => {
   });
 
   describe('Validators', () => {
-    it('returns all validators', () => {
-      const validators = getAllValidators();
-      expect(validators.length).toBeGreaterThanOrEqual(10);
+    it('returns exactly the rules of the Elements validate directive', () => {
+      const names = getAllValidators().map(v => v.name).sort();
+      expect(names).toEqual(['custom', 'email', 'max', 'min', 'required', 'url']);
+    });
+
+    it('does not list native constraint attributes as validate rules', () => {
+      for (const native of ['minlength', 'maxlength', 'pattern', 'step']) {
+        expect(getValidator(native)).toBeUndefined();
+      }
+    });
+
+    it('documents that custom:name passes no rule arguments', () => {
+      const custom = getValidator('custom')!;
+      expect(custom.example).toBe('validate="custom:phone"');
+      expect(custom.description).toContain('(value, formValues)');
     });
 
     it('includes known validators', () => {
@@ -271,5 +284,33 @@ describe('DirectiveRegistry', () => {
       expect(names.size).toBeGreaterThan(0);
       expect(names.has('as')).toBe(true);
     });
+  });
+});
+
+describe('DirectiveRegistry — NoJS 1.23 sync', () => {
+  it('documents strictUnmounted on the unmounted lifecycle event', () => {
+    const doc = getLifecycleEventDoc('unmounted');
+    expect(doc).toContain('strictUnmounted: true');
+    expect(doc).toContain('default `false`');
+  });
+
+  it('has a description for every lifecycle event and none for unknown names', () => {
+    for (const ev of getLifecycleEvents()) {
+      expect(getLifecycleEventDoc(ev)).toBeDefined();
+    }
+    expect(getLifecycleEventDoc('click')).toBeUndefined();
+    expect(getLifecycleEventDoc('')).toBeUndefined();
+  });
+
+  it('lists validate-empty as a validate companion', () => {
+    const validate = getDirective('validate')!;
+    const comp = validate.companions.find(c => c.name === 'validate-empty');
+    expect(comp).toBeDefined();
+    expect(comp!.description).toContain('skip');
+    expect(validate.documentation).toContain('endSubmit()');
+  });
+
+  it('documents router.strictOutlets on route-view', () => {
+    expect(getDirective('route-view')!.documentation).toContain('strictOutlets: true');
   });
 });

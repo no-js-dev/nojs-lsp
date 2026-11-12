@@ -584,3 +584,44 @@ describe('CompletionProvider', () => {
     });
   });
 });
+
+describe('CompletionProvider — NoJS 1.23 sync', () => {
+  it('documents strictUnmounted on the on:unmounted completion', async () => {
+    const items = await getCompletions('<div on:></div>', 8);
+    const unmounted = items.find(i => i.label === 'on:unmounted');
+    expect(unmounted).toBeDefined();
+    expect((unmounted!.documentation as any).value).toContain('strictUnmounted');
+  });
+
+  it('suggests check and skip for validate-empty', async () => {
+    const content = '<form validate validate-empty=""></form>';
+    const items = await getCompletions(content, content.indexOf('""') + 1);
+    expect(items.map(i => i.label)).toEqual(['check', 'skip']);
+  });
+
+  it('filters validate-empty values by partial input', async () => {
+    const content = '<form validate validate-empty="sk"></form>';
+    const items = await getCompletions(content, content.indexOf('sk"') + 2);
+    expect(items.map(i => i.label)).toEqual(['skip']);
+  });
+
+  it('suggests validate-empty as a companion of validate', async () => {
+    const content = '<input validate="required" ></input>';
+    const items = await getCompletions(content, content.indexOf('" >') + 2);
+    expect(items.map(i => i.label)).toContain('validate-empty');
+  });
+
+  it('does not suggest native constraints as validate rules', async () => {
+    const items = await getCompletions('<input validate=""></input>', 17);
+    const labels = items.map(i => i.label);
+    expect(labels).not.toContain('minlength');
+    expect(labels).not.toContain('pattern');
+    expect(labels).toContain('custom');
+  });
+
+  it('suggests $form.endSubmit()', async () => {
+    const content = '<form validate on:submit.prevent="$form.end"></form>';
+    const items = await getCompletions(content, content.indexOf('end"') + 3);
+    expect(items.map(i => i.label)).toContain('$form.endSubmit()');
+  });
+});

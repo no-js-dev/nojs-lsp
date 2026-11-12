@@ -1221,3 +1221,41 @@ describe('DiagnosticsProvider', () => {
     });
   });
 });
+
+describe('Diagnostics — validate rules (NoJS 1.23 sync)', () => {
+  async function run(content: string, options?: { customValidators?: string[] }) {
+    const conn = createMockConnection();
+    await validateTextDocument(createDocument(content), conn as any, options);
+    return conn.getDiagnostics();
+  }
+
+  it('does not report validate rules after a pipe as unknown filters', async () => {
+    const diags = await run('<input validate="required|email|min:1|max:3"></input>');
+    expect(diags.filter(x => msg(x).includes('Unknown filter'))).toEqual([]);
+    expect(diags.filter(x => msg(x).includes('Unknown validator'))).toEqual([]);
+  });
+
+  it('still reports unknown filters in expressions', async () => {
+    const diags = await run('<span bind="name | notAFilter"></span>');
+    expect(diags.some(x => msg(x).includes('Unknown filter'))).toBe(true);
+  });
+
+  it('points native constraints used as rules at the native attribute', async () => {
+    const diags = await run('<input validate="required|minlength:3"></input>');
+    const d = diags.find(x => msg(x).includes('minlength'));
+    expect(d).toBeDefined();
+    expect(msg(d!)).toContain('native minlength="..." attribute');
+  });
+
+  it('does not report validators listed in customValidators', async () => {
+    const diags = await run('<input validate="required|phone|minlength:3"></input>', { customValidators: ['phone', 'minlength'] });
+    expect(diags.filter(x => msg(x).includes('validator') || msg(x).includes('validate rule'))).toEqual([]);
+  });
+
+  it('still reports unknown rules not in customValidators', async () => {
+    const diags = await run('<input validate="phone|zip"></input>', { customValidators: ['phone'] });
+    const unknown = diags.filter(x => msg(x).includes('Unknown validator'));
+    expect(unknown.length).toBe(1);
+    expect(msg(unknown[0])).toContain('"zip"');
+  });
+});
