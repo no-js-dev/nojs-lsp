@@ -32123,7 +32123,7 @@ var directives_default = {
           description: "No.JS: CSS class when list is empty"
         }
       ],
-      documentation: 'Sortable list with drag and drop support.\n\n**Example:**\n```html\n<ul drag-list="items" template="item-tpl" drag-type="card">\n```',
+      documentation: 'Sortable list with drag and drop support.\n\n**Example:**\n```html\n<ul drag-list="items" template="item-tpl" drag-type="card">\n```\n\n**Compiled sites (NoJS-Server):** the server renders the rows from the array and runs reorder, move to another list and copy as server actions; the value must be a plain state path (`items`, `board.todo`). The `nojs:dnd-*` events carry `list: null`.',
       category: "dnd"
     },
     {
@@ -32146,7 +32146,7 @@ var directives_default = {
           description: "No.JS: CSS class for selected items"
         }
       ],
-      documentation: 'Enables multi-select drag on `drag` elements.\n\n**Example:**\n```html\n<div drag="item" drag-multiple drag-group="cards">\n```\n\n**Companions:** `drag-group` (required), `drag-multiple-class`',
+      documentation: 'Enables multi-select drag on `drag` elements.\n\n**Example:**\n```html\n<div drag="item" drag-multiple drag-group="cards">\n```\n\n**Companions:** `drag-group` (required), `drag-multiple-class`\n\n**Compiled sites (NoJS-Server):** the selection stays client-side; a selection drag sends at most 100 items (a larger selection is refused by the server).',
       category: "dnd"
     },
     {

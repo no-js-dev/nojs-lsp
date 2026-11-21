@@ -4,6 +4,10 @@ All notable changes to the **No.JS LSP** extension will be documented in this fi
 
 ## [Unreleased](https://github.com/no-js-dev/nojs-lsp/compare/v1.23.0...HEAD)
 
+### Changed
+
+- `drag-list` and `drag-multiple` hover and HTML custom data describe compiled sites (NoJS-Server, Elements [#128](https://github.com/no-js-dev/nojs-elements/pull/128)): the server renders a `drag-list`'s rows and runs reorder, move and copy, so its value must be a plain state path and the `nojs:dnd-*` events carry `list: null`; a `drag-multiple` selection drag sends at most 100 items
+
 ## [1.23.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.22.0...v1.23.0) — 2026-11-12
 
 Synced with NoJS Core 1.23 and NoJS Elements 1.23. The new opt-in flags default to `false`, so v1.22.0 behavior is unchanged without them.
