@@ -281,14 +281,14 @@
       "name": "drag-list",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Sortable list with drag and drop. **Requires `@no-js-dev/nojs-elements` plugin since v1.13.0.**\n\n```html\n<ul drag-list=\"items\" template=\"item-tpl\" drag-type=\"card\">\n```\n\n**Companions:** `template`, `drag-list-key`, `drag-list-item`, `drop-sort`, `drag-type`, `drop-accept`, `drag-list-copy`, `drag-list-remove`, and more"
+        "value": "No.JS: Sortable list with drag and drop. **Requires `@no-js-dev/nojs-elements` plugin since v1.13.0.**\n\n```html\n<ul drag-list=\"items\" template=\"item-tpl\" drag-type=\"card\">\n```\n\n**Companions:** `template`, `drag-list-key`, `drag-list-item`, `drop-sort`, `drag-type`, `drop-accept`, `drag-list-copy`, `drag-list-remove`, and more\n\n**Compiled sites (NoJS-Server):** the server renders the rows from the array and runs reorder, move to another list and copy as server actions; the value must be a plain state path (`items`, `board.todo`). The `nojs:dnd-*` events carry `list: null`."
       }
     },
     {
       "name": "drag-multiple",
       "description": {
         "kind": "markdown",
-        "value": "No.JS: Enables multi-select drag on `drag` elements. **Requires `@no-js-dev/nojs-elements` plugin since v1.13.0.**\n\n```html\n<div drag=\"item\" drag-multiple drag-group=\"cards\">\n```\n\n**Companions:** `drag-group` (required), `drag-multiple-class`"
+        "value": "No.JS: Enables multi-select drag on `drag` elements. **Requires `@no-js-dev/nojs-elements` plugin since v1.13.0.**\n\n```html\n<div drag=\"item\" drag-multiple drag-group=\"cards\">\n```\n\n**Companions:** `drag-group` (required), `drag-multiple-class`\n\n**Compiled sites (NoJS-Server):** the selection stays client-side; a selection drag sends at most 100 items (a larger selection is refused by the server)."
       },
       "valueSet": "v"
     },
