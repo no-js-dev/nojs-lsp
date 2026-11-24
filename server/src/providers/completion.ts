@@ -101,8 +101,10 @@ function getAttributeNameCompletions(context: CursorContext & { type: 'attribute
     if (partial && !pat.prefix.toLowerCase().startsWith(partial) && !partial.startsWith(pat.prefix.toLowerCase())) continue;
 
     if (pat.name === 'on:*') {
-      // Suggest common events
-      const events = pat.commonEvents ?? [];
+      // Suggest common events. A name that is also a lifecycle event (`error`)
+      // is offered once, below, with the lifecycle meaning NoJS gives it.
+      const lifecycle = new Set(getLifecycleEvents());
+      const events = (pat.commonEvents ?? []).filter((evt) => !lifecycle.has(evt));
       for (const evt of events) {
         const fullName = `on:${evt}`;
         if (existingAttrs.has(fullName)) continue;

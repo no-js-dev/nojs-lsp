@@ -156,7 +156,7 @@ function launch() {
     const i = spawnSync('npm', ['ci', '--no-audit', '--no-fund'], { cwd: ROOT, stdio: 'inherit' });
     if (i.status !== 0) { console.error('FAIL: npm ci exited ' + i.status); process.exit(1); }
   }
-  console.log('BUILD npm run compile (esbuild -> out/, gitignored)');
+  console.log('BUILD npm run compile (esbuild -> out/; the bundles are tracked, commit them with source changes)');
   const b = spawnSync('npm', ['run', 'compile'], { cwd: ROOT, stdio: 'inherit' });
   if (b.status !== 0 || !fs.existsSync(SERVER_BUNDLE) || !fs.existsSync(CLIENT_BUNDLE)) {
     console.error(`FAIL: npm run compile exited ${b.status}; expected ${path.relative(ROOT, SERVER_BUNDLE)} and ${path.relative(ROOT, CLIENT_BUNDLE)}`);
@@ -242,6 +242,8 @@ function checkList(desc, actual, expect = {}, exact = false) {
   if (present.length) problems.push(`unexpected ${JSON.stringify(present)}`);
   if (expect.count !== undefined && actual.length !== expect.count) problems.push(`count ${actual.length} != ${expect.count}`);
   if (expect.min !== undefined && actual.length < expect.min) problems.push(`count ${actual.length} < ${expect.min}`);
+  const duplicates = actual.filter((a, i) => actual.indexOf(a) !== i);
+  if (expect.unique && duplicates.length) problems.push(`duplicates ${JSON.stringify([...new Set(duplicates)])}`);
   if (problems.length) throw new Error(`${desc}: ${problems.join('; ')}`);
 }
 

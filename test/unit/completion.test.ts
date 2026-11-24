@@ -94,6 +94,22 @@ describe('CompletionProvider', () => {
       expect(labels).toContain('on:init');
       expect(labels).toContain('on:mounted');
     });
+
+    it('lists every attribute once', async () => {
+      const content = '<div ></div>';
+      const items = await getCompletions(content, 5); // attribute position
+      const labels = items.map(i => i.label);
+      const duplicates = labels.filter((l, i) => labels.indexOf(l) !== i);
+      expect(duplicates).toEqual([]);
+    });
+
+    it('offers on:error as the lifecycle hook NoJS runs for errors in the subtree', async () => {
+      const content = '<div on:></div>';
+      const items = await getCompletions(content, 8); // after "on:"
+      const onError = items.filter(i => i.label === 'on:error');
+      expect(onError).toHaveLength(1);
+      expect(onError[0].detail).toBe('No.JS: Lifecycle event');
+    });
   });
 
   // ─── Companion completions ───────────────────────────────────────────

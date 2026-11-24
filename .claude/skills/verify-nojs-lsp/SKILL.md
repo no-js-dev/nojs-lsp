@@ -15,7 +15,7 @@ Everything runs through `scripts/verify.mjs` from the repo root. Recipes live in
 node .claude/skills/verify-nojs-lsp/scripts/verify.mjs launch
 ```
 
-There is no long-running server to keep alive: the language server lives as long as one editor session. `launch` runs `npm ci` when `node_modules` is missing, then `npm run compile` (esbuild bundles `server/src` and `client/src` into `out/`, which is gitignored), and prints `READY server=bin/nojs-language-server.js -> out/server/src/server.js nojs-lsp=<version> sha=<git sha>`. A missing bundle or a non-zero build exits 1. Rerun `launch` after every source change; every `drive` then starts its own server process.
+There is no long-running server to keep alive: the language server lives as long as one editor session. `launch` runs `npm ci` when `node_modules` is missing, then `npm run compile` (esbuild bundles `server/src` and `client/src` into `out/`; the four bundle files are tracked in git although `.gitignore` lists `out/`, so commit them with every source change), and prints `READY server=bin/nojs-language-server.js -> out/server/src/server.js nojs-lsp=<version> sha=<git sha>`. A missing bundle or a non-zero build exits 1. Rerun `launch` after every source change; every `drive` then starts its own server process.
 
 ## Doctor
 
@@ -55,7 +55,7 @@ A scenario is JSON:
 | --- | --- | --- |
 | `open` | file | `textDocument/didOpen` with the file's text. |
 | `change` | file, text | `textDocument/didChange` replacing the whole text (new version). |
-| `configure` | settings | `workspace/didChangeConfiguration` with `{ nojs: settings }`. Pass the complete settings object (see the diagnostics feature). |
+| `configure` | settings | `workspace/didChangeConfiguration` with `{ nojs: settings }`. The server merges the keys you send over its defaults, as editors other than VS Code send only what the user set. |
 | `expect-diagnostics` | file, expect | Wait for a `publishDiagnostics` for the file that arrived after its last `open`/`change`/`configure` and matches. |
 | `completion` | file, at, expect | `textDocument/completion`; checks item labels (exact match). |
 | `hover` | file, at, expect | `textDocument/hover`; checks the markdown text (substring). |
@@ -63,7 +63,7 @@ A scenario is JSON:
 | `symbols` | file, expect | `textDocument/documentSymbol`; checks symbol names, nested included (substring). |
 | `code-actions` | file, at, expect | `textDocument/codeAction` at the position with the diagnostics published for that line; checks titles (substring). |
 
-`expect` takes `includes` (all must appear), `excludes` (none may appear), `count` (exact) and `min`. Steps time out after 5 s (`VERIFY_STEP_TIMEOUT=<ms>`); diagnostics are debounced 200 ms by the server.
+`expect` takes `includes` (all must appear), `excludes` (none may appear), `count` (exact), `min` and `unique` (no label, message or name twice). Steps time out after 5 s (`VERIFY_STEP_TIMEOUT=<ms>`); diagnostics are debounced 200 ms by the server.
 
 ## Package (VS Code extension)
 

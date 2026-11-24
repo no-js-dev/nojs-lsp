@@ -35,6 +35,6 @@ Run `node .claude/skills/verify-nojs-lsp/scripts/verify.mjs drive --scenario .cl
 
 ## Gotchas
 
-- Without `workspace/configuration` support the server replaces its whole settings object with what `didChangeConfiguration` sends. A partial object such as `{ "validation": { "enabled": true } }` drops `completion`, `customValidators` and `devtools`, and the next completion request fails with `-32603: Request textDocument/completion failed with message: Cannot read properties of undefined (reading 'filters')` (observed on 03dd993). Always send all five keys, as the scenario does. VS Code is not affected: its client answers `workspace/configuration`.
+- The scenario sends the full settings object; partial objects are covered by the [Editor settings](./settings.md) feature.
 - Diagnostics are debounced 200 ms. `expect-diagnostics` only accepts a notification that arrived after the last `open`/`change`/`configure`, so it cannot pass on a stale list.
 - The unknown-filter warning has no quick fix; only directive typos, missing `as`, `if` wrapping and `else` siblings do.

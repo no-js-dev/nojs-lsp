@@ -13,7 +13,7 @@ This directory is the maintained source for verifying what a developer sees in t
 - Every drive starts a fresh server over stdio with a fresh workspace folder; nothing carries over between drives.
 - Positions are anchors into the document text, not line/column numbers. Use the `{ "text", "occurrence", "delta" }` form when the plain anchor is ambiguous.
 - Treat every step as literal: keep anchors, labels and messages unchanged.
-- Send complete settings objects in `configure`, with `devtools.enabled: false`.
+- Keep `devtools.enabled` unset or `false` in `configure` unless a Chrome you started listens on its port.
 
 ## Proof and skip reporting
 
@@ -32,6 +32,7 @@ Each feature file starts with an H1 title and one paragraph describing the user-
 - [Completion](./completion.md): directive names in attribute position, filters after `|`, `$` context variables, store names after `$store.`.
 - [Hover documentation](./hover.md): markdown docs for directives, filters and events.
 - [Diagnostics and quick fixes](./diagnostics.md): warnings for unknown filters, HTTP directives without `as`, undefined templates; the `Add as="data"` quick fix; `nojs.validation.enabled`; clearing after an edit.
+- [Editor settings](./settings.md): partial `nojs` settings from editors other than VS Code, merged over the defaults.
 - [Navigation](./navigation.md): go to the `<template>` behind `use`, document outline of stores, state, requests and templates.
 - [VS Code extension package](./extension-package.md): the `.vsix` contents, manifest and the packaged server.
 

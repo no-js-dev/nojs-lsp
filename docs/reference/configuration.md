@@ -173,6 +173,14 @@ All settings with their defaults:
 
 Workspace-level settings in `.vscode/settings.json` override user-level settings.
 
+### Other editors
+
+Editors that run `nojs-language-server --stdio` pass the same keys under a `nojs` section, either pushed with `workspace/didChangeConfiguration` or returned for `workspace/configuration`. Send only the keys you change: the server fills every missing key with its default and ignores values of the wrong type. Each push replaces the previous one, so a key left out of a later push returns to its default. For example, Neovim's `vim.lsp.config`:
+
+```lua
+settings = { nojs = { validation = { enabled = false } } }
+```
+
 ---
 
 ## See Also

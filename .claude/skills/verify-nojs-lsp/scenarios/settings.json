@@ -1,0 +1,15 @@
+{
+  "name": "settings",
+  "documents": {"index.html": {"file": "sample.html"}},
+  "steps": [
+    ["open", "index.html"],
+    ["expect-diagnostics", "index.html", {"count": 3}],
+    ["configure", {"validation": {"enabled": false}}],
+    ["expect-diagnostics", "index.html", {"count": 0}],
+    ["completion", "index.html", "price | ", {"includes": ["uppercase", "currency"], "count": 32}],
+    ["configure", {"completion": {"filters": false}}],
+    ["expect-diagnostics", "index.html", {"count": 3}],
+    ["completion", "index.html", "price | ", {"excludes": ["uppercase", "currency"]}],
+    ["completion", "index.html", {"text": "<div ></div>", "delta": -7}, {"includes": ["state", "on:click"], "unique": true}]
+  ]
+}

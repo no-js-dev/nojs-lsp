@@ -22,6 +22,7 @@ import { onInlayHints } from './providers/inlay-hints';
 import { setWorkspaceRoots, invalidateCache } from './workspace-scanner';
 import { createDevToolsBridge, destroyDevToolsBridge, getDevToolsBridge } from './devtools-bridge';
 import { URI } from 'vscode-uri';
+import { NoJsSettings, defaultSettings, resolveSettings } from './settings';
 
 // Create a connection — supports both IPC (VS Code) and stdio (other editors)
 const connection = createConnection(ProposedFeatures.all);
@@ -31,22 +32,6 @@ const documents = new TextDocuments(TextDocument);
 
 let hasConfigurationCapability = false;
 let hasWorkspaceFolderCapability = false;
-
-interface NoJsSettings {
-  validation: { enabled: boolean };
-  completion: { filters: boolean };
-  customFilters: string[];
-  customValidators: string[];
-  devtools: { enabled: boolean; port: number; host: string };
-}
-
-const defaultSettings: NoJsSettings = {
-  validation: { enabled: true },
-  completion: { filters: true },
-  customFilters: [],
-  customValidators: [],
-  devtools: { enabled: false, port: 9222, host: 'localhost' },
-};
 
 let globalSettings: NoJsSettings = defaultSettings;
 const documentSettings = new Map<string, Thenable<NoJsSettings>>();
@@ -95,16 +80,16 @@ connection.onDidChangeConfiguration(async (change) => {
   if (hasConfigurationCapability) {
     documentSettings.clear();
   } else {
-    globalSettings = (change.settings?.nojs || defaultSettings) as NoJsSettings;
+    globalSettings = resolveSettings(change.settings?.nojs);
   }
   // Revalidate all open documents
   documents.all().forEach(validateDoc);
 
   // Handle devtools bridge connection/disconnection
   const settings = hasConfigurationCapability
-    ? await connection.workspace.getConfiguration({ section: 'nojs' }) as NoJsSettings
+    ? resolveSettings(await connection.workspace.getConfiguration({ section: 'nojs' }))
     : globalSettings;
-  const dt = settings.devtools ?? defaultSettings.devtools;
+  const dt = settings.devtools;
   if (dt.enabled) {
     const bridge = getDevToolsBridge();
     const portChanged = bridge && bridge.options.port !== dt.port;
@@ -131,7 +116,7 @@ export function getDocumentSettings(resource: string): Thenable<NoJsSettings> {
     result = connection.workspace.getConfiguration({
       scopeUri: resource,
       section: 'nojs',
-    });
+    }).then(resolveSettings);
     documentSettings.set(resource, result);
   }
   return result;
