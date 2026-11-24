@@ -33928,7 +33928,8 @@ function getAttributeNameCompletions(context, wsData, docText) {
   for (const pat of getPatterns()) {
     if (partial && !pat.prefix.toLowerCase().startsWith(partial) && !partial.startsWith(pat.prefix.toLowerCase())) continue;
     if (pat.name === "on:*") {
-      const events = pat.commonEvents ?? [];
+      const lifecycle = new Set(getLifecycleEvents());
+      const events = (pat.commonEvents ?? []).filter((evt) => !lifecycle.has(evt));
       for (const evt of events) {
         const fullName = `on:${evt}`;
         if (existingAttrs.has(fullName)) continue;

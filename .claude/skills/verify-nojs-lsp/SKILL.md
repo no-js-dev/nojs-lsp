@@ -63,7 +63,7 @@ A scenario is JSON:
 | `symbols` | file, expect | `textDocument/documentSymbol`; checks symbol names, nested included (substring). |
 | `code-actions` | file, at, expect | `textDocument/codeAction` at the position with the diagnostics published for that line; checks titles (substring). |
 
-`expect` takes `includes` (all must appear), `excludes` (none may appear), `count` (exact) and `min`. Steps time out after 5 s (`VERIFY_STEP_TIMEOUT=<ms>`); diagnostics are debounced 200 ms by the server.
+`expect` takes `includes` (all must appear), `excludes` (none may appear), `count` (exact), `min` and `unique` (no label, message or name twice). Steps time out after 5 s (`VERIFY_STEP_TIMEOUT=<ms>`); diagnostics are debounced 200 ms by the server.
 
 ## Package (VS Code extension)
 

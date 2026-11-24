@@ -242,6 +242,8 @@ function checkList(desc, actual, expect = {}, exact = false) {
   if (present.length) problems.push(`unexpected ${JSON.stringify(present)}`);
   if (expect.count !== undefined && actual.length !== expect.count) problems.push(`count ${actual.length} != ${expect.count}`);
   if (expect.min !== undefined && actual.length < expect.min) problems.push(`count ${actual.length} < ${expect.min}`);
+  const duplicates = actual.filter((a, i) => actual.indexOf(a) !== i);
+  if (expect.unique && duplicates.length) problems.push(`duplicates ${JSON.stringify([...new Set(duplicates)])}`);
   if (problems.length) throw new Error(`${desc}: ${problems.join('; ')}`);
 }
 

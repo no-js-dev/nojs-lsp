@@ -11,6 +11,7 @@ All notable changes to the **No.JS LSP** extension will be documented in this fi
 ### Fixed
 
 - Settings from editors other than VS Code: a `workspace/didChangeConfiguration` that carries only some `nojs` keys, or a `workspace/configuration` answer of `null`, is merged over the defaults. Before, the server replaced its whole settings object, and the next completion request failed with `-32603 ... Cannot read properties of undefined (reading 'filters')` (or `of null (reading 'completion')`). VS Code always sends the full section and is unaffected
+- Attribute completion offers `on:error` once, as the lifecycle hook NoJS runs for errors in the element's subtree; it was also listed a second time as a DOM event
 
 ## [1.23.0](https://github.com/no-js-dev/nojs-lsp/compare/v1.22.0...v1.23.0) — 2026-11-12
 

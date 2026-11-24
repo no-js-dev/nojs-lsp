@@ -3,7 +3,7 @@
   "documents": { "index.html": { "file": "sample.html" } },
   "steps": [
     ["open", "index.html"],
-    ["completion", "index.html", { "text": "<div ></div>", "delta": -7 }, { "includes": ["state", "store", "bind", "model", "foreach", "get", "on:click"], "min": 40 }],
+    ["completion", "index.html", { "text": "<div ></div>", "delta": -7 }, { "includes": ["state", "store", "bind", "model", "foreach", "get", "on:click", "on:error"], "min": 40, "unique": true }],
     ["completion", "index.html", "<div ", { "includes": ["computed", "bind"], "excludes": ["store", "state"] }],
     ["completion", "index.html", "price | ", { "includes": ["uppercase", "currency", "truncate", "date"], "count": 32 }],
     ["completion", "index.html", "bind=\"$", { "includes": ["$store", "$route", "$refs", "$i18n", "$form"] }],
