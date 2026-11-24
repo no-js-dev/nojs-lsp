@@ -15,7 +15,7 @@ Everything runs through `scripts/verify.mjs` from the repo root. Recipes live in
 node .claude/skills/verify-nojs-lsp/scripts/verify.mjs launch
 ```
 
-There is no long-running server to keep alive: the language server lives as long as one editor session. `launch` runs `npm ci` when `node_modules` is missing, then `npm run compile` (esbuild bundles `server/src` and `client/src` into `out/`, which is gitignored), and prints `READY server=bin/nojs-language-server.js -> out/server/src/server.js nojs-lsp=<version> sha=<git sha>`. A missing bundle or a non-zero build exits 1. Rerun `launch` after every source change; every `drive` then starts its own server process.
+There is no long-running server to keep alive: the language server lives as long as one editor session. `launch` runs `npm ci` when `node_modules` is missing, then `npm run compile` (esbuild bundles `server/src` and `client/src` into `out/`; the four bundle files are tracked in git although `.gitignore` lists `out/`, so commit them with every source change), and prints `READY server=bin/nojs-language-server.js -> out/server/src/server.js nojs-lsp=<version> sha=<git sha>`. A missing bundle or a non-zero build exits 1. Rerun `launch` after every source change; every `drive` then starts its own server process.
 
 ## Doctor
 
