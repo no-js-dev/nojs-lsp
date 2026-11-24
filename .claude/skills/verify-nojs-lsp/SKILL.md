@@ -55,7 +55,7 @@ A scenario is JSON:
 | --- | --- | --- |
 | `open` | file | `textDocument/didOpen` with the file's text. |
 | `change` | file, text | `textDocument/didChange` replacing the whole text (new version). |
-| `configure` | settings | `workspace/didChangeConfiguration` with `{ nojs: settings }`. Pass the complete settings object (see the diagnostics feature). |
+| `configure` | settings | `workspace/didChangeConfiguration` with `{ nojs: settings }`. The server merges the keys you send over its defaults, as editors other than VS Code send only what the user set. |
 | `expect-diagnostics` | file, expect | Wait for a `publishDiagnostics` for the file that arrived after its last `open`/`change`/`configure` and matches. |
 | `completion` | file, at, expect | `textDocument/completion`; checks item labels (exact match). |
 | `hover` | file, at, expect | `textDocument/hover`; checks the markdown text (substring). |

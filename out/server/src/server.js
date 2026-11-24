@@ -36346,11 +36346,7 @@ function destroyDevToolsBridge() {
   }
 }
 
-// server/src/server.ts
-var connection = (0, import_node12.createConnection)(import_node12.ProposedFeatures.all);
-var documents = new import_node12.TextDocuments(TextDocument2);
-var hasConfigurationCapability = false;
-var hasWorkspaceFolderCapability = false;
+// server/src/settings.ts
 var defaultSettings = {
   validation: { enabled: true },
   completion: { filters: true },
@@ -36358,6 +36354,38 @@ var defaultSettings = {
   customValidators: [],
   devtools: { enabled: false, port: 9222, host: "localhost" }
 };
+function isRecord(value) {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+function pick(value, fallback) {
+  return typeof value === typeof fallback ? value : fallback;
+}
+function stringList(value, fallback) {
+  return Array.isArray(value) ? value.filter((v2) => typeof v2 === "string") : fallback;
+}
+function resolveSettings(raw) {
+  const s2 = isRecord(raw) ? raw : {};
+  const validation = isRecord(s2.validation) ? s2.validation : {};
+  const completion = isRecord(s2.completion) ? s2.completion : {};
+  const devtools = isRecord(s2.devtools) ? s2.devtools : {};
+  return {
+    validation: { enabled: pick(validation.enabled, defaultSettings.validation.enabled) },
+    completion: { filters: pick(completion.filters, defaultSettings.completion.filters) },
+    customFilters: stringList(s2.customFilters, defaultSettings.customFilters),
+    customValidators: stringList(s2.customValidators, defaultSettings.customValidators),
+    devtools: {
+      enabled: pick(devtools.enabled, defaultSettings.devtools.enabled),
+      port: pick(devtools.port, defaultSettings.devtools.port),
+      host: pick(devtools.host, defaultSettings.devtools.host)
+    }
+  };
+}
+
+// server/src/server.ts
+var connection = (0, import_node12.createConnection)(import_node12.ProposedFeatures.all);
+var documents = new import_node12.TextDocuments(TextDocument2);
+var hasConfigurationCapability = false;
+var hasWorkspaceFolderCapability = false;
 var globalSettings = defaultSettings;
 var documentSettings = /* @__PURE__ */ new Map();
 connection.onInitialize((params) => {
@@ -36394,11 +36422,11 @@ connection.onDidChangeConfiguration(async (change) => {
   if (hasConfigurationCapability) {
     documentSettings.clear();
   } else {
-    globalSettings = change.settings?.nojs || defaultSettings;
+    globalSettings = resolveSettings(change.settings?.nojs);
   }
   documents.all().forEach(validateDoc);
-  const settings = hasConfigurationCapability ? await connection.workspace.getConfiguration({ section: "nojs" }) : globalSettings;
-  const dt = settings.devtools ?? defaultSettings.devtools;
+  const settings = hasConfigurationCapability ? resolveSettings(await connection.workspace.getConfiguration({ section: "nojs" })) : globalSettings;
+  const dt = settings.devtools;
   if (dt.enabled) {
     const bridge = getDevToolsBridge();
     const portChanged = bridge && bridge.options.port !== dt.port;
@@ -36422,7 +36450,7 @@ function getDocumentSettings(resource) {
     result = connection.workspace.getConfiguration({
       scopeUri: resource,
       section: "nojs"
-    });
+    }).then(resolveSettings);
     documentSettings.set(resource, result);
   }
   return result;
