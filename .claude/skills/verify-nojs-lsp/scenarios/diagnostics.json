@@ -1,0 +1,15 @@
+{
+  "name": "diagnostics",
+  "documents": {"index.html": {"file": "sample.html"}},
+  "steps": [
+    ["open", "index.html"],
+    ["expect-diagnostics", "index.html", {"count": 3, "includes": ["Unknown filter \"uppercasee\"", "HTTP directive \"get\" is missing the \"as\"", "Template \"missing-card\" is referenced but not defined"]}],
+    ["code-actions", "index.html", "<section get", {"includes": ["Add as=\"data\" companion attribute"]}],
+    ["configure", {"validation": {"enabled": false}, "completion": {"filters": true}, "customFilters": [], "customValidators": [], "devtools": {"enabled": false, "port": 9222, "host": "localhost"}}],
+    ["expect-diagnostics", "index.html", {"count": 0}],
+    ["configure", {"validation": {"enabled": true}, "completion": {"filters": true}, "customFilters": [], "customValidators": [], "devtools": {"enabled": false, "port": 9222, "host": "localhost"}}],
+    ["expect-diagnostics", "index.html", {"count": 3}],
+    ["change", "index.html", "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>verify-nojs-lsp sample</title>\n  <script src=\"https://cdn.no-js.dev/\"></script>\n</head>\n<body>\n  <div store=\"cart\" state=\"{ items: [], total: 0 }\"></div>\n\n  <main state=\"{ name: 'Ada', price: 12.5, users: [] }\">\n    <h1 bind=\"name | uppercase\"></h1>\n    <p bind=\"price | currency\"></p>\n    <p bind=\"name | lowercase\"></p>\n    <button on:click=\"name = 'Grace'\">Rename</button>\n    <section get=\"/api/users\" as=\"users\"></section>\n    <div use=\"card\"></div>\n    <span bind=\"$store.cart.total\"></span>\n    <div ></div>\n  </main>\n\n  <template id=\"card\">\n    <article class=\"card\"><slot></slot></article>\n  </template>\n</body>\n</html>\n"],
+    ["expect-diagnostics", "index.html", {"count": 0}]
+  ]
+}

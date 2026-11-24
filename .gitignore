@@ -43,3 +43,6 @@ Thumbs.db
 
 # Lock files (optional — uncomment if not committing)
 # package-lock.json
+
+# verify-nojs-lsp skill run state and evidence
+.verify/

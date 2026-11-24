@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>verify-nojs-lsp sample</title>
+  <script src="https://cdn.no-js.dev/"></script>
+</head>
+<body>
+  <div store="cart" state="{ items: [], total: 0 }"></div>
+
+  <main state="{ name: 'Ada', price: 12.5, users: [] }">
+    <h1 bind="name | uppercase"></h1>
+    <p bind="price | currency"></p>
+    <p bind="name | uppercasee"></p>
+    <button on:click="name = 'Grace'">Rename</button>
+    <section get="/api/users"></section>
+    <div use="card"></div>
+    <div use="missing-card"></div>
+    <span bind="$store.cart.total"></span>
+    <div ></div>
+  </main>
+
+  <template id="card">
+    <article class="card"><slot></slot></article>
+  </template>
+</body>
+</html>
