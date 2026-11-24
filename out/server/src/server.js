@@ -35167,6 +35167,20 @@ async function validateTextDocument(document, connection2, options) {
         });
       }
     }
+    if (el.tag === "a") {
+      const routeAttr = el.attributes.find((a2) => a2.name === "route" || a2.name === "bind-route");
+      const hasHref = el.attributes.some((a2) => a2.name === "href" || a2.name === "bind-href");
+      if (routeAttr && !hasHref) {
+        const path2 = routeAttr.value ?? "";
+        const suggestion = routeAttr.name === "bind-route" ? `bind-href with the same expression` : path2.startsWith("/") ? `href="${path2}" (href="#${path2}" in hash mode)` : `href="${path2}"`;
+        diagnostics.push({
+          severity: import_node5.DiagnosticSeverity.Information,
+          range: toRange(document, routeAttr.nameStart, routeAttr.nameEnd),
+          message: `No.JS: <a ${routeAttr.name}> has no href. Add ${suggestion} so the link can be reached with Tab, is announced as a link, is crawled and opens in a new tab; the router still handles the click.`,
+          source: SOURCE
+        });
+      }
+    }
   }
   detectDeprecatedTransitionCSS(text, document, diagnostics);
   for (const [outletName, decls] of wildcardRoutes) {
