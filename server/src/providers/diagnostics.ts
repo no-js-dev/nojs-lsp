@@ -388,6 +388,27 @@ export async function validateTextDocument(
         });
       }
     }
+
+    // 22. Route link without href — information only: the router handles the
+    // click either way, but without href the anchor is not a link to the browser
+    if (el.tag === 'a') {
+      const routeAttr = el.attributes.find(a => a.name === 'route' || a.name === 'bind-route');
+      const hasHref = el.attributes.some(a => a.name === 'href' || a.name === 'bind-href');
+      if (routeAttr && !hasHref) {
+        const path = routeAttr.value ?? '';
+        const suggestion = routeAttr.name === 'bind-route'
+          ? `bind-href with the same expression`
+          : path.startsWith('/')
+            ? `href="${path}" (href="#${path}" in hash mode)`
+            : `href="${path}"`;
+        diagnostics.push({
+          severity: DiagnosticSeverity.Information,
+          range: toRange(document, routeAttr.nameStart, routeAttr.nameEnd),
+          message: `No.JS: <a ${routeAttr.name}> has no href. Add ${suggestion} so the link can be reached with Tab, is announced as a link, is crawled and opens in a new tab; the router still handles the click.`,
+          source: SOURCE,
+        });
+      }
+    }
   }
 
   // 15. Deprecated class-based transition CSS on route-view elements

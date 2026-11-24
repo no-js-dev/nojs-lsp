@@ -1259,3 +1259,46 @@ describe('Diagnostics — validate rules (NoJS 1.23 sync)', () => {
     expect(msg(unknown[0])).toContain('"zip"');
   });
 });
+
+describe('route link without href', () => {
+  async function diagnose(content: string): Promise<Diagnostic[]> {
+    const conn = createMockConnection();
+    await validateTextDocument(createDocument(content), conn as any);
+    return conn.getDiagnostics().filter(d => msg(d).includes('has no href'));
+  }
+
+  it('informs (never warns) about <a route> without href and suggests the same path', async () => {
+    const diags = await diagnose('<a route="/about">About</a>');
+    expect(diags).toHaveLength(1);
+    expect(diags[0].severity).toBe(DiagnosticSeverity.Information);
+    expect(msg(diags[0])).toContain('href="/about"');
+    expect(diags[0].range.start).toEqual({ line: 0, character: 3 });
+  });
+
+  it('names the hash-mode form for a path and the value itself for an in-page anchor', async () => {
+    const [path] = await diagnose('<a route="/about">About</a>');
+    expect(msg(path)).toContain('href="#/about" in hash mode');
+    const [anchor] = await diagnose('<a route="#pricing">Pricing</a>');
+    expect(msg(anchor)).toContain('href="#pricing"');
+    expect(msg(anchor)).not.toContain('hash mode');
+  });
+
+  it('suggests bind-href for <a bind-route>', async () => {
+    const diags = await diagnose(`<a bind-route="'/users/' + user.id">Profile</a>`);
+    expect(diags).toHaveLength(1);
+    expect(diags[0].severity).toBe(DiagnosticSeverity.Information);
+    expect(msg(diags[0])).toContain('bind-href');
+  });
+
+  it('stays quiet when the link already has href or bind-href', async () => {
+    expect(await diagnose('<a href="/about" route="/about">About</a>')).toHaveLength(0);
+    expect(await diagnose('<a href="#/about" route="/about">About</a>')).toHaveLength(0);
+    expect(await diagnose(`<a bind-href="u" bind-route="u">Profile</a>`)).toHaveLength(0);
+  });
+
+  it('ignores route on elements that are not links', async () => {
+    expect(await diagnose('<button route="/about">About</button>')).toHaveLength(0);
+    expect(await diagnose('<template route="/about"><p>About</p></template>')).toHaveLength(0);
+    expect(await diagnose('<div route-view></div>')).toHaveLength(0);
+  });
+});

@@ -1,0 +1,10 @@
+{
+  "name": "link-href",
+  "documents": { "links.html": "<nav>\n  <a route=\"/about\">About</a>\n  <a href=\"/faq\" route=\"/faq\">FAQ</a>\n  <a bind-route=\"'/users/' + id\">Profile</a>\n  <button route=\"/contact\">Contact</button>\n</nav>\n" },
+  "steps": [
+    ["open", "links.html"],
+    ["expect-diagnostics", "links.html", {"count": 2, "includes": ["<a route> has no href. Add href=\"/about\" (href=\"#/about\" in hash mode)", "<a bind-route> has no href. Add bind-href", "[severity 3]"], "excludes": ["[severity 1]", "[severity 2]"]}],
+    ["change", "links.html", "<nav>\n  <a href=\"/about\" route=\"/about\">About</a>\n  <a href=\"/faq\" route=\"/faq\">FAQ</a>\n  <a bind-href=\"'/users/' + id\" bind-route=\"'/users/' + id\">Profile</a>\n  <button route=\"/contact\">Contact</button>\n</nav>\n"],
+    ["expect-diagnostics", "links.html", {"count": 0}]
+  ]
+}

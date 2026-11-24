@@ -358,12 +358,32 @@ The `validate` attribute accepts pipe-separated validator rules. Each rule name 
 
 ---
 
+### 15. Route Link Without `href`
+
+**Severity:** Information
+
+An `<a>` with `route` (or `bind-route`) and no `href` (or `bind-href`) still navigates, because the router handles the click. To the browser, though, it is not a link: it cannot be reached with Tab, screen readers do not announce it, crawlers do not follow it and a middle click opens nothing. The hint suggests the same destination in `href` (with the hash-mode form) or `bind-href`. It never escalates to a warning, and elements other than `<a>` (`<template route>`, `<button route>`) are not checked.
+
+```html
+<!-- ℹ Information: <a route> has no href. Add href="/about" (href="#/about" in hash mode) ... -->
+<a route="/about">About</a>
+```
+
+```html
+<!-- ✓ Correct -->
+<a href="/about" route="/about">About</a>
+<a bind-href="'/users/' + user.id" bind-route="'/users/' + user.id">Profile</a>
+```
+
+---
+
 ## Severity Reference
 
 | Severity | Rules | Usage |
 |----------|-------|-------|
 | **Error** | Missing required value, Orphaned `else`/`else-if` | Definite mistakes that will cause runtime failures |
 | **Warning** | Unknown directive, Unknown filter, Invalid modifier, Duplicate state/ref, Duplicate wildcard route, Missing template, Missing `as`, `model` on non-form, Unknown animation, Unknown validator | Likely mistakes or suspicious usage |
+| **Information** | Route link without `href` | Valid code that misses an accessibility or SEO benefit |
 | **Hint** | Expression syntax | Possible issues detected by lightweight analysis |
 
 ---
