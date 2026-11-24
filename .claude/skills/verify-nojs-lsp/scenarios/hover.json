@@ -1,0 +1,10 @@
+{
+  "name": "hover",
+  "documents": { "index.html": { "file": "sample.html" } },
+  "steps": [
+    ["open", "index.html"],
+    ["hover", "index.html", "<h1 bi", { "includes": ["`bind` directive", "Binds element's text content"] }],
+    ["hover", "index.html", "name | upper", { "includes": ["`uppercase` filter", "UPPERCASE"] }],
+    ["hover", "index.html", "<button on:cl", { "includes": ["click"] }]
+  ]
+}

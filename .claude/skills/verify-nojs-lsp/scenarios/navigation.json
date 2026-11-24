@@ -1,0 +1,9 @@
+{
+  "name": "navigation",
+  "documents": {"index.html": {"file": "sample.html"}},
+  "steps": [
+    ["open", "index.html"],
+    ["definition", "index.html", {"text": "use=\"ca"}, {"target": "<template id=\"card\""}],
+    ["symbols", "index.html", {"includes": ["store: cart", "state: { name: 'Ada'", "GET /api/users", "template: card"]}]
+  ]
+}
